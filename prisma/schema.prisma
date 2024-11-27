@@ -10,79 +10,104 @@ datasource db {
 model Product {
     id          Int      @id @default(autoincrement())
     name        String
+    slug        String   @unique
     description String
     price       Float
-    rating      Float?
-    imageUrl    String
+    rating      Int      @default(0)
+    poster      String
+    images      String[]
+    stock       Int      @default(0)
+    sku         String   @unique
     createdAt   DateTime @default(now())
     updatedAt   DateTime @updatedAt
 
-    categoryId Int?
-    category   Category? @relation(fields: [categoryId], references: [id])
+    Category         Category           @relation(fields: [categoryId], references: [id])
+    categoryId       Int
+    Review           Review[]
+    ProductAttribute ProductAttribute[]
+    Inventory        Inventory[]
 
-    reviews    Review[]
-    orderItems OrderItem[]
+    @@index([slug, categoryId])
 }
 
 model Category {
-    id        Int      @id @default(autoincrement())
-    name      String
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
+    id                 Int                 @id @default(autoincrement())
+    name               String
+    slug               String              @unique
+    image              String?
+    description        String?
+    parentId           Int?
+    parent             Category?           @relation("CategoryToParent", fields: [parentId], references: [id])
+    subcategories      Category[]          @relation("CategoryToParent")
+    products           Product[]
+    CategoryAttributes CategoryAttribute[]
 
-    products Product[]
+    @@index([slug])
 }
 
-enum OrderStatus {
-    pending
-    shipped
-    completed
-}
-
-model Order {
+model ProductAttribute {
     id        Int         @id @default(autoincrement())
-    status    OrderStatus
-    total     Float
+    name      String // Example: Size, Color
+    value     String // Example: Small, Blue
+    productId Int
     createdAt DateTime    @default(now())
     updatedAt DateTime    @updatedAt
+    product   Product     @relation(fields: [productId], references: [id])
+    Inventory Inventory[]
 
-    userId     String
-    user       User        @relation(fields: [userId], references: [id])
-    orderItems OrderItem[]
+    @@index([productId])
 }
 
-model OrderItem {
-    id        Int   @id @default(autoincrement())
-    orderId   Int
-    productId Int
-    quantity  Int
-    price     Float
+model CategoryAttribute {
+    id          Int      @id @default(autoincrement())
+    name        String
+    description String?
+    categoryId  Int
+    createdAt   DateTime @default(now())
+    updatedAt   DateTime @updatedAt
+    category    Category @relation(fields: [categoryId], references: [id])
 
-    order   Order   @relation(fields: [orderId], references: [id])
-    product Product @relation(fields: [productId], references: [id])
+    @@index([categoryId])
+}
+
+model Inventory {
+    id                 Int              @id @default(autoincrement())
+    quantity           Int
+    productId          Int
+    productAttributeId Int
+    createdAt          DateTime         @default(now())
+    updatedAt          DateTime         @updatedAt
+    product            Product          @relation(fields: [productId], references: [id])
+    productAttribute   ProductAttribute @relation(fields: [productAttributeId], references: [id])
+
+    @@index([productId])
 }
 
 model Review {
     id        Int      @id @default(autoincrement())
-    productId Int
-    rating    Int
+    rating    Int      @default(0)
     comment   String?
+    userId    String
+    user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+    productId Int
+    product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
     createdAt DateTime @default(now())
+}
 
-    userId  String
-    user    User    @relation(fields: [userId], references: [id])
-    product Product @relation(fields: [productId], references: [id])
+enum UserRole {
+    ADMIN
+    USER
 }
 
 model User {
     id            String    @id @default(cuid())
     name          String?
+    role          UserRole  @default(USER)
     email         String?   @unique
     emailVerified DateTime?
     image         String?
     accounts      Account[]
     sessions      Session[]
-    Order         Order[]
     Review        Review[]
 }
 

@@ -20,3 +20,6 @@ export const registerSchema = loginSchema
     },
     { message: "Passwords don't match" },
   );
+
+export type LoginSchemaType = z.infer<typeof loginSchema>;
+export type RegisterSchemaType = z.infer<typeof registerSchema>;

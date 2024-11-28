@@ -1,17 +1,14 @@
-import { auth } from "@/server/auth";
+import { getServerAuthSession } from "@/server/auth";
 import Link from "next/link";
+import SignOut from "./sign-out";
 
 async function Header() {
-  const session = await auth();
+  const session = await getServerAuthSession();
 
   return (
     <header>
       <div className="container">
-        {session ? (
-          <Link href="/api/sign-out">Log out</Link>
-        ) : (
-          <Link href="/login">Login</Link>
-        )}
+        {session ? <SignOut /> : <Link href="/login">Login</Link>}
       </div>
     </header>
   );

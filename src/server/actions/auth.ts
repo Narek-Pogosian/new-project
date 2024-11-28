@@ -1,3 +1,5 @@
+"use server";
+
 import { registerSchema } from "@/schemas/auth-schemas";
 import { actionClient } from ".";
 import { db } from "../db";
@@ -5,10 +7,10 @@ import bcrypt from "bcrypt";
 
 export const registerAction = actionClient
   .schema(registerSchema)
-  .action(({ parsedInput }) => {
+  .action(async ({ parsedInput }) => {
     const hashedPassword = bcrypt.hashSync(parsedInput.password, 10);
 
-    return db.user.create({
+    const user = await db.user.create({
       data: {
         email: parsedInput.email,
         name: parsedInput.name,
@@ -16,4 +18,10 @@ export const registerAction = actionClient
         role: "USER",
       },
     });
+
+    if (!user) {
+      return null;
+    }
+
+    return { email: parsedInput.email, password: parsedInput.password };
   });

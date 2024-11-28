@@ -1,13 +1,17 @@
-import { type DefaultSession, type NextAuthConfig } from "next-auth";
+import { PrismaAdapter } from "@auth/prisma-adapter";
+import {
+  getServerSession,
+  type DefaultSession,
+  type NextAuthOptions,
+} from "next-auth";
 import { type UserRole } from "@prisma/client";
 import { type Adapter } from "next-auth/adapters";
-import { PrismaAdapter } from "@auth/prisma-adapter";
+import { loginSchema } from "@/schemas/auth-schemas";
 import { db } from "@/server/db";
+
 import Credentials from "next-auth/providers/credentials";
 import bcrypt from "bcrypt";
-import { loginSchema } from "@/schemas/auth-schemas";
 
-/** * @see https://next-auth.js.org/getting-started/typescript#module-augmentation */
 declare module "next-auth" {
   interface Session extends DefaultSession {
     user: {
@@ -22,7 +26,26 @@ declare module "next-auth" {
 }
 
 /** * @see https://next-auth.js.org/configuration/options */
-export const authConfig = {
+export const authOptions: NextAuthOptions = {
+  callbacks: {
+    jwt({ token, user }) {
+      if (user) {
+        token.id = user.id;
+      }
+      return token;
+    },
+    session: ({ session, token }) => ({
+      ...session,
+      user: {
+        ...session.user,
+        id: token.id,
+      },
+    }),
+  },
+  adapter: PrismaAdapter(db) as Adapter,
+  session: {
+    strategy: "jwt",
+  },
   providers: [
     Credentials({
       credentials: {
@@ -57,23 +80,6 @@ export const authConfig = {
       },
     }),
   ],
-  adapter: PrismaAdapter(db) as Adapter,
-  session: {
-    strategy: "jwt",
-  },
-  callbacks: {
-    jwt({ token, user }) {
-      if (user) {
-        token.id = user.id;
-      }
-      return token;
-    },
-    session: ({ session, token }) => ({
-      ...session,
-      user: {
-        ...session.user,
-        // id: token.id,
-      },
-    }),
-  },
-} satisfies NextAuthConfig;
+};
+
+export const getServerAuthSession = () => getServerSession(authOptions);

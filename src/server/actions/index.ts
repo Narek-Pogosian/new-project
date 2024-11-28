@@ -1,10 +1,12 @@
 import { createSafeActionClient } from "next-safe-action";
-import { auth } from "../auth";
+import { getServerAuthSession } from "../auth";
 
-export const actionClient = createSafeActionClient({});
+export const actionClient = createSafeActionClient({
+  defaultValidationErrorsShape: "flattened",
+});
 
 export const protectedActionClient = actionClient.use(async ({ next }) => {
-  const session = await auth();
+  const session = await getServerAuthSession();
   if (!session) {
     throw new Error("Session not found!");
   }
@@ -13,7 +15,7 @@ export const protectedActionClient = actionClient.use(async ({ next }) => {
 });
 
 export const adminActionClient = actionClient.use(async ({ next }) => {
-  const session = await auth();
+  const session = await getServerAuthSession();
   if (!session) {
     throw new Error("Session not found!");
   }

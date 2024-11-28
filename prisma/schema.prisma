@@ -18,6 +18,7 @@ model Product {
     images      String[]
     stock       Int      @default(0)
     sku         String   @unique
+    vector      Bytes
     createdAt   DateTime @default(now())
     updatedAt   DateTime @updatedAt
 
@@ -100,15 +101,16 @@ enum UserRole {
 }
 
 model User {
-    id            String    @id @default(cuid())
-    name          String?
-    role          UserRole  @default(USER)
-    email         String?   @unique
-    emailVerified DateTime?
-    image         String?
-    accounts      Account[]
-    sessions      Session[]
-    Review        Review[]
+    id             String    @id @default(cuid())
+    name           String?
+    role           UserRole  @default(USER)
+    hashedPassword String?
+    email          String?   @unique
+    emailVerified  DateTime?
+    image          String?
+    accounts       Account[]
+    sessions       Session[]
+    Review         Review[]
 }
 
 model Session {

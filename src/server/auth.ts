@@ -31,6 +31,7 @@ export const authOptions: NextAuthOptions = {
     jwt({ token, user }) {
       if (user) {
         token.id = user.id;
+        token.role = user.role;
       }
       return token;
     },
@@ -39,6 +40,7 @@ export const authOptions: NextAuthOptions = {
       user: {
         ...session.user,
         id: token.id,
+        role: token.role,
       },
     }),
   },

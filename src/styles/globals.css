@@ -21,6 +21,15 @@
     --ring: 240 10% 3.9%;
 
     --radius: 6px;
+
+    --sidebar-background: 0 0% 98%;
+    --sidebar-foreground: 240 5.3% 26.1%;
+    --sidebar-primary: 240 5.9% 10%;
+    --sidebar-primary-foreground: 0 0% 98%;
+    --sidebar-accent: 240 4.8% 95.9%;
+    --sidebar-accent-foreground: 240 5.9% 10%;
+    --sidebar-border: 220 13% 91%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
   }
   .dark {
     --primary: 0 0% 94%;
@@ -38,6 +47,15 @@
     --scrollbar: 240, 8%, 23%;
     --border: 240 4% 14%;
     --ring: 240 10% 97.9%;
+
+    --sidebar-background: 240 5.9% 10%;
+    --sidebar-foreground: 240 4.8% 95.9%;
+    --sidebar-primary: 224.3 76.3% 48%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 240 3.7% 15.9%;
+    --sidebar-accent-foreground: 240 4.8% 95.9%;
+    --sidebar-border: 240 3.7% 15.9%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
   }
 }
 
@@ -47,10 +65,19 @@
   }
 
   html {
-    @apply scrollbar-thin scrollbar-track-transparent scrollbar-thumb-scrollbar h-full;
+    @apply h-full scrollbar-thin scrollbar-track-transparent scrollbar-thumb-scrollbar;
   }
 
   body {
     @apply h-full overflow-y-scroll bg-background text-foreground;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
   }
 }

@@ -11,8 +11,9 @@ model Product {
     id          Int      @id @default(autoincrement())
     name        String
     slug        String   @unique
-    description String
     price       Float
+    description String
+    isFeatured  Boolean  @default(false)
     rating      Int      @default(0)
     poster      String
     images      String[]

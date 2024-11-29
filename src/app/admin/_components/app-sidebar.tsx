@@ -1,6 +1,9 @@
+import { type Session } from "next-auth";
+import { Boxes, LayoutDashboard, LayoutGrid } from "lucide-react";
 import {
   Sidebar,
   SidebarContent,
+  SidebarFooter,
   SidebarGroup,
   SidebarGroupContent,
   SidebarGroupLabel,
@@ -9,6 +12,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
+import AppSidebarFooter from "./app-sidebar-footer";
 import Link from "next/link";
 
 const items = [
@@ -18,6 +22,7 @@ const items = [
       {
         title: "Overview",
         url: "/admin",
+        icon: LayoutDashboard,
       },
     ],
   },
@@ -27,21 +32,27 @@ const items = [
       {
         title: "Products",
         url: "#",
+        icon: Boxes,
       },
       {
-        title: "Category",
+        title: "Categories",
         url: "#",
+        icon: LayoutGrid,
       },
     ],
   },
 ];
 
-export function AppSidebar() {
+export function AppSidebar({ session }: { session: Session }) {
   return (
     <Sidebar>
       <SidebarHeader>
         <SidebarMenu>
-          <SidebarMenuItem>Header</SidebarMenuItem>
+          <SidebarMenuItem>
+            <Link href="/" className="block px-2 pt-2 font-semibold">
+              Shop Logo
+            </Link>
+          </SidebarMenuItem>
         </SidebarMenu>
       </SidebarHeader>
       <SidebarContent>
@@ -53,7 +64,10 @@ export function AppSidebar() {
                 {item.items.map((item) => (
                   <SidebarMenuItem key={item.title}>
                     <SidebarMenuButton asChild>
-                      <Link href={item.url}>{item.title}</Link>
+                      <Link href={item.url}>
+                        <item.icon />
+                        {item.title}
+                      </Link>
                     </SidebarMenuButton>
                   </SidebarMenuItem>
                 ))}
@@ -62,6 +76,13 @@ export function AppSidebar() {
           </SidebarGroup>
         ))}
       </SidebarContent>
+      <SidebarFooter>
+        <SidebarMenu>
+          <SidebarMenuItem>
+            <AppSidebarFooter session={session} />
+          </SidebarMenuItem>
+        </SidebarMenu>
+      </SidebarFooter>
     </Sidebar>
   );
 }

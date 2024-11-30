@@ -6,7 +6,7 @@ function RegisterPage() {
     <div className="mx-auto max-w-md">
       <h1 className="mb-4 text-2xl font-bold">Register</h1>
       <RegisterForm />
-      <p className="mt-6 text-sm font-medium">
+      <p className="mt-6 text-center text-sm font-medium">
         Already have an account,{" "}
         <Link
           href="/login"

@@ -19,6 +19,7 @@ import { Input } from "@/components/ui/input";
 
 function LoginForm() {
   const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState("");
 
   const router = useRouter();
   const form = useForm<LoginSchemaType>({
@@ -31,10 +32,15 @@ function LoginForm() {
 
   async function onSubmit(data: LoginSchemaType) {
     setIsLoading(true);
+    setError("");
+
     const res = await signIn("credentials", { ...data, redirect: false });
     if (res?.ok) {
       router.push("/");
+    } else if (res?.error) {
+      setError("Invalid Credentials");
     }
+
     setIsLoading(false);
   }
 
@@ -68,6 +74,12 @@ function LoginForm() {
             </FormItem>
           )}
         />
+
+        {error && (
+          <p className="font-semibold text-danger-600 dark:text-danger-500">
+            {error}
+          </p>
+        )}
 
         <LoadingButton loading={isLoading} type="submit">
           Login

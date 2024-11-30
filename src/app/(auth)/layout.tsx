@@ -8,9 +8,9 @@ function AuthLayout({ children }: { children: React.ReactNode }) {
       <div className="content-center max-lg:hidden">
         <span>Image</span>
       </div>
-      <div className="relative w-full content-center lg:col-span-2">
+      <div className="relative w-full content-center px-4 max-lg:pt-20 lg:col-span-2">
         <Button variant="outline" asChild>
-          <Link href="/" className="absolute left-8 top-8">
+          <Link href="/" className="absolute left-4 top-4 lg:left-8 lg:top-8">
             <MoveLeft />
             Home
           </Link>

@@ -11,7 +11,7 @@ const buttonVariants = cva(
         default:
           "bg-primary text-primary-foreground shadow-sm dark:shadow-black hover:bg-primary/90 ring-offset-2 ring-offset-background",
         accent:
-          "bg-accent-600 text-accent-foreground shadow-sm hover:bg-accent-700 shadow-sm dark:shadow-black",
+          "bg-gradient-to-tr from-accent-700 to-accent-500 text-accent-foreground shadow-sm hover:bg-accent-700 shadow-sm dark:shadow-black",
         destructive:
           "bg-danger-600 text-white shadow-sm hover:bg-danger-700 shadow-sm dark:shadow-black",
         outline: "border shadow-sm dark:shadow-black bg-background-card",

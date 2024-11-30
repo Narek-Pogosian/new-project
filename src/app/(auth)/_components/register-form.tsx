@@ -20,8 +20,11 @@ import { useAction } from "next-safe-action/hooks";
 import { useForm } from "react-hook-form";
 import { signIn } from "next-auth/react";
 import { Input } from "@/components/ui/input";
+import { useState } from "react";
 
 function RegisterForm() {
+  const [isLoading, setIsLoading] = useState(false);
+
   const form = useForm<RegisterSchemaType>({
     resolver: zodResolver(registerSchema),
     defaultValues: {
@@ -33,7 +36,10 @@ function RegisterForm() {
   });
 
   const router = useRouter();
-  const { executeAsync, isPending } = useAction(registerAction, {
+  const { executeAsync, result } = useAction(registerAction, {
+    onExecute: () => {
+      setIsLoading(true);
+    },
     onSuccess: async ({ input }) => {
       const res = await signIn("credentials", {
         email: input.email,
@@ -45,10 +51,13 @@ function RegisterForm() {
         router.push("/");
       }
     },
+    onSettled: () => {
+      setIsLoading(false);
+    },
   });
 
   async function onSubmit(data: RegisterSchemaType) {
-    if (isPending) {
+    if (isLoading) {
       return;
     }
 
@@ -114,7 +123,13 @@ function RegisterForm() {
           )}
         />
 
-        <LoadingButton loading={isPending} type="submit">
+        {result.serverError && (
+          <p className="font-semibold text-danger-600 dark:text-danger-500">
+            Something went wrong
+          </p>
+        )}
+
+        <LoadingButton loading={isLoading} type="submit">
           Register
         </LoadingButton>
       </form>

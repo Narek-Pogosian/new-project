@@ -20,7 +20,7 @@ export const registerAction = actionClient
     });
 
     if (!user) {
-      return null;
+      throw Error("Something went wrong");
     }
 
     return { email: parsedInput.email, password: parsedInput.password };

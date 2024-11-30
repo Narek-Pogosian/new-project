@@ -1,7 +1,7 @@
 import "@/styles/globals.css";
-import { ThemeProvider } from "@/components/theme-provider";
-import { GeistSans } from "geist/font/sans";
 import { type Metadata } from "next";
+import { GeistSans } from "geist/font/sans";
+import { Providers } from "@/components/providers";
 
 export const metadata: Metadata = {
   title: "Shop",
@@ -19,14 +19,7 @@ export default function RootLayout({
       suppressHydrationWarning
     >
       <body>
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          disableTransitionOnChange
-          enableSystem
-        >
-          {children}
-        </ThemeProvider>
+        <Providers>{children}</Providers>
       </body>
     </html>
   );

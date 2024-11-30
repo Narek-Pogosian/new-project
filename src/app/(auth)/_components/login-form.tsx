@@ -9,14 +9,17 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+import { LoadingButton } from "@/components/ui/loading-button";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { Button } from "@/components/ui/button";
 import { signIn } from "next-auth/react";
 import { Input } from "@/components/ui/input";
 
 function LoginForm() {
+  const [isLoading, setIsLoading] = useState(false);
+
   const router = useRouter();
   const form = useForm<LoginSchemaType>({
     resolver: zodResolver(loginSchema),
@@ -27,10 +30,12 @@ function LoginForm() {
   });
 
   async function onSubmit(data: LoginSchemaType) {
+    setIsLoading(true);
     const res = await signIn("credentials", { ...data, redirect: false });
     if (res?.ok) {
       router.push("/");
     }
+    setIsLoading(false);
   }
 
   return (
@@ -64,7 +69,9 @@ function LoginForm() {
           )}
         />
 
-        <Button type="submit">Login</Button>
+        <LoadingButton loading={isLoading} type="submit">
+          Login
+        </LoadingButton>
       </form>
     </Form>
   );

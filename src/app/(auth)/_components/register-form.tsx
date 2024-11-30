@@ -13,11 +13,11 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { registerAction } from "@/server/actions/auth";
+import { LoadingButton } from "@/components/ui/loading-button";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import { useAction } from "next-safe-action/hooks";
 import { useForm } from "react-hook-form";
-import { Button } from "@/components/ui/button";
 import { signIn } from "next-auth/react";
 import { Input } from "@/components/ui/input";
 
@@ -114,7 +114,9 @@ function RegisterForm() {
           )}
         />
 
-        <Button type="submit">Register</Button>
+        <LoadingButton loading={isPending} type="submit">
+          Register
+        </LoadingButton>
       </form>
     </Form>
   );

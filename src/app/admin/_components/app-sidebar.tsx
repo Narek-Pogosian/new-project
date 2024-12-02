@@ -14,6 +14,7 @@ import {
 } from "@/components/ui/sidebar";
 import AppSidebarFooter from "./app-sidebar-footer";
 import Link from "next/link";
+import Logo from "@/components/logo";
 
 const items = [
   {
@@ -50,7 +51,7 @@ export function AppSidebar({ session }: { session: Session }) {
         <SidebarMenu>
           <SidebarMenuItem>
             <Link href="/" className="block px-2 pt-2 font-semibold">
-              Shop Logo
+              <Logo />
             </Link>
           </SidebarMenuItem>
         </SidebarMenu>

@@ -16,7 +16,7 @@ export function Providers({ children }: { children: React.ReactNode }) {
     <SessionProvider refetchOnWindowFocus={false}>
       <ThemeProvider
         attribute="class"
-        defaultTheme="system"
+        defaultTheme="dark"
         enableSystem
         disableTransitionOnChange
       >

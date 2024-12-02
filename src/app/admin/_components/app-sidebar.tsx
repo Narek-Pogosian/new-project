@@ -32,12 +32,12 @@ const items = [
     items: [
       {
         title: "Products",
-        url: "#",
+        url: "/admin/products",
         icon: Boxes,
       },
       {
         title: "Categories",
-        url: "#",
+        url: "/admin/categories",
         icon: LayoutGrid,
       },
     ],

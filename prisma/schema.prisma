@@ -61,13 +61,14 @@ model ProductAttribute {
 }
 
 model CategoryAttribute {
-    id          Int      @id @default(autoincrement())
-    name        String
-    description String?
-    categoryId  Int
-    createdAt   DateTime @default(now())
-    updatedAt   DateTime @updatedAt
-    category    Category @relation(fields: [categoryId], references: [id])
+    id              Int      @id @default(autoincrement())
+    name            String
+    possibleValues  String[]
+    description     String?
+    categoryId      Int
+    createdAt       DateTime @default(now())
+    updatedAt       DateTime @updatedAt
+    category        Category @relation(fields: [categoryId], references: [id])
 
     @@index([categoryId])
 }

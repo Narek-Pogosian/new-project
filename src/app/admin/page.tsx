@@ -1,5 +1,11 @@
+import PageTitle from "./_components/page-title";
+
 function AdminHomePage() {
-  return <div>AdminPage</div>;
+  return (
+    <>
+      <PageTitle>Overview</PageTitle>
+    </>
+  );
 }
 
 export default AdminHomePage;

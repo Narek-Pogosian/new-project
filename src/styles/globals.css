@@ -15,6 +15,7 @@
 
     --foreground: 240 8% 5%;
     --foreground-muted: 240 8% 50%;
+    --foreground-placeholder: 240 5% 60%;
 
     --scrollbar: 240 10% 82%;
     --border: 240 8% 93%;
@@ -42,7 +43,8 @@
     --background-popover-focus: 240, 6%, 20%;
 
     --foreground: 240 6% 98%;
-    --foreground-muted: 240 12% 70%;
+    --foreground-muted: 240 8% 65%;
+    --foreground-placeholder: 240 8% 58%;
 
     --scrollbar: 240, 6%, 23%;
     --border: 240 6% 16%;
@@ -52,7 +54,7 @@
     --sidebar-foreground: 240 4.8% 95.9%;
     --sidebar-primary: 224.3 76.3% 48%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 240 6% 18%;
+    --sidebar-accent: 240 6% 16%;
     --sidebar-accent-foreground: 240 8% 95.9%;
     --sidebar-border: 240 6% 18%;
   }

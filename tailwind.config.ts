@@ -1,3 +1,4 @@
+/* eslint-disable */
 import { type Config } from "tailwindcss";
 import { fontFamily } from "tailwindcss/defaultTheme";
 import colors from "tailwindcss/colors";
@@ -12,7 +13,7 @@ export default {
       black: colors.black,
       white: colors.white,
       neutral: colors.zinc,
-      danger: colors.rose,
+      danger: colors.red,
       accent: colors.pink,
       "accent-foreground": colors.white,
     },
@@ -42,6 +43,7 @@ export default {
         foreground: {
           DEFAULT: "hsl(var(--foreground))",
           muted: "hsl(var(--foreground-muted))",
+          placeholder: "hsl(var(--foreground-placeholder))",
         },
         background: {
           DEFAULT: "hsl(var(--background))",
@@ -66,6 +68,10 @@ export default {
       },
     },
   },
-  // eslint-disable-next-line
-  plugins: [require("tailwindcss-animate"), require("tailwind-scrollbar")],
+
+  plugins: [
+    require("tailwindcss-animate"),
+    require("tailwind-scrollbar"),
+    require("@tailwindcss/container-queries"),
+  ],
 } satisfies Config;

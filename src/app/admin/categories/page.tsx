@@ -1,16 +1,22 @@
+import CategoryList from "./_components/category-list";
 import PageTitle from "../_components/page-title";
-import Link from "next/link";
-import { Button } from "@/components/ui/button";
 
-function AdminCategoriesPage() {
+import { getAllCategories } from "@/server/queries/categories";
+import { Suspense } from "react";
+
+export default function AdminCategoriesPage() {
   return (
     <>
       <PageTitle>Categories</PageTitle>
-      <Button asChild>
-        <Link href="/admin/categories/create">Create category</Link>
-      </Button>
+      <Suspense fallback={<p>Loading...</p>}>
+        <Categories />
+      </Suspense>
     </>
   );
 }
 
-export default AdminCategoriesPage;
+async function Categories() {
+  const categories = await getAllCategories();
+
+  return <CategoryList categories={categories} />;
+}

@@ -3,6 +3,7 @@
 import { createCategorySchema } from "@/schemas/category-schemas";
 import { adminActionClient } from ".";
 import { db } from "../db";
+import { revalidateDbCache } from "../queries/cache";
 
 export const createCategoryAction = adminActionClient
   .schema(createCategorySchema)
@@ -33,6 +34,10 @@ export const createCategoryAction = adminActionClient
         categoryAttributes: attributesWithCategoryId,
       };
     });
+
+    if (result) {
+      revalidateDbCache({ tag: "categories" });
+    }
 
     return result;
   });

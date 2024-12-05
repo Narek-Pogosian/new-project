@@ -19,8 +19,9 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { Trash2 } from "lucide-react";
+import { slugify } from "@/lib/utils";
 
-function CategoryForm() {
+export default function CategoryForm() {
   const form = useForm<CreateCategorySchemaType>({
     resolver: zodResolver(createCategorySchema),
     defaultValues: {
@@ -37,8 +38,6 @@ function CategoryForm() {
     name: "attributes",
   });
 
-  console.log(form.getValues());
-
   function onSubmit(vals: CreateCategorySchemaType) {
     console.log(vals);
   }
@@ -47,14 +46,14 @@ function CategoryForm() {
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="@container space-y-8"
+        className="space-y-8 @container"
       >
         {/* Category Name */}
         <FormField
           control={form.control}
           name="name"
           render={({ field }) => (
-            <FormItem className="@xl:grid-cols-2 @xl:gap-8 grid gap-1">
+            <FormItem className="grid gap-1 @xl:grid-cols-2 @xl:gap-8">
               <div className="space-y-2">
                 <FormLabel>Category Name*</FormLabel>
                 <FormDescription>
@@ -64,7 +63,14 @@ function CategoryForm() {
                 <FormMessage />
               </div>
               <FormControl>
-                <Input placeholder="Enter category name" {...field} />
+                <Input
+                  placeholder="Enter category name"
+                  {...field}
+                  onChange={(e) => {
+                    field.onChange(e.target.value);
+                    form.setValue("slug", slugify(e.target.value));
+                  }}
+                />
               </FormControl>
             </FormItem>
           )}
@@ -77,7 +83,7 @@ function CategoryForm() {
           control={form.control}
           name="slug"
           render={({ field }) => (
-            <FormItem className="@xl:grid-cols-2 @xl:gap-8 grid gap-1">
+            <FormItem className="grid gap-1 @xl:grid-cols-2 @xl:gap-8">
               <div className="space-y-2">
                 <FormLabel>Category Slug*</FormLabel>
                 <FormDescription>
@@ -104,7 +110,7 @@ function CategoryForm() {
           control={form.control}
           name="image"
           render={({ field }) => (
-            <FormItem className="@xl:grid-cols-2 @xl:gap-8 grid gap-1">
+            <FormItem className="grid gap-1 @xl:grid-cols-2 @xl:gap-8">
               <div className="space-y-2">
                 <FormLabel>Category Image</FormLabel>
                 <FormDescription>
@@ -127,7 +133,7 @@ function CategoryForm() {
           control={form.control}
           name="description"
           render={({ field }) => (
-            <FormItem className="@xl:grid-cols-2 @xl:gap-8 grid gap-1">
+            <FormItem className="grid gap-1 @xl:grid-cols-2 @xl:gap-8">
               <div className="space-y-2">
                 <FormLabel>Category Description</FormLabel>
                 <FormDescription>
@@ -154,11 +160,15 @@ function CategoryForm() {
         <div>
           <div className="mb-4 space-y-2">
             <FormLabel>Category Attributes</FormLabel>
-            <FormDescription>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit.
+            <FormDescription className="text-balance">
+              Use this section to define custom category attributes (e.g.,
+              &quot;Color&quot;, &quot;Size&quot;) and specify possible values
+              for each (e.g., &quot;Red&quot;, &quot;Blue&quot;). You can easily
+              add more attributes as needed to organize and filter products more
+              effectively.
             </FormDescription>
           </div>
-          <div className="mb-8 space-y-14">
+          <ul className="mb-8 space-y-6">
             {fields.map((attribute, index) => (
               <Attribute
                 key={attribute.id}
@@ -167,18 +177,19 @@ function CategoryForm() {
                 removeAttribute={remove}
               />
             ))}
-          </div>
+          </ul>
 
           <Button
             type="button"
             variant="outline"
-            onClick={() => append({ name: "", possibleValues: [] })}
+            className="-mt-2 block"
+            onClick={() => append({ name: "", possibleValues: [""] })}
           >
             Add Attribute
           </Button>
         </div>
 
-        <Button>Submit</Button>
+        <Button size="lg">Create Category</Button>
       </form>
     </Form>
   );
@@ -202,34 +213,37 @@ function Attribute({ index, control, removeAttribute }: AttributeProps) {
   });
 
   return (
-    <div className="@xl:grid-cols-2 @xl:gap-8 mb-4 grid gap-1">
+    <li className="space-y-4 border-b pb-6">
       <FormField
         control={control}
         name={`attributes.${index}.name`}
         render={({ field }) => (
           <FormItem>
             <FormLabel>Attribute Name</FormLabel>
-            <div className="flex gap-2">
+            <div className="flex justify-between gap-4">
+              <FormControl>
+                <Input
+                  placeholder="Attribute name"
+                  className="w-fit"
+                  {...field}
+                />
+              </FormControl>
               <Button
                 type="button"
-                onClick={() => removeAttribute(index)}
                 variant="destructive"
-                size="icon"
+                className="h-fit"
+                size="sm"
+                onClick={() => removeAttribute(index)}
               >
-                <Trash2 />
-                <span className="sr-only">Remove Attribute</span>
+                Remove Attribute
               </Button>
-              <FormControl>
-                <Input placeholder="Attribute name" {...field} />
-              </FormControl>
             </div>
             <FormMessage />
           </FormItem>
         )}
       />
 
-      <div>
-        <FormLabel>Possible Values</FormLabel>
+      <div className="max-w-md">
         {valueFields.map((_, valueIndex) => (
           <FormField
             key={valueIndex}
@@ -257,18 +271,18 @@ function Attribute({ index, control, removeAttribute }: AttributeProps) {
             )}
           />
         ))}
+
         <Button
           type="button"
           // @ts-expect-error it works
           onClick={() => appendValue("")}
           className="mt-2 block"
+          variant="outline"
           size="sm"
         >
           Add Possible Value
         </Button>
       </div>
-    </div>
+    </li>
   );
 }
-
-export default CategoryForm;

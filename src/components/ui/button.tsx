@@ -9,7 +9,7 @@ const buttonVariants = cva(
     variants: {
       variant: {
         default:
-          "bg-primary text-primary-foreground shadow-sm dark:shadow-black hover:bg-primary/90 ring-offset-2 ring-offset-background",
+          "bg-primary text-primary-foreground shadow-sm dark:shadow-black hover:bg-primary/80 ring-offset-2 ring-offset-background",
         accent:
           "bg-gradient-to-tr from-accent-700 to-accent-500 text-accent-foreground shadow-sm hover:bg-accent-700 shadow-sm dark:shadow-black",
         destructive:
@@ -21,7 +21,7 @@ const buttonVariants = cva(
       size: {
         default: "px-4 py-1.5",
         sm: "rounded py-1.5 px-3 text-xs",
-        lg: "rounded py-2 text-lg px-8",
+        lg: "rounded py-2 px-8",
         icon: "size-9",
       },
     },

@@ -1,8 +1,10 @@
 import { z } from "zod";
 
 const categoryAttribute = z.object({
-  name: z.string(),
-  possibleValues: z.array(z.string().trim().min(1, { message: "Required" })),
+  name: z.string().trim().min(1, { message: "Name is required" }),
+  possibleValues: z.array(
+    z.string().trim().min(1, { message: "A value cannot be empty" }),
+  ),
 });
 
 export const createCategorySchema = z.object({

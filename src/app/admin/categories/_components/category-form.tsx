@@ -20,6 +20,9 @@ import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { Trash2 } from "lucide-react";
 import { slugify } from "@/lib/utils";
+import { useAction } from "next-safe-action/hooks";
+import { createCategoryAction } from "@/server/actions/categories";
+import { LoadingButton } from "@/components/ui/loading-button";
 
 export default function CategoryForm() {
   const form = useForm<CreateCategorySchemaType>({
@@ -38,8 +41,15 @@ export default function CategoryForm() {
     name: "attributes",
   });
 
-  function onSubmit(vals: CreateCategorySchemaType) {
-    console.log(vals);
+  const { executeAsync, isPending } = useAction(createCategoryAction);
+
+  async function onSubmit(vals: CreateCategorySchemaType) {
+    if (isPending) return;
+
+    const res = await executeAsync(vals);
+    if (res) {
+      form.reset();
+    }
   }
 
   return (
@@ -189,7 +199,9 @@ export default function CategoryForm() {
           </Button>
         </div>
 
-        <Button size="lg">Create Category</Button>
+        <LoadingButton loading={isPending} size="lg">
+          Create Category
+        </LoadingButton>
       </form>
     </Form>
   );

@@ -6,11 +6,12 @@ import { type Category } from "@prisma/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import Link from "next/link";
+import CategoryActions from "./category-actions";
 
 function CategoryList({ categories }: { categories: Category[] }) {
   const [nameQuery, setNameQuery] = useState("");
 
-  const filteredSurvey = useMemo(() => {
+  const filteredCategories = useMemo(() => {
     return categories.filter((category) => {
       const matchesName = category.name
         .toLowerCase()
@@ -42,21 +43,38 @@ function CategoryList({ categories }: { categories: Category[] }) {
 
       <hr className="mb-6" />
 
-      {filteredSurvey.length === 0 ? (
-        <div className="mx-auto mb-8 pt-10 text-center">
+      {filteredCategories.length === 0 ? (
+        <div className="mx-auto mb-8 pt-16 text-center">
           <div className="mx-auto mb-4 flex size-20 items-center justify-center rounded-full bg-primary/5">
             <FileQuestion className="size-10 text-primary" />
           </div>
           <h2 className="mb-2 text-xl font-semibold">Oops! No Results</h2>
           <p className="text-sm text-foreground-muted">
-            Try adjusting your filters to find more surveys!
+            Try adjusting your filters to find categories!
           </p>
         </div>
       ) : (
-        <ul className="space-y-2">
-          {filteredSurvey.map((survey) => (
-            <p key={survey.id}>{survey.name}</p>
-            // <SurveyCard key={survey.id} survey={survey} />
+        <ul className="space-y-6">
+          {filteredCategories.map((category) => (
+            <li
+              key={category.id}
+              className="flex justify-between gap-2 [&:not(:last-of-type)]:border-b [&:not(:last-of-type)]:pb-6"
+            >
+              <div className="flex gap-6">
+                <div>Image</div>
+                <div>
+                  <h3 className="mb-1 font-semibold">{category.name}</h3>
+                  <p className="mb-2 text-xs text-foreground-muted">
+                    Created: {new Date(category.createdAt).toDateString()}
+                  </p>
+                  <p className="text-sm font-medium text-foreground-muted">
+                    10 products
+                  </p>
+                  <p></p>
+                </div>
+              </div>
+              <CategoryActions categoryId={category.id} />
+            </li>
           ))}
         </ul>
       )}

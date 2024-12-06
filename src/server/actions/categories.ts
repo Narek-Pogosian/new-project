@@ -2,8 +2,16 @@
 
 import { createCategorySchema } from "@/schemas/category-schemas";
 import { adminActionClient } from ".";
-import { db } from "../db";
 import { revalidateDbCache } from "../queries/cache";
+import { db } from "../db";
+import { z } from "zod";
+
+export const deleteCategoryAction = adminActionClient
+  .schema(z.number())
+  .action(async ({ parsedInput }) => {
+    await db.category.delete({ where: { id: parsedInput } });
+    revalidateDbCache({ tag: "categories" });
+  });
 
 export const createCategoryAction = adminActionClient
   .schema(createCategorySchema)

@@ -28,7 +28,7 @@ model Product {
     Inventory        Inventory[]
     ProductAttribute ProductAttribute[]
 
-    @@index([slug, categoryId])
+    @@index([slug, categoryId, price, rating])
 }
 
 model Category {

@@ -1,3 +1,9 @@
+import { deleteCategoryAction } from "@/server/actions/categories";
+import { buttonVariants } from "@/components/ui/button";
+import { LoadingButton } from "@/components/ui/loading-button";
+import { useAction } from "next-safe-action/hooks";
+import { useState } from "react";
+import { Trash2 } from "lucide-react";
 import {
   AlertDialog,
   AlertDialogCancel,
@@ -8,14 +14,6 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import { Button, buttonVariants } from "@/components/ui/button";
-import { deleteCategoryAction } from "@/server/actions/categories";
-import { revalidateDbCache } from "@/server/queries/cache";
-import { Pencil, Trash2 } from "lucide-react";
-import { useAction } from "next-safe-action/hooks";
-import { useState } from "react";
-import Link from "next/link";
-import { LoadingButton } from "@/components/ui/loading-button";
 
 export default function CategoryActions({
   categoryId,
@@ -24,13 +22,6 @@ export default function CategoryActions({
 }) {
   return (
     <div className="flex">
-      <Link
-        href={`/admin/categories/${categoryId}/edit`}
-        className={buttonVariants({ variant: "ghost", size: "icon" })}
-      >
-        <span className="sr-only">Edit Category</span>
-        <Pencil className="!size-4" />
-      </Link>
       <CategoryDeleteAction id={categoryId} />
     </div>
   );

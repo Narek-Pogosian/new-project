@@ -21,8 +21,8 @@ import { Button } from "@/components/ui/button";
 import { Trash2 } from "lucide-react";
 import { slugify } from "@/lib/utils";
 import { useAction } from "next-safe-action/hooks";
-import { createCategoryAction } from "@/server/actions/categories";
 import { LoadingButton } from "@/components/ui/loading-button";
+import { createCategoryAction } from "@/server/actions/categories";
 
 export default function CategoryForm() {
   const form = useForm<CreateCategorySchemaType>({
@@ -32,7 +32,7 @@ export default function CategoryForm() {
       slug: "",
       image: undefined,
       description: undefined,
-      attributes: [],
+      attributes: [{ name: "", possibleValues: ["Attribute Value"] }],
     },
   });
 
@@ -193,7 +193,9 @@ export default function CategoryForm() {
             type="button"
             variant="outline"
             className="-mt-2 block"
-            onClick={() => append({ name: "", possibleValues: [""] })}
+            onClick={() =>
+              append({ name: "", possibleValues: ["Attribute Value"] })
+            }
           >
             Add Attribute
           </Button>
@@ -243,11 +245,12 @@ function Attribute({ index, control, removeAttribute }: AttributeProps) {
               <Button
                 type="button"
                 variant="destructive"
-                className="h-fit"
+                className="w-fit md:h-fit"
                 size="sm"
                 onClick={() => removeAttribute(index)}
               >
-                Remove Attribute
+                <Trash2 className="sm:hidden" />
+                <span className="max-sm:sr-only">Remove Attribute</span>
               </Button>
             </div>
             <FormMessage />
@@ -275,7 +278,7 @@ function Attribute({ index, control, removeAttribute }: AttributeProps) {
                     onClick={() => removeValue(valueIndex)}
                   >
                     <span className="sr-only">Remove Value</span>
-                    <Trash2 />
+                    <Trash2 className="!size-4" />
                   </Button>
                 </div>
                 <FormMessage />

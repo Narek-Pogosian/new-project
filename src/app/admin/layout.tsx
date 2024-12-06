@@ -12,7 +12,7 @@ async function AdminLayout({ children }: { children: React.ReactNode }) {
   return (
     <SidebarProvider>
       <AppSidebar session={session} />
-      <main className="mx-auto w-full max-w-[1800px] p-4 md:px-12 md:py-12 lg:px-28">
+      <main className="mx-auto w-full max-w-[1600px] p-4 md:px-12 md:py-12 lg:px-28 xl:px-40">
         <SidebarTrigger className="mb-4 md:hidden" />
         {children}
       </main>

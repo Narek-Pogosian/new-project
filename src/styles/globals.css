@@ -36,7 +36,7 @@
     --primary: 0 0% 94%;
     --primary-foreground: 0 0% 8%;
 
-    --background: 240, 6%, 7%;
+    --background: 240, 6%, 7.5%;
     --background-card: 240, 6%, 10%;
     --background-input: 240, 6%, 11%;
     --background-popover: 240, 6%, 11%;
@@ -50,13 +50,13 @@
     --border: 240 6% 16%;
     --ring: 240 10% 97.9%;
 
-    --sidebar-background: 240 5.9% 9%;
+    --sidebar-background: 240 5.9% 6%;
     --sidebar-foreground: 240 4.8% 95.9%;
     --sidebar-primary: 224.3 76.3% 48%;
     --sidebar-primary-foreground: 0 0% 100%;
     --sidebar-accent: 240 6% 16%;
     --sidebar-accent-foreground: 240 8% 95.9%;
-    --sidebar-border: 240 6% 18%;
+    --sidebar-border: 240 6% 2%;
   }
 }
 

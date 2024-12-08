@@ -1,14 +1,18 @@
 "use client";
 
+import { type getCategoriesWithProductsCount } from "@/server/queries/categories";
 import { FileQuestion, Search } from "lucide-react";
 import { useMemo, useState } from "react";
-import { type Category } from "@prisma/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import Link from "next/link";
 import CategoryActions from "./category-actions";
 
-function CategoryList({ categories }: { categories: Category[] }) {
+interface Props {
+  categories: Awaited<ReturnType<typeof getCategoriesWithProductsCount>>;
+}
+
+function CategoryList({ categories }: Props) {
   const [nameQuery, setNameQuery] = useState("");
 
   const filteredCategories = useMemo(() => {
@@ -16,8 +20,6 @@ function CategoryList({ categories }: { categories: Category[] }) {
       const matchesName = category.name
         .toLowerCase()
         .includes(nameQuery.trim().toLowerCase());
-      // const matchesStatus = status ? category.status === status : true;
-      // return matchesName && matchesStatus;
       return matchesName;
     });
   }, [categories, nameQuery]);
@@ -68,7 +70,7 @@ function CategoryList({ categories }: { categories: Category[] }) {
                     Created: {new Date(category.createdAt).toDateString()}
                   </p>
                   <p className="text-sm font-medium text-foreground-muted">
-                    10 products
+                    {category._count.products} products
                   </p>
                   <p></p>
                 </div>

@@ -1,7 +1,7 @@
 import CategoryList from "./_components/category-list";
 import PageTitle from "../_components/page-title";
 
-import { getAllCategories } from "@/server/queries/categories";
+import { getCategoriesWithProductsCount } from "@/server/queries/categories";
 import { Suspense } from "react";
 
 export default function AdminCategoriesPage() {
@@ -16,7 +16,7 @@ export default function AdminCategoriesPage() {
 }
 
 async function Categories() {
-  const categories = await getAllCategories();
+  const categories = await getCategoriesWithProductsCount();
 
   return <CategoryList categories={categories} />;
 }

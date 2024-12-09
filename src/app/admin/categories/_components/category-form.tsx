@@ -30,8 +30,8 @@ export default function CategoryForm() {
     defaultValues: {
       name: "",
       slug: "",
-      image: undefined,
-      description: undefined,
+      image: "",
+      description: "",
       attributes: [{ name: "", possibleValues: ["Attribute Value"] }],
     },
   });

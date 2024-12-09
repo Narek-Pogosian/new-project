@@ -48,7 +48,7 @@ model Category {
     id                 Int                 @id @default(autoincrement())
     name               String
     slug               String              @unique
-    image              String?
+    image              String
     description        String?
     products           Product[]
     categoryAttributes CategoryAttribute[]

@@ -26,18 +26,23 @@ export default function ProductForm() {
     defaultValues: {
       name: "",
       slug: "",
-      poster: undefined,
-      description: undefined,
+      price: 0,
+      poster: "",
+      description: "",
       categoryId: undefined,
       images: [{ url: "" }],
-      price: 0,
       productAttributes: [{ name: "", value: "", quantity: 0 }],
     },
   });
 
-  const p = useFieldArray({
+  const attributesFieldArray = useFieldArray({
     control: form.control,
     name: "productAttributes",
+  });
+
+  const imagesFieldArray = useFieldArray({
+    control: form.control,
+    name: "images",
   });
 
   async function onSubmit(vals: CreateProductsSchemaType) {

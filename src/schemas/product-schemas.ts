@@ -7,16 +7,16 @@ const productAttribute = z.object({
 });
 
 const image = z.object({
-  url: z.string().trim().min(1, { message: "Image is required" }),
+  url: z.string().trim().min(1, { message: "Image url is required" }),
 });
 
 export const createProductSchema = z.object({
   name: z.string().trim().min(1, { message: "Name is required" }),
   slug: z.string().trim().min(1, { message: "Slug is required" }),
-  price: z.coerce.number().min(0),
   poster: z.string().trim().min(1, { message: "Poster is required" }),
-  images: z.array(image).min(1),
   description: z.string().trim().optional(),
+  price: z.coerce.number().min(0),
+  images: z.array(image).min(1),
   categoryId: z.coerce.number(),
   productAttributes: z.array(productAttribute).min(1),
 });

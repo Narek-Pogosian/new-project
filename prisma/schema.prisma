@@ -15,38 +15,20 @@ model Product {
     description String
     isFeatured  Boolean  @default(false)
     rating      Int      @default(0)
+    posterId    Int
     poster      String
     images      String[]
-    sku         String   @unique
-    vector      Bytes
+    vector      Bytes?
     createdAt   DateTime @default(now())
     updatedAt   DateTime @updatedAt
 
-    categoryId       Int
-    Category         Category           @relation(fields: [categoryId], references: [id], onDelete: Cascade)
-    Review           Review[]
-    Inventory        Inventory[]
-    ProductAttribute ProductAttribute[]
+    categoryId        Int
+    category          Category           @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+    reviews           Review[]
+    inventory         Inventory[]
+    productAttributes ProductAttribute[]
 
     @@index([slug, categoryId, price, rating])
-}
-
-model Category {
-    id                 Int                 @id @default(autoincrement())
-    name               String
-    slug               String              @unique
-    image              String?
-    description        String?
-    parentId           Int?
-    parent             Category?           @relation("CategoryToParent", fields: [parentId], references: [id])
-    subcategories      Category[]          @relation("CategoryToParent")
-    products           Product[]
-    CategoryAttributes CategoryAttribute[]
-
-    createdAt   DateTime @default(now())
-    updatedAt   DateTime @updatedAt
-
-    @@index([slug])
 }
 
 model ProductAttribute {
@@ -57,20 +39,35 @@ model ProductAttribute {
     createdAt DateTime    @default(now())
     updatedAt DateTime    @updatedAt
     product   Product     @relation(fields: [productId], references: [id], onDelete: Cascade)
-    Inventory Inventory[]
+    inventory Inventory[]
 
     @@index([productId])
 }
 
+model Category {
+    id                 Int                 @id @default(autoincrement())
+    name               String
+    slug               String              @unique
+    image              String?
+    description        String?
+    products           Product[]
+    categoryAttributes CategoryAttribute[]
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    @@index([slug])
+}
+
 model CategoryAttribute {
-    id              Int      @id @default(autoincrement())
-    name            String
-    possibleValues  String[]
-    description     String?
-    categoryId      Int
-    createdAt       DateTime @default(now())
-    updatedAt       DateTime @updatedAt
-    category        Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+    id             Int      @id @default(autoincrement())
+    name           String
+    possibleValues String[]
+    description    String?
+    categoryId     Int
+    createdAt      DateTime @default(now())
+    updatedAt      DateTime @updatedAt
+    category       Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
 
     @@index([categoryId])
 }

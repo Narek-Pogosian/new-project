@@ -1,5 +1,6 @@
 "use client";
 
+import { type getCategoriesWithAttributes } from "@/server/queries/categories";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useFieldArray, useForm } from "react-hook-form";
 import {
@@ -20,7 +21,11 @@ import { Textarea } from "@/components/ui/textarea";
 import { slugify } from "@/lib/utils";
 import { Input } from "@/components/ui/input";
 
-export default function ProductForm() {
+interface ProductFormProps {
+  categories: Awaited<ReturnType<typeof getCategoriesWithAttributes>>;
+}
+
+export default function ProductForm({ categories }: ProductFormProps) {
   const form = useForm<CreateProductsSchemaType>({
     resolver: zodResolver(createProductSchema),
     defaultValues: {
@@ -38,11 +43,6 @@ export default function ProductForm() {
   const attributesFieldArray = useFieldArray({
     control: form.control,
     name: "productAttributes",
-  });
-
-  const imagesFieldArray = useFieldArray({
-    control: form.control,
-    name: "images",
   });
 
   async function onSubmit(vals: CreateProductsSchemaType) {
@@ -113,6 +113,28 @@ export default function ProductForm() {
 
         <FormField
           control={form.control}
+          name="price"
+          render={({ field }) => (
+            <FormItem className="grid gap-1 @xl:grid-cols-2 @xl:gap-8">
+              <div className="space-y-2">
+                <FormLabel>Product Price*</FormLabel>
+                <FormDescription>
+                  Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                  Laborum, est.
+                </FormDescription>
+                <FormMessage />
+              </div>
+              <FormControl>
+                <Input placeholder="Enter product price" {...field} />
+              </FormControl>
+            </FormItem>
+          )}
+        />
+
+        <hr />
+
+        <FormField
+          control={form.control}
           name="poster"
           render={({ field }) => (
             <FormItem className="grid gap-1 @xl:grid-cols-2 @xl:gap-8">
@@ -160,8 +182,24 @@ export default function ProductForm() {
 
         <hr />
 
+        <CategoryAndAttributes categories={categories} />
+
         <LoadingButton size="lg">Create Product</LoadingButton>
       </form>
     </Form>
+  );
+}
+
+function CategoryAndAttributes({
+  categories,
+}: {
+  categories: ProductFormProps["categories"];
+}) {
+  return (
+    <>
+      <p>Category</p>
+      <hr />
+      <p>Attributes</p>
+    </>
   );
 }

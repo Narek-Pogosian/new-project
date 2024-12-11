@@ -122,7 +122,7 @@ export default function CategoryForm() {
           render={({ field }) => (
             <FormItem className="grid gap-1 @xl:grid-cols-2 @xl:gap-8">
               <div className="space-y-2">
-                <FormLabel>Category Image</FormLabel>
+                <FormLabel>Category Image*</FormLabel>
                 <FormDescription>
                   Upload an image to represent the category visually. This image
                   will be displayed alongside the category name.
@@ -169,7 +169,7 @@ export default function CategoryForm() {
         {/* Category Attributes */}
         <div>
           <div className="mb-4 space-y-2">
-            <FormLabel>Category Attributes</FormLabel>
+            <FormLabel>Category Attributes*</FormLabel>
             <FormDescription className="text-balance">
               Use this section to define custom category attributes (e.g.,
               &quot;Color&quot;, &quot;Size&quot;) and specify possible values

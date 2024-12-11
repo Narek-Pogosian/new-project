@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import Link from "next/link";
 import CategoryActions from "./category-actions";
+import Image from "next/image";
 
 interface Props {
   categories: Awaited<ReturnType<typeof getCategoriesWithProductsCount>>;
@@ -60,10 +61,16 @@ function CategoryList({ categories }: Props) {
           {filteredCategories.map((category) => (
             <li
               key={category.id}
-              className="flex justify-between gap-2 [&:not(:last-of-type)]:border-b [&:not(:last-of-type)]:pb-6"
+              className="flex items-center justify-between gap-2 [&:not(:last-of-type)]:border-b [&:not(:last-of-type)]:pb-6"
             >
-              <div className="flex gap-6">
-                <div>Image</div>
+              <div className="flex items-center gap-6">
+                <Image
+                  src={category.image}
+                  alt=""
+                  width={80}
+                  height={80}
+                  className="rounded"
+                />
                 <div>
                   <h3 className="mb-1 font-semibold">{category.name}</h3>
                   <p className="mb-2 text-xs text-foreground-muted">

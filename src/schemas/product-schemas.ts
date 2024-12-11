@@ -16,7 +16,7 @@ export const createProductSchema = z.object({
   poster: z.string().trim().min(1, { message: "Poster is required" }),
   description: z.string().trim().optional(),
   price: z.coerce.number().min(0),
-  images: z.array(image).min(1),
+  images: z.array(image),
   categoryId: z.coerce.number(),
   productAttributes: z.array(productAttribute).min(1),
 });

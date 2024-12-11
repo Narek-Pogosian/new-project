@@ -8,6 +8,7 @@ export const CACHE_TAGS = {
   products: "products",
   categories: "categories",
   categoriesWithProductCount: "categoriesWithProductCount",
+  categoriesWithAttributes: "categoriesWithAttributes",
 } as const;
 
 type CacheCallback<T, A extends unknown[]> = (...args: A) => Promise<T>;

@@ -25,21 +25,19 @@ model Product {
     categoryId        Int
     category          Category           @relation(fields: [categoryId], references: [id], onDelete: Cascade)
     reviews           Review[]
-    inventory         Inventory[]
     productAttributes ProductAttribute[]
 
     @@index([slug, categoryId, price, rating])
 }
 
 model ProductAttribute {
-    id        Int         @id @default(autoincrement())
+    id        Int      @id @default(autoincrement())
     name      String
-    value     String
+    values    String[]
     productId Int
-    createdAt DateTime    @default(now())
-    updatedAt DateTime    @updatedAt
-    product   Product     @relation(fields: [productId], references: [id], onDelete: Cascade)
-    inventory Inventory[]
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+    product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
 
     @@index([productId])
 }
@@ -70,19 +68,6 @@ model CategoryAttribute {
     category       Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
 
     @@index([categoryId])
-}
-
-model Inventory {
-    id                 Int              @id @default(autoincrement())
-    quantity           Int
-    productId          Int
-    productAttributeId Int
-    createdAt          DateTime         @default(now())
-    updatedAt          DateTime         @updatedAt
-    product            Product          @relation(fields: [productId], references: [id])
-    productAttribute   ProductAttribute @relation(fields: [productAttributeId], references: [id])
-
-    @@index([productId, productAttributeId])
 }
 
 model Review {

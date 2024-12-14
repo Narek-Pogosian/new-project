@@ -1,8 +1,8 @@
 "use client";
 
 import { type getCategoriesWithAttributes } from "@/server/queries/categories";
+import { useForm, type UseFormReturn } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useFieldArray, useForm } from "react-hook-form";
 import {
   Form,
   FormControl,
@@ -20,6 +20,15 @@ import { LoadingButton } from "@/components/ui/loading-button";
 import { Textarea } from "@/components/ui/textarea";
 import { slugify } from "@/lib/utils";
 import { Input } from "@/components/ui/input";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { useState } from "react";
+import { Label } from "@/components/ui/label";
 
 interface ProductFormProps {
   categories: Awaited<ReturnType<typeof getCategoriesWithAttributes>>;
@@ -31,23 +40,20 @@ export default function ProductForm({ categories }: ProductFormProps) {
     defaultValues: {
       name: "",
       slug: "",
-      price: 0,
+      price: "" as unknown as number,
       poster: "",
       description: "",
-      categoryId: undefined,
-      images: [{ url: "" }],
-      productAttributes: [{ name: "", value: "", quantity: 0 }],
+      categoryId: "" as unknown as number,
+      images: [""],
+      productAttributes: [{ name: "", values: [] }],
     },
   });
 
-  const attributesFieldArray = useFieldArray({
-    control: form.control,
-    name: "productAttributes",
-  });
+  console.log(form.getValues());
 
   async function onSubmit(vals: CreateProductsSchemaType) {
     console.log(vals);
-    form.reset();
+    form.reset({ productAttributes: [{ name: "", values: [] }] });
   }
 
   return (
@@ -182,7 +188,7 @@ export default function ProductForm({ categories }: ProductFormProps) {
 
         <hr />
 
-        <CategoryAndAttributes categories={categories} />
+        <CategoryAndAttributes categories={categories} form={form} />
 
         <LoadingButton size="lg">Create Product</LoadingButton>
       </form>
@@ -192,14 +198,129 @@ export default function ProductForm({ categories }: ProductFormProps) {
 
 function CategoryAndAttributes({
   categories,
+  form,
 }: {
   categories: ProductFormProps["categories"];
+  form: UseFormReturn<CreateProductsSchemaType>;
 }) {
+  const [, setForceRender] = useState(0);
+  const selectedCategoryId = form.watch("categoryId");
+
+  const handleCategoryChange = (val: string) => {
+    const categoryAttributes =
+      categories.find((c) => c.id.toString() === val)?.categoryAttributes ?? [];
+
+    form.setValue(
+      "productAttributes",
+      categoryAttributes.map((attr) => ({ name: attr.name, values: [] })),
+    );
+    form.setValue("categoryId", parseInt(val));
+  };
+
+  const handleAttributeChange = (attributeName: string, value: string) => {
+    const updatedAttributes = form
+      .getValues("productAttributes")
+      .map((attr) => {
+        if (attr.name === attributeName) {
+          const isChecked = attr.values.includes(value);
+          const newValues = isChecked
+            ? attr.values.filter((v) => v !== value)
+            : [...attr.values, value];
+          return { ...attr, values: newValues };
+        }
+        return attr;
+      });
+
+    form.setValue("productAttributes", updatedAttributes);
+    setForceRender((v) => v + 1);
+  };
+
+  const categoryAttributes =
+    categories.find((c) => c.id == selectedCategoryId)?.categoryAttributes ??
+    [];
+
   return (
     <>
-      <p>Category</p>
-      <hr />
-      <p>Attributes</p>
+      <FormField
+        control={form.control}
+        name="categoryId"
+        render={({ field }) => (
+          <FormItem className="grid gap-1 @xl:grid-cols-2 @xl:gap-8">
+            <div className="space-y-2">
+              <FormLabel>Category</FormLabel>
+              <FormDescription>
+                Select a category to assign the product.
+              </FormDescription>
+              <FormMessage />
+            </div>
+            <Select
+              onValueChange={(value) => {
+                handleCategoryChange(value);
+                field.onChange(value);
+              }}
+              value={field.value.toString()}
+            >
+              <FormControl>
+                <SelectTrigger>
+                  <SelectValue placeholder="Select a category" />
+                </SelectTrigger>
+              </FormControl>
+              <SelectContent>
+                {categories.map((category) => (
+                  <SelectItem key={category.id} value={category.id.toString()}>
+                    {category.name}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </FormItem>
+        )}
+      />
+
+      {selectedCategoryId && categoryAttributes.length > 0 && (
+        <>
+          <hr />
+          <div>
+            <p className="mb-6 text-sm font-medium leading-none">
+              Choose the available attributes for this product:
+            </p>
+            <div className="space-y-6">
+              {categoryAttributes.map((attr) => (
+                <div key={attr.id}>
+                  <p className="mb-2 text-sm font-medium leading-none">
+                    {attr.name}
+                  </p>
+                  <ul className="flex gap-6">
+                    {attr.possibleValues.map((val) => {
+                      const isChecked = form
+                        .getValues("productAttributes")
+                        .find((attribute) => attribute.name === attr.name)
+                        ?.values.includes(val);
+
+                      return (
+                        <Label
+                          key={val}
+                          className="flex cursor-pointer items-center gap-1"
+                        >
+                          <input
+                            type="checkbox"
+                            className="size-4"
+                            checked={isChecked}
+                            onChange={() =>
+                              handleAttributeChange(attr.name, val)
+                            }
+                          />
+                          {val}
+                        </Label>
+                      );
+                    })}
+                  </ul>
+                </div>
+              ))}
+            </div>
+          </div>
+        </>
+      )}
     </>
   );
 }

@@ -1,17 +1,22 @@
-import { getProducts } from "@/server/queries/products";
 import PageTitle from "../_components/page-title";
-import Link from "next/link";
+import ProductList from "./_components/product-list";
 
-export default async function AdminProductsPage() {
-  const products = await getProducts();
+import { getProducts } from "@/server/queries/products";
+import { Suspense } from "react";
 
+export default function AdminProductsPage() {
   return (
     <>
       <PageTitle>Products</PageTitle>
-      <div className="flex gap-4">
-        <p>{JSON.stringify(products, null, 2)}</p>
-        <Link href="/admin/products/create">Create</Link>
-      </div>
+      <Suspense fallback={<p>Loading...</p>}>
+        <Products />
+      </Suspense>
     </>
   );
+}
+
+async function Products() {
+  const products = await getProducts();
+
+  return <ProductList products={products} />;
 }

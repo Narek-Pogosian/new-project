@@ -29,6 +29,8 @@ import {
 } from "@/components/ui/select";
 import { useState } from "react";
 import { Label } from "@/components/ui/label";
+import { useAction } from "next-safe-action/hooks";
+import { createProductAction } from "@/server/actions/products";
 
 interface ProductFormProps {
   categories: Awaited<ReturnType<typeof getCategoriesWithAttributes>>;
@@ -49,11 +51,15 @@ export default function ProductForm({ categories }: ProductFormProps) {
     },
   });
 
-  console.log(form.getValues());
+  const { executeAsync, isPending } = useAction(createProductAction);
 
   async function onSubmit(vals: CreateProductsSchemaType) {
-    console.log(vals);
-    form.reset({ productAttributes: [{ name: "", values: [] }] });
+    if (isPending) return;
+
+    const res = await executeAsync(vals);
+    if (res) {
+      form.reset({ productAttributes: [{ name: "", values: [] }] });
+    }
   }
 
   return (
@@ -281,7 +287,10 @@ function CategoryAndAttributes({
         <>
           <hr />
           <div>
-            <p className="mb-6 text-sm font-medium leading-none">
+            <p className="mb-1 text-xs text-danger-500">
+              TODO: Show error message here if nothing picked
+            </p>
+            <p className="mb-4 text-sm font-medium leading-none">
               Choose the available attributes for this product:
             </p>
             <div className="space-y-6">

@@ -1,8 +1,8 @@
 "use server";
 
 import { createCategorySchema } from "@/schemas/category-schemas";
+import { revalidateDbCache } from "../queries/cache";
 import { adminActionClient } from ".";
-import { revalidateTag } from "next/cache";
 import { db } from "../db";
 import { z } from "zod";
 
@@ -10,7 +10,7 @@ export const deleteCategoryAction = adminActionClient
   .schema(z.number())
   .action(async ({ parsedInput }) => {
     await db.category.delete({ where: { id: parsedInput } });
-    revalidateTag("categories");
+    revalidateDbCache("categories");
   });
 
 export const createCategoryAction = adminActionClient
@@ -44,7 +44,7 @@ export const createCategoryAction = adminActionClient
     });
 
     if (result) {
-      revalidateTag("categories");
+      revalidateDbCache("categories");
     }
 
     return result;

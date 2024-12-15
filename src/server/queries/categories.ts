@@ -5,7 +5,10 @@ import { dbCache } from "./cache";
  * ***** CATEGORY ******
  */
 function getCategoryInternal(id: number) {
-  return db.category.findFirst({ where: { id } });
+  return db.category.findFirst({
+    where: { id },
+    include: { categoryAttributes: true },
+  });
 }
 
 export async function getCategory(id: number) {

@@ -15,7 +15,6 @@ model Product {
     description String
     isFeatured  Boolean  @default(false)
     rating      Int      @default(0)
-    posterId    Int
     poster      String
     images      String[]
     vector      Bytes?

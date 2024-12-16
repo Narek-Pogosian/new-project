@@ -10,7 +10,9 @@ export const deleteProductAction = adminActionClient
   .schema(z.number())
   .action(async ({ parsedInput }) => {
     await db.product.delete({ where: { id: parsedInput } });
+
     revalidateDbCache("products");
+    revalidateDbCache("categoriesWithProductCount");
   });
 
 export const createProductAction = adminActionClient

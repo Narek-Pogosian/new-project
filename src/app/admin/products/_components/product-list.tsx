@@ -64,14 +64,13 @@ function ProductList({ products }: Props) {
               className="flex items-center justify-between gap-2 [&:not(:last-of-type)]:border-b [&:not(:last-of-type)]:pb-6"
             >
               <div className="flex items-center gap-6">
-                <p>TODO: Image</p>
-                {/* <Image
+                <Image
                   src={product.poster}
-                  alt=""
+                  alt={`Image of ${product.name}`}
                   width={80}
                   height={80}
                   className="rounded"
-                /> */}
+                />
                 <div>
                   <h3 className="mb-1 font-semibold">{product.name}</h3>
                   <p className="mb-2 text-xs text-foreground-muted">

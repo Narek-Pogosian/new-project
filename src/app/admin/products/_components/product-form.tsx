@@ -196,7 +196,9 @@ export default function ProductForm({ categories }: ProductFormProps) {
 
         <CategoryAndAttributes categories={categories} form={form} />
 
-        <LoadingButton size="lg">Create Product</LoadingButton>
+        <LoadingButton loading={isPending} size="lg">
+          Create Product
+        </LoadingButton>
       </form>
     </Form>
   );

@@ -68,13 +68,16 @@ function ProductList({ products }: Props) {
                   src={product.poster}
                   alt={`Image of ${product.name}`}
                   width={80}
-                  height={80}
+                  height={102}
                   className="rounded"
                 />
                 <div>
                   <h3 className="mb-1 font-semibold">{product.name}</h3>
                   <p className="mb-2 text-xs text-foreground-muted">
                     Created: {new Date(product.createdAt).toDateString()}
+                  </p>
+                  <p className="text-xs text-foreground-muted">
+                    ${product.price}
                   </p>
                 </div>
               </div>

@@ -1,4 +1,3 @@
-import { deleteCategoryAction } from "@/server/actions/categories";
 import { buttonVariants } from "@/components/ui/button";
 import { LoadingButton } from "@/components/ui/loading-button";
 import { useAction } from "next-safe-action/hooks";
@@ -14,23 +13,20 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
+import { deleteProductAction } from "@/server/actions/products";
 
-export default function CategoryActions({
-  categoryId,
-}: {
-  categoryId: number;
-}) {
+export default function ProductActions({ productId }: { productId: number }) {
   return (
     <div className="flex">
-      <CategoryDeleteDialog id={categoryId} />
+      <ProductDeleteDialog id={productId} />
     </div>
   );
 }
 
-function CategoryDeleteDialog({ id }: { id: number }) {
+function ProductDeleteDialog({ id }: { id: number }) {
   const [isOpen, setIsOpen] = useState(false);
 
-  const { executeAsync, isPending } = useAction(deleteCategoryAction, {
+  const { executeAsync, isPending } = useAction(deleteProductAction, {
     onSettled: () => {
       setIsOpen(false);
     },
@@ -47,14 +43,14 @@ function CategoryDeleteDialog({ id }: { id: number }) {
         className={buttonVariants({ variant: "ghost", size: "icon" })}
       >
         <Trash2 className="!size-4" />
-        <span className="sr-only">Delete Category</span>
+        <span className="sr-only">Delete Product</span>
       </AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>
           <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
           <AlertDialogDescription>
             This action cannot be undone. This will permanently delete the
-            category and all products with the category.
+            product.
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>

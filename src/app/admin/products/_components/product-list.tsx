@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import Link from "next/link";
 import Image from "next/image";
+import ProductActions from "./product-actions";
 
 interface Props {
   products: Awaited<ReturnType<typeof getProducts>>;
@@ -63,24 +64,22 @@ function ProductList({ products }: Props) {
               className="flex items-center justify-between gap-2 [&:not(:last-of-type)]:border-b [&:not(:last-of-type)]:pb-6"
             >
               <div className="flex items-center gap-6">
-                <Image
+                <p>TODO: Image</p>
+                {/* <Image
                   src={product.poster}
                   alt=""
                   width={80}
                   height={80}
                   className="rounded"
-                />
+                /> */}
                 <div>
                   <h3 className="mb-1 font-semibold">{product.name}</h3>
                   <p className="mb-2 text-xs text-foreground-muted">
                     Created: {new Date(product.createdAt).toDateString()}
                   </p>
-
-                  <p></p>
                 </div>
               </div>
-              <p>Actions</p>
-              {/* <CategoryActions categoryId={product.id} /> */}
+              <ProductActions productId={product.id} />
             </li>
           ))}
         </ul>

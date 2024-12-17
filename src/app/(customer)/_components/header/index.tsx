@@ -1,25 +1,27 @@
 "use client";
 
-import { useSession } from "next-auth/react";
 import UserDropdown from "./user-dropdown";
 import Link from "next/link";
 import Logo from "@/components/logo";
+import { useSession } from "next-auth/react";
+import { Moon, Sun } from "lucide-react";
 import { useTheme } from "next-themes";
 import { Button } from "@/components/ui/button";
-import { Moon, Sun } from "lucide-react";
 
 export default function Header() {
   const { data: session } = useSession();
 
   return (
     <header>
-      <div className="container flex items-center justify-between py-2">
+      <div className="container flex items-center justify-between py-4">
         <div className="flex items-center gap-16">
-          <Logo />
+          <Link href="/">
+            <Logo />
+          </Link>
           <nav>
             <ul className="flex gap-8 text-sm font-medium">
               <li>
-                <Link href="#">Shop</Link>
+                <Link href="/shop">Shop</Link>
               </li>
               {session?.user.role === "ADMIN" && (
                 <li>

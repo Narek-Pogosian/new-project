@@ -34,6 +34,7 @@ export default {
     extend: {
       fontFamily: {
         sans: ["var(--font-geist-sans)", ...fontFamily.sans],
+        style: ["var(--font-cookie)", ...fontFamily.serif],
       },
       colors: {
         primary: {

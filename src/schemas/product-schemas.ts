@@ -21,4 +21,14 @@ export const createProductSchema = z.object({
     }),
 });
 
+export const productQueryParams = z.object({
+  category: z.coerce.number().optional(),
+  min_price: z.coerce.number().optional(),
+  max_price: z.coerce.number().optional(),
+  min_rating: z.coerce.number().optional(),
+  sort_by: z.string().optional(),
+  dir: z.enum(["asc", "desc"]).optional(),
+});
+
 export type CreateProductsSchemaType = z.infer<typeof createProductSchema>;
+export type ProductQueryParamsType = z.infer<typeof productQueryParams>;

@@ -14,7 +14,7 @@ export default function Header() {
   return (
     <header>
       <div className="container flex items-center justify-between py-4">
-        <div className="flex items-center gap-16">
+        <div className="flex items-center gap-10">
           <Link href="/">
             <Logo />
           </Link>

@@ -23,9 +23,10 @@ export const createProductSchema = z.object({
 
 export const productQueryParams = z.object({
   category: z.coerce.number().optional(),
-  min_price: z.coerce.number().optional(),
-  max_price: z.coerce.number().optional(),
-  min_rating: z.coerce.number().optional(),
+  min_price: z.coerce.number().gte(0).optional(),
+  max_price: z.coerce.number().gte(0).optional(),
+  min_rating: z.coerce.number().gte(0).optional(),
+  page: z.coerce.number().int().gte(1).optional(),
   sort_by: z.string().optional(),
   dir: z.enum(["asc", "desc"]).optional(),
 });

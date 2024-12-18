@@ -28,13 +28,12 @@ export default {
       center: true,
       padding: "1rem",
       screens: {
-        lg: "1240px",
+        sm: "1440px",
       },
     },
     extend: {
       fontFamily: {
         sans: ["var(--font-geist-sans)", ...fontFamily.sans],
-        style: ["var(--font-cookie)", ...fontFamily.serif],
       },
       colors: {
         primary: {

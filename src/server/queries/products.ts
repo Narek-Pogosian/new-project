@@ -77,16 +77,31 @@ function discoverProductsInternal(queryOptions: ProductQueryParamsType) {
     where.rating = { gte: min_rating };
   }
 
-  const take = 10;
+  const take = 8;
   const skip = (page - 1) * take;
   const orderBy = sort_by ? { [sort_by]: dir } : undefined;
 
-  return db.product.findMany({
+  const totalCountPromise = db.product.count({
+    where,
+  });
+
+  const productsPromise = db.product.findMany({
     where,
     skip,
     take,
     orderBy,
   });
+
+  return Promise.all([totalCountPromise, productsPromise]).then(
+    ([totalCount, products]) => {
+      const totalPages = Math.ceil(totalCount / take);
+      return {
+        products,
+        totalPages,
+        currentPage: page,
+      };
+    },
+  );
 }
 
 export async function discoverProducts(queryOptions: ProductQueryParamsType) {

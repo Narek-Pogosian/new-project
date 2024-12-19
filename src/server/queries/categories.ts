@@ -23,7 +23,7 @@ export async function getCategory(id: number) {
  * ***** CATEGORIES ******
  */
 function getCategoriesInternal() {
-  return db.category.findMany();
+  return db.category.findMany({ orderBy: { name: "asc" } });
 }
 
 export async function getCategories() {

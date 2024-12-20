@@ -36,18 +36,18 @@
     --primary: 0 0% 94%;
     --primary-foreground: 0 0% 8%;
 
-    --background: 240, 6%, 7.5%;
-    --background-card: 240, 6%, 10%;
-    --background-input: 240, 6%, 11%;
-    --background-popover: 240, 6%, 11%;
-    --background-popover-focus: 240, 6%, 20%;
+    --background: 240, 8%, 7%;
+    --background-card: 240, 8%, 9%;
+    --background-input: 240, 8%, 10%;
+    --background-popover: 240, 8%, 10%;
+    --background-popover-focus: 240, 8%, 20%;
 
-    --foreground: 240 6% 98%;
+    --foreground: 240 8% 98%;
     --foreground-muted: 240 8% 65%;
     --foreground-placeholder: 240 8% 58%;
 
-    --scrollbar: 240, 6%, 23%;
-    --border: 240 6% 16%;
+    --scrollbar: 240, 8%, 23%;
+    --border: 240 6% 14%;
     --ring: 240 10% 97.9%;
 
     --sidebar-background: 240 5.9% 6%;

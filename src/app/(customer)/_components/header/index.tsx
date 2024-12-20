@@ -13,7 +13,7 @@ export default function Header() {
 
   return (
     <header>
-      <div className="container flex items-center justify-between py-4">
+      <div className="container flex h-16 items-center justify-between">
         <div className="flex items-center gap-10">
           <Link href="/">
             <Logo />

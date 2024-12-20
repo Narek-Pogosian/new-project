@@ -7,6 +7,7 @@ import { discoverProducts } from "@/server/queries/products";
 import Image from "next/image";
 import { redirect } from "next/navigation";
 import { Suspense } from "react";
+import Categories from "./_components/categories";
 
 type SearchParams = Promise<Record<string, string | string[] | undefined>>;
 
@@ -25,9 +26,12 @@ export default async function ShopPage({
   return (
     <div className="flex gap-12">
       <Suspense fallback={<p>Loading categories...</p>}>
-        <Categories current={data.category} />
+        <CategoriesWrapper current={data.category} />
       </Suspense>
-      <Suspense fallback={<p>Loading products...</p>}>
+      <Suspense
+        fallback={<p>Loading products...</p>}
+        key={Object.values(data).join("")}
+      >
         <Products data={data} />
       </Suspense>
     </div>
@@ -57,21 +61,18 @@ async function Products({ data }: { data: ProductQueryParamsType }) {
   );
 }
 
-async function Categories({ current }: { current: number | undefined }) {
+async function CategoriesWrapper({ current }: { current: number | undefined }) {
   const res = await getCategories();
 
-  console.log(current);
   return (
-    <div>
-      <h3 className="mb-2 text-lg font-semibold text-foreground-muted">
+    <nav className="shrink-0" aria-describedby="categories">
+      <h3
+        id="caregories"
+        className="mb-2 text-lg font-semibold text-foreground-muted"
+      >
         Categories
       </h3>
-      <ul>
-        <li>All</li>
-        {res.map((c) => (
-          <li key={c.id}>{c.name}</li>
-        ))}
-      </ul>
-    </div>
+      <Categories categories={res} currentCategory={current} />
+    </nav>
   );
 }

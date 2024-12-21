@@ -14,14 +14,18 @@ export function slugify(str: string): string {
     .replace(/-+/g, "-");
 }
 
-export function getUpdatedSearchParams(key: string, value?: string | number) {
+export function getUpdatedSearchParams(
+  params: Record<string, string | number | undefined>,
+) {
   const searchParams = new URLSearchParams(window.location.search);
 
-  if (value) {
-    searchParams.set(key, value.toString());
-  } else {
-    searchParams.delete(key);
-  }
+  Object.entries(params).forEach(([key, value]) => {
+    if (value !== undefined && value !== null) {
+      searchParams.set(key, value.toString());
+    } else {
+      searchParams.delete(key);
+    }
+  });
 
   return `${window.location.pathname}?${searchParams.toString()}`;
 }

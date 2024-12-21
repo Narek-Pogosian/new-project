@@ -13,7 +13,7 @@ function Categories({ categories, currentCategory }: Props) {
   const router = useRouter();
 
   function handleNavigate(val?: number) {
-    const r = getUpdatedSearchParams("category", val);
+    const r = getUpdatedSearchParams({ category: val });
     router.push(r);
   }
 

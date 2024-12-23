@@ -18,32 +18,35 @@ function Categories({ categories, currentCategory }: Props) {
   }
 
   return (
-    <ul className="w-full space-y-1">
-      <li>
-        <button
-          role="link"
-          onClick={() => handleNavigate()}
-          className={cn("w-full rounded px-4 py-1 text-left", {
-            "bg-black/5 dark:bg-white/10": !currentCategory,
-          })}
-        >
-          All
-        </button>
-      </li>
-      {categories.map((c) => (
-        <li key={c.id}>
+    <nav className="shrink-0" aria-label="categories">
+      <ul className="w-full text-foreground-muted">
+        <li>
           <button
             role="link"
-            onClick={() => handleNavigate(c.id)}
-            className={cn("w-full rounded px-4 py-1 text-left", {
-              "bg-black/5 dark:bg-white/10": currentCategory === c.id,
+            onClick={() => handleNavigate()}
+            className={cn("w-full border-l-2 px-4 py-2 text-left", {
+              "border-l-accent-500/50 text-foreground": !currentCategory,
             })}
           >
-            {c.name}
+            All Products
           </button>
         </li>
-      ))}
-    </ul>
+        {categories.map((c) => (
+          <li key={c.id}>
+            <button
+              role="link"
+              onClick={() => handleNavigate(c.id)}
+              className={cn("w-full border-l-2 px-4 py-1 text-left", {
+                "border-l-accent-500/50 text-foreground":
+                  currentCategory === c.id,
+              })}
+            >
+              {c.name}
+            </button>
+          </li>
+        ))}
+      </ul>
+    </nav>
   );
 }
 

@@ -8,8 +8,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { useRouter } from "next/navigation";
 import { getUpdatedSearchParams } from "@/lib/utils";
+import { useRouter } from "next/navigation";
+import { Label } from "@/components/ui/label";
 
 type Option = {
   label: string;
@@ -52,18 +53,26 @@ function Sorting() {
   }
 
   return (
-    <Select onValueChange={handleChange}>
-      <SelectTrigger className="mb-8 w-60">
-        <SelectValue placeholder="Sort by" />
-      </SelectTrigger>
-      <SelectContent>
-        {sortingOptions.map((o) => (
-          <SelectItem value={o.label} key={o.label}>
-            {o.label}
-          </SelectItem>
-        ))}
-      </SelectContent>
-    </Select>
+    <div className="flex items-center gap-4">
+      <Label
+        htmlFor="sort-by"
+        className="uppercase tracking-wider text-foreground-muted"
+      >
+        Sort by
+      </Label>
+      <Select onValueChange={handleChange}>
+        <SelectTrigger className="w-48" id="sort-by">
+          <SelectValue placeholder="Select option" />
+        </SelectTrigger>
+        <SelectContent>
+          {sortingOptions.map((o) => (
+            <SelectItem value={o.label} key={o.label}>
+              {o.label}
+            </SelectItem>
+          ))}
+        </SelectContent>
+      </Select>
+    </div>
   );
 }
 

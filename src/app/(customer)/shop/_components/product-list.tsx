@@ -7,11 +7,17 @@ async function ProductList({ data }: { data: ProductQueryParamsType }) {
 
   return (
     <section aria-label="products">
-      <ul className="grid w-full grid-cols-4 gap-8">
+      <ul className="grid w-full grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:gap-8">
         {res.products.map((product) => (
           <li key={product.id}>
             <div className="relative mb-2 aspect-[8/11]">
-              <Image src={product.poster} alt="" fill className="rounded" />
+              <Image
+                src={product.poster}
+                alt=""
+                fill
+                sizes="33vw"
+                className="rounded"
+              />
             </div>
             <h3 className="font-semibold">{product.name}</h3>
             <p className="text-sm text-foreground-muted">€{product.price}</p>

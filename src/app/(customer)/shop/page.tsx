@@ -22,7 +22,7 @@ export default async function ShopPage({
 
   return (
     <div className="flex gap-8">
-      <div className="min-w-60 space-y-4">
+      <div className="min-w-60 space-y-4 max-lg:hidden">
         <h3 className="mb-4 pt-4 text-sm uppercase tracking-wider text-foreground-muted">
           Categories
         </h3>

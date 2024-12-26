@@ -14,12 +14,12 @@ export default function Header() {
   return (
     <header>
       <div className="container flex h-16 items-center justify-between">
-        <div className="flex items-center gap-10">
+        <div className="flex items-center gap-6 md:gap-10">
           <Link href="/">
             <Logo />
           </Link>
           <nav>
-            <ul className="flex gap-8 text-sm font-medium">
+            <ul className="flex gap-4 text-sm font-medium md:gap-8">
               <li>
                 <Link href="/shop">Shop</Link>
               </li>

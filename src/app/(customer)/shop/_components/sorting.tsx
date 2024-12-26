@@ -56,7 +56,7 @@ function Sorting() {
     <div className="flex items-center gap-4">
       <Label
         htmlFor="sort-by"
-        className="uppercase tracking-wider text-foreground-muted"
+        className="uppercase tracking-wider text-foreground-muted max-sm:sr-only"
       >
         Sort by
       </Label>

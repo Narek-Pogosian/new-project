@@ -5,6 +5,7 @@ import { Suspense } from "react";
 import ProductList from "./_components/product-list";
 import Categories from "./_components/categories";
 import Sorting from "./_components/sorting";
+import MobileFilters from "./_components/mobile-filters";
 
 type SearchParams = Promise<Record<string, string | string[] | undefined>>;
 
@@ -20,18 +21,24 @@ export default async function ShopPage({
     return redirect("/shop");
   }
 
+  const categories = await getCategories();
+
   return (
-    <div className="flex gap-8">
+    <div className="lg:flex lg:gap-8">
       <div className="min-w-60 space-y-4 max-lg:hidden">
         <h3 className="mb-4 pt-4 text-sm uppercase tracking-wider text-foreground-muted">
           Categories
         </h3>
-        <Suspense fallback={<p>Loading categories...</p>}>
-          <CategoriesServerWrapper current={data.category} />
-        </Suspense>
+        <Categories categories={categories} currentCategory={data.category} />
         <h3 className="mb-4 pt-2 text-sm uppercase tracking-wider text-foreground-muted">
           Price filters
         </h3>
+      </div>
+      <div className="lg:hidden">
+        <MobileFilters
+          categories={categories}
+          currentCategory={data.category}
+        />
       </div>
 
       <div className="w-full">
@@ -47,14 +54,4 @@ export default async function ShopPage({
       </div>
     </div>
   );
-}
-
-async function CategoriesServerWrapper({
-  current,
-}: {
-  current: number | undefined;
-}) {
-  const res = await getCategories();
-
-  return <Categories categories={res} currentCategory={current} />;
 }

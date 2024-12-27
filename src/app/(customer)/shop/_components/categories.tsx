@@ -19,12 +19,12 @@ function Categories({ categories, currentCategory }: Props) {
 
   return (
     <nav className="shrink-0" aria-label="categories">
-      <ul className="w-full text-foreground-muted">
+      <ul className="flex w-full items-center gap-2 text-foreground-muted">
         <li>
           <button
             role="link"
             onClick={() => handleNavigate()}
-            className={cn("w-full border-l-2 px-4 py-2 text-left", {
+            className={cn("w-full border-l-2 px-4 py-1 text-left", {
               "border-l-accent-500/50 text-foreground": !currentCategory,
             })}
           >

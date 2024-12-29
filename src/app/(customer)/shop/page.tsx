@@ -2,7 +2,7 @@ import { productQueryParams } from "@/schemas/product-schemas";
 import { getCategories } from "@/server/queries/categories";
 import { redirect } from "next/navigation";
 import { Suspense } from "react";
-import ProductList from "./_components/product-list";
+import ProductList, { ProductsSkeleton } from "./_components/product-list";
 import Categories from "./_components/categories";
 import Sorting from "./_components/sorting";
 import MobileFilters from "./_components/mobile-filters";
@@ -41,7 +41,7 @@ export default async function ShopPage({
         <Sorting />
       </div>
       <Suspense
-        fallback={<p>Loading products...</p>}
+        fallback={<ProductsSkeleton />}
         key={Object.values(data).join("")}
       >
         <ProductList searchParams={data} />

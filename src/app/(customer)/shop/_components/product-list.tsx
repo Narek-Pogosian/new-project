@@ -1,9 +1,14 @@
 import { type ProductQueryParamsType } from "@/schemas/product-schemas";
 import { discoverProducts } from "@/server/queries/products";
+import ProductPagination from "./product-pagination";
 import Image from "next/image";
 
-async function ProductList({ data }: { data: ProductQueryParamsType }) {
-  const res = await discoverProducts(data);
+export default async function ProductList({
+  searchParams,
+}: {
+  searchParams: ProductQueryParamsType;
+}) {
+  const res = await discoverProducts(searchParams);
 
   return (
     <section aria-label="products">
@@ -24,8 +29,11 @@ async function ProductList({ data }: { data: ProductQueryParamsType }) {
           </li>
         ))}
       </ul>
+      <ProductPagination
+        currentPage={res.currentPage}
+        totalPages={res.totalPages}
+        searchParams={searchParams}
+      />
     </section>
   );
 }
-
-export default ProductList;

@@ -27,5 +27,7 @@ export function getUpdatedSearchParams(
     }
   });
 
+  searchParams.delete("page");
+
   return `${window.location.pathname}?${searchParams.toString()}`;
 }

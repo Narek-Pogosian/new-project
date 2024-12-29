@@ -44,7 +44,7 @@ export default async function ShopPage({
         fallback={<p>Loading products...</p>}
         key={Object.values(data).join("")}
       >
-        <ProductList data={data} />
+        <ProductList searchParams={data} />
       </Suspense>
     </>
   );

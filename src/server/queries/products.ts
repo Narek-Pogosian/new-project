@@ -6,7 +6,10 @@ import { db } from "../db";
  * PRODUCT
  */
 function getProductBySlugInternal(slug: string) {
-  return db.product.findFirst({ where: { slug } });
+  return db.product.findFirst({
+    where: { slug },
+    include: { productAttributes: true, reviews: true },
+  });
 }
 
 export async function getProductBySlug(slug: string) {

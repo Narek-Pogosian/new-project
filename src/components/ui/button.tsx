@@ -19,7 +19,7 @@ const buttonVariants = cva(
         link: "text-accent-700 dark:text-accent-300 underline-offset-4 hover:underline",
       },
       size: {
-        default: "px-4 py-1.5",
+        default: "px-4 py-2",
         sm: "rounded py-1.5 px-3 text-xs",
         lg: "rounded py-2 px-8",
         icon: "size-9",

@@ -3,6 +3,7 @@ import { discoverProducts } from "@/server/queries/products";
 import ProductPagination from "./product-pagination";
 import Image from "next/image";
 import { Skeleton } from "@/components/ui/skeleton";
+import Link from "next/link";
 
 export default async function ProductList({
   searchParams,
@@ -19,7 +20,7 @@ export default async function ProductList({
     <section aria-label="products">
       <ul className="grid w-full grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5 lg:gap-8">
         {res.products.map((product) => (
-          <li key={product.id}>
+          <li key={product.id} className="relative">
             <div className="relative mb-2 aspect-[8/11]">
               <Image
                 src={product.poster}
@@ -30,7 +31,12 @@ export default async function ProductList({
               />
             </div>
             <h3 className="text-sm font-semibold sm:text-base">
-              {product.name}
+              <Link
+                href={`/product/${product.slug}`}
+                className="after:absolute after:inset-0"
+              >
+                {product.name}
+              </Link>
             </h3>
             <p className="text-xs text-foreground-muted sm:text-sm">
               €{product.price}

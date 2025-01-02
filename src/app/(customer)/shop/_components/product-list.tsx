@@ -34,6 +34,7 @@ export default async function ProductList({
               <Link
                 href={`/product/${product.slug}`}
                 className="after:absolute after:inset-0"
+                prefetch={false}
               >
                 {product.name}
               </Link>

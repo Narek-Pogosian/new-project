@@ -72,7 +72,7 @@ export default {
         },
       },
       animation: {
-        shimmer: "shimmer 1.5s infinite",
+        shimmer: "shimmer 2.5s infinite",
       },
     },
   },

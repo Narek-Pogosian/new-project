@@ -20,9 +20,6 @@ export default function Header() {
           </Link>
           <nav>
             <ul className="flex gap-4 text-sm font-medium md:gap-8">
-              <li>
-                <Link href="/shop">Shop</Link>
-              </li>
               {session?.user.role === "ADMIN" && (
                 <li>
                   <Link href="/admin">Admin</Link>

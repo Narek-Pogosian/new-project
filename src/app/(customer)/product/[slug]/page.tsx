@@ -46,13 +46,13 @@ async function ProductPage({ params }: { params: Params }) {
           </div>
 
           <div>
-            <Button variant="accent" className="mb-4 mr-4">
+            <Button variant="accent" className="mr-4">
               Add to cart
             </Button>
             <span>Quantity picker</span>
           </div>
 
-          <hr className="pb-4 max-sm:hidden" />
+          <hr className="my-6 border-accent-500/30 max-sm:hidden" />
           <p className="max-w-lg text-foreground-muted max-sm:hidden">
             {product.description}
           </p>

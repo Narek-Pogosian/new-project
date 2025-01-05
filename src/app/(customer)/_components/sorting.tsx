@@ -39,7 +39,12 @@ const sortingOptions: Option[] = [
   },
 ];
 
-function Sorting() {
+interface Props {
+  initialDir: ProductQueryParamsType["dir"] | undefined;
+  initialSortBy: ProductQueryParamsType["sort_by"] | undefined;
+}
+
+function Sorting({ initialDir, initialSortBy }: Props) {
   const router = useRouter();
 
   function handleChange(val: string) {
@@ -60,7 +65,14 @@ function Sorting() {
       >
         Sort by
       </Label>
-      <Select onValueChange={handleChange}>
+      <Select
+        defaultValue={
+          sortingOptions.find(
+            (o) => o.sort_by === initialSortBy && o.dir === initialDir,
+          )?.label
+        }
+        onValueChange={handleChange}
+      >
         <SelectTrigger className="w-48" id="sort-by">
           <SelectValue placeholder="Select option" />
         </SelectTrigger>

@@ -1,8 +1,9 @@
-import { Button } from "@/components/ui/button";
 import { getProductBySlug } from "@/server/queries/products";
+import AddToCart from "./_components/add-to-cart";
 import Image from "next/image";
 
 type Params = Promise<{ slug: string }>;
+// type SearchParams = Promise<Record<string, string | string[] | undefined>>;
 
 async function ProductPage({ params }: { params: Params }) {
   const { slug } = await params;
@@ -35,24 +36,10 @@ async function ProductPage({ params }: { params: Params }) {
             €{product.price}
           </p>
 
-          <div className="mb-2">
-            {product.productAttributes.map((attributes) => (
-              <ul key={attributes.id} className="flex gap-4">
-                {attributes.values.map((v) => (
-                  <div key={v}>{v}</div>
-                ))}
-              </ul>
-            ))}
-          </div>
+          <hr className="my-6 max-sm:hidden" />
+          <AddToCart productAttributes={product.productAttributes} />
+          <hr className="my-6 max-sm:hidden" />
 
-          <div>
-            <Button variant="accent" className="mr-4">
-              Add to cart
-            </Button>
-            <span>Quantity picker</span>
-          </div>
-
-          <hr className="my-6 border-accent-500/30 max-sm:hidden" />
           <p className="max-w-lg text-foreground-muted max-sm:hidden">
             {product.description}
           </p>

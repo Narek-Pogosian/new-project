@@ -38,7 +38,7 @@ export default async function ShopPage({
             currentCategory={data.category}
           />
         </div>
-        <Sorting />
+        <Sorting initialDir={data.dir} initialSortBy={data.sort_by} />
       </div>
       <Suspense
         fallback={<ProductsSkeleton />}

@@ -1,4 +1,5 @@
 import { getProductBySlug } from "@/server/queries/products";
+import { Star } from "lucide-react";
 import AddToCart from "./_components/add-to-cart";
 import Image from "next/image";
 
@@ -6,6 +7,9 @@ type Params = Promise<{ slug: string }>;
 
 async function ProductPage({ params }: { params: Params }) {
   const { slug } = await params;
+  await new Promise((res) => {
+    setTimeout(() => res(""), 2000);
+  });
   const product = await getProductBySlug(slug);
 
   if (!product) throw Error();
@@ -23,17 +27,28 @@ async function ProductPage({ params }: { params: Params }) {
           />
           <div className="absolute inset-0 rounded bg-black/60 p-8 text-white sm:hidden">
             <h1 className="mb-1 text-xl font-bold">{product.name}</h1>
-            <p className="mb-4 text-foreground-muted">€{product.price}</p>
+            <div className="mb-4 flex items-center gap-4">
+              <div className="flex items-center gap-0.5">
+                <Star className="size-4 fill-current text-accent-500" />
+                <p>{product.rating == 0 ? 0 : product.rating.toFixed(1)}</p>
+              </div>
+              <p>€{product.price}</p>
+            </div>
             <p className="max-w-lg">{product.description}</p>
           </div>
         </div>
-        <div>
+
+        <div className="w-full max-w-lg">
           <h1 className="mb-1 text-2xl font-bold max-sm:hidden">
             {product.name}
           </h1>
-          <p className="mb-4 text-foreground-muted max-sm:hidden">
-            €{product.price}
-          </p>
+          <div className="flex items-center gap-4 text-foreground-muted max-sm:hidden">
+            <div className="flex items-center gap-0.5">
+              <Star className="size-4 fill-current text-accent-500" />
+              <p>{product.rating == 0 ? 0 : product.rating.toFixed(1)}</p>
+            </div>
+            <p>€{product.price}</p>
+          </div>
 
           <hr className="my-6 max-sm:hidden" />
           <AddToCart productAttributes={product.productAttributes} />

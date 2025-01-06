@@ -3,8 +3,13 @@
 import { type ProductAttribute } from "@prisma/client";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
 import { Input } from "@/components/ui/input";
+import { cn } from "@/lib/utils";
+import {
+  parseAsString,
+  useQueryStates,
+  type UseQueryStatesKeysMap,
+} from "nuqs";
 
 type Props = {
   productAttributes: ProductAttribute[];
@@ -12,20 +17,25 @@ type Props = {
 
 function AddToCart({ productAttributes }: Props) {
   const [quantity, setQuantity] = useState(1);
-  const [selectedAttributes, setSelectedAttributes] = useState<
-    Record<number, string>
-  >({});
+  const [selectedAttributes, setSelectedAttributes] = useQueryStates(
+    productAttributes.reduce((acc, curr) => {
+      acc[curr.name] = parseAsString;
+      return acc;
+      // eslint-disable-next-line
+    }, {} as UseQueryStatesKeysMap<any>),
+  );
 
-  const handleSelect = (attributeId: number, value: string) => {
-    setSelectedAttributes((prev) => ({
-      ...prev,
-      [attributeId]: value,
-    }));
+  const handleSelect = (attributeName: string, value: string) => {
+    void setSelectedAttributes({
+      ...selectedAttributes,
+      [attributeName]: value,
+    });
   };
 
   const isValidSelection =
-    productAttributes.every((attribute) => selectedAttributes[attribute.id]) &&
-    quantity > 0;
+    productAttributes.every(
+      (attribute) => selectedAttributes[attribute.name],
+    ) && quantity > 0;
 
   return (
     <>
@@ -37,18 +47,18 @@ function AddToCart({ productAttributes }: Props) {
             </h3>
             <ul className="flex flex-wrap gap-2">
               {attribute.values.map((value) => (
-                <li
-                  key={value}
-                  className={cn(
-                    "cursor-pointer rounded border px-3 py-1.5 text-xs font-medium md:text-sm",
-                    {
+                <li key={value}>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className={cn("text-xs md:text-sm", {
                       "bg-primary text-primary-foreground":
-                        selectedAttributes[attribute.id] === value,
-                    },
-                  )}
-                  onClick={() => handleSelect(attribute.id, value)}
-                >
-                  {value}
+                        selectedAttributes[attribute.name] === value,
+                    })}
+                    onClick={() => handleSelect(attribute.name, value)}
+                  >
+                    {value}
+                  </Button>
                 </li>
               ))}
             </ul>

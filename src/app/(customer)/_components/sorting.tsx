@@ -8,8 +8,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { getUpdatedSearchParams } from "@/lib/utils";
-import { useRouter } from "next/navigation";
+import { parseAsString, useQueryStates } from "nuqs";
 import { Label } from "@/components/ui/label";
 
 type Option = {
@@ -45,16 +44,21 @@ interface Props {
 }
 
 function Sorting({ initialDir, initialSortBy }: Props) {
-  const router = useRouter();
+  const [queryState, setQueryState] = useQueryStates({
+    sort_by: parseAsString.withDefault(initialSortBy ?? ""),
+    dir: parseAsString.withDefault(initialDir ?? ""),
+  });
 
   function handleChange(val: string) {
     const option = sortingOptions.find((o) => o.label === val)!;
-    const url = getUpdatedSearchParams({
-      sort_by: option.sort_by,
-      dir: option.dir,
-    });
 
-    router.push(url);
+    void setQueryState(
+      {
+        sort_by: option.sort_by,
+        dir: option.dir,
+      },
+      { shallow: false, history: "push" },
+    );
   }
 
   return (
@@ -66,10 +70,10 @@ function Sorting({ initialDir, initialSortBy }: Props) {
         Sort by
       </Label>
       <Select
-        defaultValue={
+        value={
           sortingOptions.find(
-            (o) => o.sort_by === initialSortBy && o.dir === initialDir,
-          )?.label
+            (o) => o.sort_by === queryState.sort_by && o.dir === queryState.dir,
+          )?.label ?? ""
         }
         onValueChange={handleChange}
       >

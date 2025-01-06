@@ -3,7 +3,6 @@ import AddToCart from "./_components/add-to-cart";
 import Image from "next/image";
 
 type Params = Promise<{ slug: string }>;
-// type SearchParams = Promise<Record<string, string | string[] | undefined>>;
 
 async function ProductPage({ params }: { params: Params }) {
   const { slug } = await params;

@@ -1,8 +1,9 @@
 import { type ProductQueryParamsType } from "@/schemas/product-schemas";
 import { discoverProducts } from "@/server/queries/products";
+import { Skeleton } from "@/components/ui/skeleton";
+import { Luggage } from "lucide-react";
 import ProductPagination from "./product-pagination";
 import Image from "next/image";
-import { Skeleton } from "@/components/ui/skeleton";
 import Link from "next/link";
 
 export default async function ProductList({
@@ -13,7 +14,17 @@ export default async function ProductList({
   const res = await discoverProducts(searchParams);
 
   if (res.products.length === 0) {
-    return <div className="text-center">No products</div>;
+    return (
+      <div className="pt-14 text-center">
+        <div className="mx-auto mb-4 flex size-28 items-center justify-center rounded-full bg-primary/5">
+          <Luggage className="size-14 text-primary" />
+        </div>
+        <h1 className="mb-2 text-xl font-semibold">No products found</h1>
+        <p className="text-foreground-muted">
+          Your search did not match any products. <br /> Please try again.
+        </p>
+      </div>
+    );
   }
 
   return (

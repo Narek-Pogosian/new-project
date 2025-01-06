@@ -44,10 +44,13 @@ interface Props {
 }
 
 function Sorting({ initialDir, initialSortBy }: Props) {
-  const [queryState, setQueryState] = useQueryStates({
-    sort_by: parseAsString.withDefault(initialSortBy ?? ""),
-    dir: parseAsString.withDefault(initialDir ?? ""),
-  });
+  const [queryState, setQueryState] = useQueryStates(
+    {
+      sort_by: parseAsString.withDefault(initialSortBy ?? ""),
+      dir: parseAsString.withDefault(initialDir ?? ""),
+    },
+    { clearOnDefault: false },
+  );
 
   function handleChange(val: string) {
     const option = sortingOptions.find((o) => o.label === val)!;

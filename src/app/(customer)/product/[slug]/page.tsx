@@ -7,9 +7,6 @@ type Params = Promise<{ slug: string }>;
 
 async function ProductPage({ params }: { params: Params }) {
   const { slug } = await params;
-  await new Promise((res) => {
-    setTimeout(() => res(""), 2000);
-  });
   const product = await getProductBySlug(slug);
 
   if (!product) throw Error();

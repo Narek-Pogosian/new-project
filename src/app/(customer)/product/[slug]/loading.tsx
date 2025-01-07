@@ -34,14 +34,13 @@ function ProductLoading() {
           </div>
 
           <hr className="my-6 max-sm:hidden" />
-          {/* <AddToCart productAttributes={product.productAttributes} /> */}
           <div className="mb-6">
             <Skeleton className="mb-1 h-3 w-12" />
             <ul className="flex flex-wrap gap-2">
-              <Skeleton className="h-8 w-20" />
-              <Skeleton className="h-8 w-20" />
-              <Skeleton className="h-8 w-20" />
-              <Skeleton className="h-8 w-20" />
+              <Skeleton className="h-9 w-20" />
+              <Skeleton className="h-9 w-20" />
+              <Skeleton className="h-9 w-20" />
+              <Skeleton className="h-9 w-20" />
             </ul>
           </div>
 

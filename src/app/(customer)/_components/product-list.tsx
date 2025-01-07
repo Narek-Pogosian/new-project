@@ -15,7 +15,7 @@ export default async function ProductList({
 
   if (res.products.length === 0) {
     return (
-      <div className="pt-14 text-center">
+      <div className="pt-20 text-center">
         <div className="mx-auto mb-4 flex size-28 items-center justify-center rounded-full bg-primary/5">
           <Luggage className="size-14 text-primary" />
         </div>

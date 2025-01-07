@@ -1,7 +1,9 @@
 import { getProductBySlug } from "@/server/queries/products";
-import { Star } from "lucide-react";
+import { Luggage, Star } from "lucide-react";
 import AddToCart from "./_components/add-to-cart";
 import Image from "next/image";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
 
 type Params = Promise<{ slug: string }>;
 
@@ -9,7 +11,18 @@ async function ProductPage({ params }: { params: Params }) {
   const { slug } = await params;
   const product = await getProductBySlug(slug);
 
-  if (!product) throw Error();
+  if (!product)
+    return (
+      <div className="pt-20 text-center">
+        <div className="mx-auto mb-4 flex size-28 items-center justify-center rounded-full bg-primary/5">
+          <Luggage className="size-14 text-primary" />
+        </div>
+        <h1 className="mb-4 text-xl font-semibold">Product not found</h1>
+        <Button size="lg" asChild>
+          <Link href="/">Back to shop</Link>
+        </Button>
+      </div>
+    );
 
   return (
     <>

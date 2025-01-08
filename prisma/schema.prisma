@@ -25,6 +25,7 @@ model Product {
     category          Category           @relation(fields: [categoryId], references: [id], onDelete: Cascade)
     reviews           Review[]
     productAttributes ProductAttribute[]
+    CartItem          CartItem[]
 
     @@index([slug, categoryId, price, rating])
 }
@@ -69,6 +70,34 @@ model CategoryAttribute {
     @@index([categoryId])
 }
 
+model Cart {
+    id        Int      @id @default(autoincrement())
+    userId    String?
+    cartToken String
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    items CartItem[]
+    user  User?      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+    @@index([userId, cartToken])
+}
+
+model CartItem {
+    id                Int      @id @default(autoincrement())
+    quantity          Int      @default(1)
+    productId         Int
+    cartId            Int
+    createdAt         DateTime @default(now())
+    updatedAt         DateTime @updatedAt
+    productAttributes String[] // Array of attribute values that represent the variation (e.g., ["Red", "L", "Leather"])
+
+    cart    Cart    @relation(fields: [cartId], references: [id], onDelete: Cascade)
+    product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+    @@index([cartId])
+}
+
 model Review {
     id        Int      @id @default(autoincrement())
     rating    Int      @default(0)
@@ -97,6 +126,7 @@ model User {
     accounts       Account[]
     sessions       Session[]
     Review         Review[]
+    Cart           Cart[]
 }
 
 model Session {

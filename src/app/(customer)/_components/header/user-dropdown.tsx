@@ -22,8 +22,12 @@ export default function UserDropdown({ session }: { session: Session | null }) {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent>
-        <DropdownMenuLabel>My Account</DropdownMenuLabel>
-        <DropdownMenuSeparator />
+        {session?.user.name && (
+          <>
+            <DropdownMenuLabel>{session.user.name}</DropdownMenuLabel>
+            <DropdownMenuSeparator />
+          </>
+        )}
         <UserDropdownContent session={session} />
       </DropdownMenuContent>
     </DropdownMenu>
@@ -43,7 +47,8 @@ function UserDropdownContent({ session }: { session: Session | null }) {
 
   return (
     <>
-      <DropdownMenuItem>Profile</DropdownMenuItem>
+      <DropdownMenuItem>Overview</DropdownMenuItem>
+      <DropdownMenuItem>Orders</DropdownMenuItem>
       <DropdownMenuItem onSelect={() => signOut()}>Signout</DropdownMenuItem>
     </>
   );

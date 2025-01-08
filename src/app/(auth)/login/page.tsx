@@ -6,7 +6,7 @@ function LoginPage() {
     <div className="mx-auto max-w-md">
       <h1 className="mb-4 text-2xl font-bold">Login</h1>
       <LoginForm />
-      <p className="mt-6 text-center text-sm font-medium">
+      <p className="mt-10 text-center text-sm font-medium">
         Don&apos;t have an account,{" "}
         <Link
           href="/register"

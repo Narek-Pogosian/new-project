@@ -3,9 +3,9 @@ import { getCategories } from "@/server/queries/categories";
 import { redirect } from "next/navigation";
 import { Suspense } from "react";
 import ProductList, { ProductsSkeleton } from "./_components/product-list";
+import MobileFilters from "./_components/mobile-filters";
 import Categories from "./_components/categories";
 import Sorting from "./_components/sorting";
-import MobileFilters from "./_components/mobile-filters";
 
 type SearchParams = Promise<Record<string, string | string[] | undefined>>;
 
@@ -30,7 +30,7 @@ export default async function ShopPage({
           <h3 className="mb-4 pt-4 text-sm uppercase tracking-wider text-foreground-muted">
             Categories
           </h3>
-          <Categories categories={categories} currentCategory={data.category} />
+          <Categories categories={categories} />
         </div>
         <div className="lg:hidden">
           <MobileFilters
@@ -38,7 +38,7 @@ export default async function ShopPage({
             currentCategory={data.category}
           />
         </div>
-        <Sorting initialDir={data.dir} initialSortBy={data.sort_by} />
+        <Sorting />
       </div>
       <Suspense
         fallback={<ProductsSkeleton />}

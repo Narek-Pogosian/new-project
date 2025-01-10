@@ -1,21 +1,15 @@
 "use client";
 
-import { cn, getUpdatedSearchParams } from "@/lib/utils";
 import { type getCategories } from "@/server/queries/categories";
-import { useRouter } from "next/navigation";
+import { parseAsInteger, useQueryState } from "nuqs";
+import { cn } from "@/lib/utils";
 
 interface Props {
   categories: Awaited<ReturnType<typeof getCategories>>;
-  currentCategory: number | undefined;
 }
 
-function Categories({ categories, currentCategory }: Props) {
-  const router = useRouter();
-
-  function handleNavigate(val?: number) {
-    const r = getUpdatedSearchParams({ category: val });
-    router.push(r);
-  }
+function Categories({ categories }: Props) {
+  const [category, setCategory] = useQueryState("category", parseAsInteger);
 
   return (
     <nav className="shrink-0" aria-label="categories">
@@ -23,9 +17,11 @@ function Categories({ categories, currentCategory }: Props) {
         <li>
           <button
             role="link"
-            onClick={() => handleNavigate()}
+            onClick={() =>
+              setCategory(null, { shallow: false, history: "push" })
+            }
             className={cn("w-full border-l-2 px-4 py-1 text-left", {
-              "border-l-accent-500/50 text-foreground": !currentCategory,
+              "border-l-accent-500/50 text-foreground": !category,
             })}
           >
             All Products
@@ -35,10 +31,11 @@ function Categories({ categories, currentCategory }: Props) {
           <li key={c.id}>
             <button
               role="link"
-              onClick={() => handleNavigate(c.id)}
+              onClick={() =>
+                setCategory(c.id, { shallow: false, history: "push" })
+              }
               className={cn("w-full border-l-2 px-4 py-1 text-left", {
-                "border-l-accent-500/50 text-foreground":
-                  currentCategory === c.id,
+                "border-l-accent-500/50 text-foreground": category === c.id,
               })}
             >
               {c.name}

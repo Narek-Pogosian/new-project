@@ -31,3 +31,7 @@ export function getUpdatedSearchParams(
 
   return `${window.location.pathname}?${searchParams.toString()}`;
 }
+
+export function sleep(ms: number): Promise<void> {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}

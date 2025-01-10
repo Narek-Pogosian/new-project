@@ -38,19 +38,11 @@ const sortingOptions: Option[] = [
   },
 ];
 
-interface Props {
-  initialDir: ProductQueryParamsType["dir"] | undefined;
-  initialSortBy: ProductQueryParamsType["sort_by"] | undefined;
-}
-
-function Sorting({ initialDir, initialSortBy }: Props) {
-  const [queryState, setQueryState] = useQueryStates(
-    {
-      sort_by: parseAsString.withDefault(initialSortBy ?? ""),
-      dir: parseAsString.withDefault(initialDir ?? ""),
-    },
-    { clearOnDefault: false },
-  );
+function Sorting() {
+  const [queryState, setQueryState] = useQueryStates({
+    sort_by: parseAsString,
+    dir: parseAsString,
+  });
 
   function handleChange(val: string) {
     const option = sortingOptions.find((o) => o.label === val)!;

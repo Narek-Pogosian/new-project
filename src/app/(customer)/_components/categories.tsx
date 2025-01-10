@@ -1,7 +1,7 @@
 "use client";
 
 import { type getCategories } from "@/server/queries/categories";
-import { parseAsInteger, useQueryState } from "nuqs";
+import { parseAsInteger, useQueryStates } from "nuqs";
 import { cn } from "@/lib/utils";
 
 interface Props {
@@ -9,7 +9,10 @@ interface Props {
 }
 
 function Categories({ categories }: Props) {
-  const [category, setCategory] = useQueryState("category", parseAsInteger);
+  const [queryState, setQueryState] = useQueryStates({
+    page: parseAsInteger,
+    category: parseAsInteger,
+  });
 
   return (
     <nav className="shrink-0" aria-label="categories">
@@ -18,10 +21,10 @@ function Categories({ categories }: Props) {
           <button
             role="link"
             onClick={() =>
-              setCategory(null, { shallow: false, history: "push" })
+              setQueryState(null, { shallow: false, history: "push" })
             }
             className={cn("w-full border-l-2 px-4 py-1 text-left", {
-              "border-l-accent-500/50 text-foreground": !category,
+              "border-l-accent-500/50 text-foreground": !queryState.category,
             })}
           >
             All Products
@@ -32,10 +35,14 @@ function Categories({ categories }: Props) {
             <button
               role="link"
               onClick={() =>
-                setCategory(c.id, { shallow: false, history: "push" })
+                setQueryState(
+                  { category: c.id, page: null },
+                  { shallow: false, history: "push" },
+                )
               }
               className={cn("w-full border-l-2 px-4 py-1 text-left", {
-                "border-l-accent-500/50 text-foreground": category === c.id,
+                "border-l-accent-500/50 text-foreground":
+                  queryState.category === c.id,
               })}
             >
               {c.name}

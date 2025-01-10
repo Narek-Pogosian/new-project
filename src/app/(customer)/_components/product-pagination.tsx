@@ -1,4 +1,7 @@
-import { type ProductQueryParamsType } from "@/schemas/product-schemas";
+"use client";
+
+import { cn } from "@/lib/utils";
+import { parseAsInteger, useQueryState } from "nuqs";
 import {
   Pagination,
   PaginationContent,
@@ -7,43 +10,26 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination";
-import { cn } from "@/lib/utils";
-
-function createUrl(searchParams: ProductQueryParamsType, page: number) {
-  const newSearchParams = { ...searchParams, page: page.toString() };
-
-  Object.entries(newSearchParams).forEach(([key, value]) => {
-    if (!value) {
-      delete newSearchParams[key as keyof ProductQueryParamsType];
-    }
-  });
-
-  const stringifiedParams: Record<string, string> = {};
-  Object.entries(newSearchParams).forEach(([key, value]) => {
-    if (value !== undefined) {
-      stringifiedParams[key] = String(value);
-    }
-  });
-
-  const queryString = new URLSearchParams(stringifiedParams).toString();
-  return `/shop?${queryString}`;
-}
 
 export default function ProductPagination({
   currentPage,
   totalPages,
-  searchParams,
 }: {
   totalPages: number;
   currentPage: number;
-  searchParams: ProductQueryParamsType;
 }) {
+  const [, setPage] = useQueryState("page", parseAsInteger);
+
+  function changePage(p: number) {
+    void setPage(p > 1 ? p : null, { shallow: false });
+  }
+
   return (
     <Pagination className="mt-12">
       <PaginationContent>
         <PaginationItem>
           <PaginationPrevious
-            href={createUrl(searchParams, currentPage - 1)}
+            onClick={() => changePage(currentPage - 1)}
             aria-disabled={currentPage <= 1}
             className={cn({
               "pointer-events-none opacity-40": currentPage <= 1,
@@ -53,7 +39,7 @@ export default function ProductPagination({
         {new Array(totalPages).fill(0).map((_, i) => (
           <PaginationItem key={i}>
             <PaginationLink
-              href={createUrl(searchParams, i + 1)}
+              onClick={() => changePage(i + 1)}
               isActive={i + 1 === currentPage}
             >
               {i + 1}
@@ -62,7 +48,7 @@ export default function ProductPagination({
         ))}
         <PaginationItem>
           <PaginationNext
-            href={createUrl(searchParams, currentPage + 1)}
+            onClick={() => changePage(currentPage + 1)}
             aria-disabled={currentPage >= totalPages}
             className={cn({
               "pointer-events-none opacity-40": currentPage >= totalPages,

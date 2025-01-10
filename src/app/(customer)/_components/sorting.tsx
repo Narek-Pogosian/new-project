@@ -8,7 +8,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { parseAsString, useQueryStates } from "nuqs";
+import { parseAsInteger, parseAsString, useQueryStates } from "nuqs";
 import { Label } from "@/components/ui/label";
 
 type Option = {
@@ -42,6 +42,7 @@ function Sorting() {
   const [queryState, setQueryState] = useQueryStates({
     sort_by: parseAsString,
     dir: parseAsString,
+    page: parseAsInteger,
   });
 
   function handleChange(val: string) {
@@ -51,6 +52,7 @@ function Sorting() {
       {
         sort_by: option.sort_by,
         dir: option.dir,
+        page: null,
       },
       { shallow: false, history: "push" },
     );

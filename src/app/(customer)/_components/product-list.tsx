@@ -59,7 +59,6 @@ export default async function ProductList({
       <ProductPagination
         currentPage={res.currentPage}
         totalPages={res.totalPages}
-        searchParams={searchParams}
       />
     </section>
   );

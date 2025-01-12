@@ -289,12 +289,14 @@ function CategoryAndAttributes({
         <>
           <hr />
           <div>
-            <p className="mb-1 text-xs text-danger-500">
-              TODO: Show error message here if nothing picked
-            </p>
             <p className="mb-4 text-sm font-medium leading-none">
               Choose the available attributes for this product:
             </p>
+            {form.getFieldState("productAttributes").error && (
+              <p className="-mt-2 mb-2 text-xs text-danger-500">
+                Pick atleast 1 option for each attribute
+              </p>
+            )}
             <div className="space-y-6">
               {categoryAttributes.map((attr) => (
                 <div key={attr.id}>

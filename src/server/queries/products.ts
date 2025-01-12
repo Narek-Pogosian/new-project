@@ -80,7 +80,7 @@ function discoverProductsInternal(queryOptions: ProductQueryParamsType) {
     where.rating = { gte: min_rating };
   }
 
-  const take = 4;
+  const take = 12;
   const skip = (page - 1) * take;
   const orderBy = sort_by ? { [sort_by]: dir } : undefined;
 

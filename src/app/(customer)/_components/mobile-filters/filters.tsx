@@ -11,19 +11,30 @@ import {
   DrawerTitle,
   DrawerTrigger,
 } from "@/components/ui/drawer";
+import { type getCategories } from "@/server/queries/categories";
 import { cn } from "@/lib/utils";
+import Categories from "../categories";
 
-function Filters() {
+interface Props {
+  categories: Awaited<ReturnType<typeof getCategories>>;
+}
+
+function Filters({ categories }: Props) {
   return (
     <Drawer>
-      <DrawerTrigger className={cn(buttonVariants())}>Filters</DrawerTrigger>
+      <DrawerTrigger className={buttonVariants()}>Filters</DrawerTrigger>
       <DrawerContent>
         <DrawerHeader>
-          <DrawerTitle>Are you absolutely sure?</DrawerTitle>
-          <DrawerDescription>This action cannot be undone.</DrawerDescription>
+          <DrawerTitle>Filters</DrawerTitle>
+          <DrawerDescription></DrawerDescription>
         </DrawerHeader>
+        <div className="max-h-80 overflow-y-auto px-4">
+          <Categories categories={categories} />
+        </div>
         <DrawerFooter>
-          <DrawerClose>Close</DrawerClose>
+          <DrawerClose className={cn("mt-4", buttonVariants())}>
+            Close
+          </DrawerClose>
         </DrawerFooter>
       </DrawerContent>
     </Drawer>

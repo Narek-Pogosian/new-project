@@ -1,4 +1,4 @@
-import { Button } from "@/components/ui/button";
+import { buttonVariants } from "@/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -15,11 +15,11 @@ import Link from "next/link";
 export default function UserDropdown({ session }: { session: Session | null }) {
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button size="icon" variant="ghost">
-          <span className="sr-only">Your Account</span>
-          <User aria-hidden />
-        </Button>
+      <DropdownMenuTrigger
+        className={buttonVariants({ size: "icon", variant: "ghost" })}
+      >
+        <span className="sr-only">Your Account</span>
+        <User aria-hidden />
       </DropdownMenuTrigger>
       <DropdownMenuContent>
         {session?.user.name && (

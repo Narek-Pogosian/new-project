@@ -33,10 +33,7 @@ export default async function ShopPage({
           <Categories categories={categories} />
         </div>
         <div className="lg:hidden">
-          <MobileFilters
-            categories={categories}
-            currentCategory={data.category}
-          />
+          <MobileFilters categories={categories} />
         </div>
         <Sorting />
       </div>

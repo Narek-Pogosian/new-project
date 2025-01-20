@@ -90,7 +90,7 @@ model CartItem {
     cartId            Int
     createdAt         DateTime @default(now())
     updatedAt         DateTime @updatedAt
-    productAttributes String[] // Array of attribute values that represent the variation (e.g., ["Red", "L", "Leather"])
+    productAttributes Json
 
     cart    Cart    @relation(fields: [cartId], references: [id], onDelete: Cascade)
     product Product @relation(fields: [productId], references: [id], onDelete: Cascade)

@@ -7,6 +7,7 @@ import { useSession } from "next-auth/react";
 import { Moon, Sun } from "lucide-react";
 import { useTheme } from "next-themes";
 import { Button } from "@/components/ui/button";
+import Cart from "../cart";
 
 export default function Header() {
   const { data: session } = useSession();
@@ -28,8 +29,9 @@ export default function Header() {
             </ul>
           </nav>
         </div>
-        <div className="flex">
+        <div className="flex gap-0.5">
           <UserDropdown session={session} />
+          <Cart />
           <ThemeToggle />
         </div>
       </div>

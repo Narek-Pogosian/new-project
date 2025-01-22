@@ -10,14 +10,14 @@ async function getCart(userId: string | null, cartToken: string | null) {
   if (userId) {
     cart = await db.cart.findFirst({
       where: { userId },
-      include: { items: true },
+      include: { items: { include: { product: true } } },
     });
   }
 
   if (!cart && cartToken) {
     cart = await db.cart.findFirst({
       where: { cartToken },
-      include: { items: true },
+      include: { items: { include: { product: true } } },
     });
   }
 
@@ -32,7 +32,7 @@ async function getCart(userId: string | null, cartToken: string | null) {
     return { cartId: res.id, items: [] };
   }
 
-  return { cartId: cart.id, items: cart.items || [] };
+  return { cartId: cart.id, items: cart.items };
 }
 
 export async function GET() {
@@ -53,7 +53,7 @@ export async function GET() {
       });
     }
 
-    return new Response(JSON.stringify({ ...cart }), { status: 200 });
+    return new Response(JSON.stringify(cart), { status: 200 });
   } catch (err) {
     return new Response(JSON.stringify({ message: err }), {
       status: 500,

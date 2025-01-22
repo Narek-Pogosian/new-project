@@ -14,7 +14,7 @@ import { useQuery } from "@tanstack/react-query";
 import { ShoppingCart } from "lucide-react";
 
 function Cart() {
-  const {} = useQuery({
+  const { data, isLoading, isError, isSuccess } = useQuery({
     queryKey: ["cart"],
     queryFn: async () => {
       const res = await fetch("/api/cart");
@@ -28,10 +28,18 @@ function Cart() {
 
   return (
     <Sheet>
-      <SheetTrigger asChild>
+      <SheetTrigger className="relative" asChild>
         <Button size="icon" variant="ghost">
           <span className="sr-only">Your cart</span>
           <ShoppingCart />
+          {data && data.items.length > 0 && (
+            <span
+              aria-hidden
+              className="pointer-events-none absolute -right-1 -top-1 flex size-5 items-center justify-center rounded-full bg-primary text-xs font-semibold text-primary-foreground"
+            >
+              {data.items.length}
+            </span>
+          )}
         </Button>
       </SheetTrigger>
       <SheetContent>
@@ -39,6 +47,13 @@ function Cart() {
           <SheetTitle>Your Cart</SheetTitle>
           <SheetDescription></SheetDescription>
         </SheetHeader>
+        {isLoading ? (
+          <p>Loading...</p>
+        ) : isError ? (
+          <p>Error</p>
+        ) : (
+          isSuccess && JSON.stringify(data.items)
+        )}
       </SheetContent>
     </Sheet>
   );

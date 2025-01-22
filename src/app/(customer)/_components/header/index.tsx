@@ -30,9 +30,9 @@ export default function Header() {
           </nav>
         </div>
         <div className="flex gap-0.5">
+          <ThemeToggle />
           <UserDropdown session={session} />
           <Cart />
-          <ThemeToggle />
         </div>
       </div>
     </header>

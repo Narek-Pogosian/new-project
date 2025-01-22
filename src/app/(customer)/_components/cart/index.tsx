@@ -14,7 +14,7 @@ import { useQuery } from "@tanstack/react-query";
 import { ShoppingCart } from "lucide-react";
 
 function Cart() {
-  const { data, error, isLoading } = useQuery({
+  const {} = useQuery({
     queryKey: ["cart"],
     queryFn: async () => {
       const res = await fetch("/api/cart");

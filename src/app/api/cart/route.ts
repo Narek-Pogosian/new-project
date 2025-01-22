@@ -1,36 +1,69 @@
 import { getServerAuthSession } from "@/server/auth";
 import { cookies } from "next/headers";
+import { db } from "@/server/db";
 
-export type GetCartType = ReturnType<typeof getUserCart>;
+export type GetCartType = ReturnType<typeof getCart>;
 
-async function getUserCart(userId: string) {
-  return [
-    { productId: 1, quantity: 2 },
-    { productId: 2, quantity: 1 },
-  ];
+async function getCart(userId: string | null, cartToken: string | null) {
+  let cart = null;
+
+  if (userId) {
+    cart = await db.cart.findFirst({
+      where: { userId },
+      include: { items: true },
+    });
+  }
+
+  if (!cart && cartToken) {
+    cart = await db.cart.findFirst({
+      where: { cartToken },
+      include: { items: true },
+    });
+  }
+
+  if (!cart) {
+    const res = await db.cart.create({
+      data: {
+        userId: userId ?? undefined,
+        cartToken: cartToken ?? undefined,
+      },
+    });
+
+    return { cartId: res.id, items: [] };
+  }
+
+  return { cartId: cart.id, items: cart.items || [] };
 }
 
 export async function GET() {
   const session = await getServerAuthSession();
-
-  if (session) {
-    try {
-      const cart = await getUserCart(session.user.id);
-      return new Response(JSON.stringify({ cart }), { status: 200 });
-    } catch (err) {
-      return new Response(JSON.stringify({ message: err }), { status: 500 });
-    }
-  }
-
   const cookieStore = await cookies();
   const cartToken = cookieStore.get("cartToken");
 
-  if (!cartToken) {
-    cookieStore.set("cartToken", crypto.randomUUID(), {
-      httpOnly: true,
-      path: "/",
+  try {
+    const cart = await getCart(
+      session?.user.id ?? null,
+      cartToken?.value ?? null,
+    );
+
+    if (!cartToken && !session?.user.id) {
+      cookieStore.set("cartToken", crypto.randomUUID(), {
+        httpOnly: true,
+        path: "/",
+      });
+    }
+
+    return new Response(JSON.stringify({ ...cart }), { status: 200 });
+  } catch (err) {
+    return new Response(JSON.stringify({ message: err }), {
+      status: 500,
     });
   }
-
-  return new Response(JSON.stringify([]), { status: 200 });
 }
+
+// export async function POST() {
+//   const session = await getServerAuthSession();
+
+//   const cookieStore = await cookies();
+//   const cartToken = cookieStore.get("cartToken");
+// }

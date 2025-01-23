@@ -61,7 +61,10 @@ async function ProductPage({ params }: { params: Params }) {
           </div>
 
           <hr className="my-6 max-sm:hidden" />
-          <AddToCart productAttributes={product.productAttributes} />
+          <AddToCart
+            productAttributes={product.productAttributes}
+            productId={product.id}
+          />
           <hr className="my-6 max-sm:hidden" />
 
           <p className="max-w-lg text-foreground-muted max-sm:hidden">

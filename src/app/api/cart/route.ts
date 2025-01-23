@@ -1,6 +1,8 @@
 import { getServerAuthSession } from "@/server/auth";
 import { cookies } from "next/headers";
 import { db } from "@/server/db";
+import { type NextRequest } from "next/server";
+import { addCartSchema } from "@/schemas/cart-schemas";
 
 export type GetCartType = ReturnType<typeof getCart>;
 
@@ -61,9 +63,26 @@ export async function GET() {
   }
 }
 
-// export async function POST() {
-//   const session = await getServerAuthSession();
+export async function POST(req: NextRequest) {
+  const { data } = addCartSchema.safeParse(await req.json());
+  if (!data) {
+    return new Response(JSON.stringify({}), { status: 401 });
+  }
 
-//   const cookieStore = await cookies();
-//   const cartToken = cookieStore.get("cartToken");
-// }
+  try {
+    const cartItem = await db.cartItem.create({
+      data: {
+        productAttributes: JSON.stringify(data.attributes),
+        cartId: data.cartId,
+        productId: data.productId,
+        quantity: data.quantity,
+      },
+    });
+
+    return new Response(JSON.stringify(cartItem), { status: 201 });
+  } catch (err) {
+    return new Response(JSON.stringify({ message: err }), {
+      status: 500,
+    });
+  }
+}

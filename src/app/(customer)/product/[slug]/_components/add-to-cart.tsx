@@ -10,12 +10,16 @@ import {
   useQueryStates,
   type UseQueryStatesKeysMap,
 } from "nuqs";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { type AddCartType } from "@/schemas/cart-schemas";
+import { z } from "zod";
 
 type Props = {
   productAttributes: ProductAttribute[];
+  productId: number;
 };
 
-function AddToCart({ productAttributes }: Props) {
+function AddToCart({ productAttributes, productId }: Props) {
   const [quantity, setQuantity] = useState(1);
   const [selectedAttributes, setSelectedAttributes] = useQueryStates(
     productAttributes.reduce((acc, curr) => {
@@ -32,10 +36,47 @@ function AddToCart({ productAttributes }: Props) {
     });
   };
 
+  const queryClient = useQueryClient();
+  const { mutate } = useMutation({
+    mutationFn: (data: AddCartType) =>
+      fetch("/api/cart", { method: "POST", body: JSON.stringify(data) }),
+  });
+
+  const cart = queryClient.getQueryData(["cart"]);
+  const { data: safeCart, success } = z
+    .object({ cartId: z.number() })
+    .safeParse(cart);
+
   const isValidSelection =
     productAttributes.every(
       (attribute) => selectedAttributes[attribute.name],
-    ) && quantity > 0;
+    ) &&
+    quantity > 0 &&
+    success;
+
+  function handleAdd() {
+    mutate(
+      {
+        productId,
+        quantity,
+        // @ts-expect-error button is disabled if safeCart.cartId doesn't exist
+        cartId: safeCart?.cartId,
+        attributes: Object.fromEntries(
+          Object.entries(selectedAttributes).map(([key, value]) => [
+            key,
+            value,
+          ]),
+        ),
+      },
+      {
+        onSuccess: (res) => {
+          console.log(res);
+          // Add the returned CartItem to cart cache,
+          // Refactor
+        },
+      },
+    );
+  }
 
   return (
     <>
@@ -67,7 +108,12 @@ function AddToCart({ productAttributes }: Props) {
       </div>
 
       <div className="flex">
-        <Button variant="accent" className="mr-4" disabled={!isValidSelection}>
+        <Button
+          variant="accent"
+          className="mr-4"
+          onClick={handleAdd}
+          disabled={!isValidSelection}
+        >
           Add to cart
         </Button>
         <Input

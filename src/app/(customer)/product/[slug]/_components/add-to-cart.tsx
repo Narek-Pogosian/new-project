@@ -1,18 +1,18 @@
 "use client";
 
 import { type ProductAttribute } from "@prisma/client";
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
+import { z } from "zod";
 import {
   parseAsString,
   useQueryStates,
   type UseQueryStatesKeysMap,
 } from "nuqs";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { type AddCartType } from "@/schemas/cart-schemas";
-import { z } from "zod";
+import { useGetCart } from "@/hooks/use-get-cart";
+import { useAddToCartMutation } from "@/hooks/use-add-to-cart";
 
 type Props = {
   productAttributes: ProductAttribute[];
@@ -21,33 +21,34 @@ type Props = {
 
 function AddToCart({ productAttributes, productId }: Props) {
   const [quantity, setQuantity] = useState(1);
-  const [selectedAttributes, setSelectedAttributes] = useQueryStates(
-    productAttributes.reduce((acc, curr) => {
-      acc[curr.name] = parseAsString;
+
+  const initialSelectedAttributes = useMemo(() => {
+    return productAttributes.reduce((acc, { name }) => {
+      acc[name] = parseAsString;
       return acc;
       // eslint-disable-next-line
-    }, {} as UseQueryStatesKeysMap<any>),
+    }, {} as UseQueryStatesKeysMap<any>);
+  }, [productAttributes]);
+
+  const [selectedAttributes, setSelectedAttributes] = useQueryStates(
+    initialSelectedAttributes,
   );
 
   const handleSelect = (attributeName: string, value: string) => {
-    void setSelectedAttributes({
-      ...selectedAttributes,
+    void setSelectedAttributes((prev) => ({
+      ...prev,
       [attributeName]: value,
-    });
+    }));
   };
 
-  const queryClient = useQueryClient();
-  const { mutate } = useMutation({
-    mutationFn: (data: AddCartType) =>
-      fetch("/api/cart", { method: "POST", body: JSON.stringify(data) }),
-  });
+  const cart = useGetCart();
+  const mutate = useAddToCartMutation();
 
-  const cart = queryClient.getQueryData(["cart"]);
   const { data: safeCart, success } = z
     .object({ cartId: z.number() })
-    .safeParse(cart);
+    .safeParse(cart.data);
 
-  const isValidSelection =
+  const isValid =
     productAttributes.every(
       (attribute) => selectedAttributes[attribute.name],
     ) &&
@@ -55,31 +56,32 @@ function AddToCart({ productAttributes, productId }: Props) {
     success;
 
   function handleAdd() {
-    mutate(
-      {
-        productId,
-        quantity,
-        // @ts-expect-error button is disabled if safeCart.cartId doesn't exist
-        cartId: safeCart?.cartId,
-        attributes: Object.fromEntries(
-          Object.entries(selectedAttributes).map(([key, value]) => [
-            key,
-            value,
-          ]),
-        ),
-      },
-      {
-        onSuccess: (res) => {
-          console.log(res);
-          // Add the returned CartItem to cart cache,
-          // Refactor
-        },
-      },
-    );
+    if (!safeCart?.cartId) return;
+    // if (
+    //   cart.data?.items.find(
+    //     (v) =>
+    //       v.productAttributes ===
+    //       JSON.stringify(selectedAttributes && v.productId === productId),
+    //   )
+    // )
+    //   return;
+
+    // TODO: Need to compare the JsonValue productAttributes with the selectedAttributes
+
+    console.log(cart.data?.items.find((v) => v.productId === productId));
+
+    // mutate({
+    //   productId,
+    //   quantity,
+    //   cartId: safeCart.cartId,
+    //   attributes: Object.fromEntries(
+    //     Object.entries(selectedAttributes).map(([key, value]) => [key, value]),
+    //   ),
+    // });
   }
 
   return (
-    <>
+    <div>
       <div className="mb-6 space-y-4">
         {productAttributes.map((attribute) => (
           <div key={attribute.id}>
@@ -107,13 +109,8 @@ function AddToCart({ productAttributes, productId }: Props) {
         ))}
       </div>
 
-      <div className="flex">
-        <Button
-          variant="accent"
-          className="mr-4"
-          onClick={handleAdd}
-          disabled={!isValidSelection}
-        >
+      <div className="flex gap-4">
+        <Button variant="accent" onClick={handleAdd} disabled={!isValid}>
           Add to cart
         </Button>
         <Input
@@ -121,11 +118,11 @@ function AddToCart({ productAttributes, productId }: Props) {
           min={1}
           max={100}
           value={quantity}
-          onChange={(e) => setQuantity(parseInt(e.target.value))}
+          onChange={(e) => setQuantity(parseInt(e.target.value, 10))}
           className="w-24 bg-background"
         />
       </div>
-    </>
+    </div>
   );
 }
 

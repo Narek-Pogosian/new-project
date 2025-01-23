@@ -12,14 +12,18 @@ async function getCart(userId: string | null, cartToken: string | null) {
   if (userId) {
     cart = await db.cart.findFirst({
       where: { userId },
-      include: { items: { include: { product: true } } },
+      include: {
+        items: { include: { product: true }, orderBy: { productId: "asc" } },
+      },
     });
   }
 
   if (!cart && cartToken) {
     cart = await db.cart.findFirst({
       where: { cartToken },
-      include: { items: { include: { product: true } } },
+      include: {
+        items: { include: { product: true }, orderBy: { productId: "asc" } },
+      },
     });
   }
 
@@ -77,6 +81,7 @@ export async function POST(req: NextRequest) {
         productId: data.productId,
         quantity: data.quantity,
       },
+      include: { product: true },
     });
 
     return new Response(JSON.stringify(cartItem), { status: 201 });

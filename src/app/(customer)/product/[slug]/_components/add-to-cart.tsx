@@ -57,27 +57,47 @@ function AddToCart({ productAttributes, productId }: Props) {
 
   function handleAdd() {
     if (!safeCart?.cartId) return;
-    // if (
-    //   cart.data?.items.find(
-    //     (v) =>
-    //       v.productAttributes ===
-    //       JSON.stringify(selectedAttributes && v.productId === productId),
-    //   )
-    // )
-    //   return;
 
-    // TODO: Need to compare the JsonValue productAttributes with the selectedAttributes
+    if (
+      cart.data?.items.find(
+        (v) =>
+          v.productAttributes === JSON.stringify(selectedAttributes) &&
+          v.productId === productId,
+      )
+    ) {
+      // Preventing adding product with same attributes again, maybe should increase
+      // quantity instead.
+      return;
+    }
 
-    console.log(cart.data?.items.find((v) => v.productId === productId));
-
-    // mutate({
-    //   productId,
-    //   quantity,
-    //   cartId: safeCart.cartId,
-    //   attributes: Object.fromEntries(
-    //     Object.entries(selectedAttributes).map(([key, value]) => [key, value]),
-    //   ),
-    // });
+    mutate(
+      {
+        productId,
+        quantity,
+        cartId: safeCart.cartId,
+        attributes: Object.fromEntries(
+          Object.entries(selectedAttributes).map(([key, value]) => [
+            key,
+            value,
+          ]),
+        ),
+      },
+      {
+        onSuccess: () => {
+          void setSelectedAttributes((prev) => {
+            const resetAttributes = Object.keys(prev).reduce(
+              (acc, key) => {
+                acc[key] = null;
+                return acc;
+              },
+              // eslint-disable-next-line
+              {} as Record<string, any>,
+            );
+            return resetAttributes;
+          });
+        },
+      },
+    );
   }
 
   return (

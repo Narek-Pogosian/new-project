@@ -18,7 +18,7 @@ async function getCart(userId: string | null, cartToken: string | null) {
     });
   }
 
-  if (!cart && cartToken) {
+  if (!cart && !userId && cartToken) {
     cart = await db.cart.findFirst({
       where: { cartToken },
       include: {
@@ -31,7 +31,7 @@ async function getCart(userId: string | null, cartToken: string | null) {
     const res = await db.cart.create({
       data: {
         userId: userId ?? undefined,
-        cartToken: cartToken ?? undefined,
+        cartToken: userId ? undefined : (cartToken ?? undefined),
       },
     });
 
@@ -46,18 +46,17 @@ export async function GET() {
   const cookieStore = await cookies();
   const cartToken = cookieStore.get("cartToken");
 
-  try {
-    const cart = await getCart(
-      session?.user.id ?? null,
-      cartToken?.value ?? null,
-    );
+  let tokenToUse = cartToken?.value ?? null;
+  if (!tokenToUse && !session?.user.id) {
+    tokenToUse = crypto.randomUUID();
+    cookieStore.set("cartToken", tokenToUse, {
+      httpOnly: true,
+      path: "/",
+    });
+  }
 
-    if (!cartToken && !session?.user.id) {
-      cookieStore.set("cartToken", crypto.randomUUID(), {
-        httpOnly: true,
-        path: "/",
-      });
-    }
+  try {
+    const cart = await getCart(session?.user.id ?? null, tokenToUse);
 
     return new Response(JSON.stringify(cart), { status: 200 });
   } catch (err) {

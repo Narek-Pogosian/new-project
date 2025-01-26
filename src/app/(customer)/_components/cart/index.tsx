@@ -37,9 +37,12 @@ function Cart() {
           <SheetDescription></SheetDescription>
         </SheetHeader>
         {isLoading ? (
-          <p>Loading...</p>
+          <p className="pt-10 text-center">Loading...</p>
         ) : isError ? (
-          <p>Error</p>
+          <div className="pt-10 text-center">
+            <p className="mb-2 font-semibold">Something went wrong</p>
+            <Button onClick={() => location.reload()}>Try Again</Button>
+          </div>
         ) : (
           isSuccess && JSON.stringify(data!.items)
         )}

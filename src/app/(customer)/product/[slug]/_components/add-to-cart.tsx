@@ -84,6 +84,7 @@ function AddToCart({ productAttributes, productId }: Props) {
       },
       {
         onSuccess: () => {
+          setQuantity(1);
           void setSelectedAttributes((prev) => {
             const resetAttributes = Object.keys(prev).reduce(
               (acc, key) => {

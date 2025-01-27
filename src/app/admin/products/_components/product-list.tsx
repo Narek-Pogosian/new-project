@@ -77,7 +77,7 @@ function ProductList({ products }: Props) {
                     Created: {new Date(product.createdAt).toDateString()}
                   </p>
                   <p className="text-xs text-foreground-muted">
-                    ${product.price}
+                    €{product.price}
                   </p>
                 </div>
               </div>

@@ -8,7 +8,7 @@ function AuthLayout({ children }: { children: React.ReactNode }) {
       <Button variant="outline" asChild>
         <Link href="/" className="absolute left-4 top-4 lg:left-8 lg:top-8">
           <MoveLeft />
-          Home
+          Shop
         </Link>
       </Button>
       {children}

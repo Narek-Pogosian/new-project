@@ -4,7 +4,7 @@ import UserDropdown from "./user-dropdown";
 import Link from "next/link";
 import Logo from "@/components/logo";
 import { useSession } from "next-auth/react";
-import { Moon, Sun } from "lucide-react";
+import { Moon, Sun, User } from "lucide-react";
 import { useTheme } from "next-themes";
 import { Button } from "@/components/ui/button";
 import Cart from "../cart";
@@ -19,19 +19,26 @@ export default function Header() {
           <Link href="/">
             <Logo />
           </Link>
-          <nav>
-            <ul className="flex gap-4 text-sm font-medium md:gap-8">
-              {session?.user.role === "ADMIN" && (
-                <li>
-                  <Link href="/admin">Admin</Link>
-                </li>
-              )}
-            </ul>
-          </nav>
+          {session?.user.role === "ADMIN" && (
+            <Link href="/admin" className="text-sm font-semibold">
+              Admin
+            </Link>
+          )}
         </div>
-        <div className="flex gap-0.5">
+        <div className="flex items-center gap-0.5">
           <ThemeToggle />
-          <UserDropdown session={session} />
+          {session ? (
+            <UserDropdown session={session} />
+          ) : (
+            <nav>
+              <Button size="icon" variant="ghost">
+                <Link href="/login">
+                  <User />
+                  <span className="sr-only">Login</span>
+                </Link>
+              </Button>
+            </nav>
+          )}
           <Cart />
         </div>
       </div>

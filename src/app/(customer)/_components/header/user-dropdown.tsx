@@ -9,10 +9,9 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { type Session } from "next-auth";
 import { signOut } from "next-auth/react";
-import { User } from "lucide-react";
-import Link from "next/link";
+import { Box, Eye, LogOut, User } from "lucide-react";
 
-export default function UserDropdown({ session }: { session: Session | null }) {
+export default function UserDropdown({ session }: { session: Session }) {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger
@@ -21,35 +20,21 @@ export default function UserDropdown({ session }: { session: Session | null }) {
         <span className="sr-only">Your Account</span>
         <User aria-hidden />
       </DropdownMenuTrigger>
-      <DropdownMenuContent>
-        {session?.user.name && (
-          <>
-            <DropdownMenuLabel>{session.user.name}</DropdownMenuLabel>
-            <DropdownMenuSeparator />
-          </>
-        )}
-        <UserDropdownContent session={session} />
+      <DropdownMenuContent className="w-40">
+        <>
+          <DropdownMenuLabel>{session.user.name}</DropdownMenuLabel>
+          <DropdownMenuSeparator />
+        </>
+        <DropdownMenuItem>
+          <Eye /> Overview
+        </DropdownMenuItem>
+        <DropdownMenuItem>
+          <Box /> Orders
+        </DropdownMenuItem>
+        <DropdownMenuItem onSelect={() => signOut()}>
+          <LogOut /> Signout
+        </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
-  );
-}
-
-function UserDropdownContent({ session }: { session: Session | null }) {
-  if (!session) {
-    return (
-      <>
-        <DropdownMenuItem asChild>
-          <Link href="/login">Login</Link>
-        </DropdownMenuItem>
-      </>
-    );
-  }
-
-  return (
-    <>
-      <DropdownMenuItem>Overview</DropdownMenuItem>
-      <DropdownMenuItem>Orders</DropdownMenuItem>
-      <DropdownMenuItem onSelect={() => signOut()}>Signout</DropdownMenuItem>
-    </>
   );
 }

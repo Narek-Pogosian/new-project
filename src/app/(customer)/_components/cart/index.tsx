@@ -28,7 +28,7 @@ export default function Cart() {
           )}
         </Button>
       </SheetTrigger>
-      <SheetContent className="pr-4">
+      <SheetContent className="pr-2">
         <SheetHeader>
           <SheetTitle>Your Cart</SheetTitle>
           <SheetDescription></SheetDescription>
@@ -52,7 +52,7 @@ const CartContent = ({ data }: { data: Awaited<GetCartType> }) => {
 
   return (
     <div className="h-full">
-      <ul className="h-[calc(100%-120px)] overflow-y-auto scrollbar-thin">
+      <ul className="h-[calc(100%-120px)] overflow-y-scroll pr-1 scrollbar-thin">
         {data.items.map((item) => (
           <CartItem key={item.id} item={item} cartId={data.cartId} />
         ))}
@@ -60,10 +60,9 @@ const CartContent = ({ data }: { data: Awaited<GetCartType> }) => {
       <div className="h-[120px] py-4 text-center">
         <p className="mb-2 font-semibold">
           Total Price: €
-          {data.items.reduce(
-            (acc, curr) => acc + curr.quantity * curr.product.price,
-            0,
-          )}
+          {data.items
+            .reduce((acc, curr) => acc + curr.quantity * curr.product.price, 0)
+            .toFixed(2)}
         </p>
         <Button className="w-full" variant="accent">
           Checkout

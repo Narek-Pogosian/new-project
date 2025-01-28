@@ -7,4 +7,9 @@ export const addCartSchema = z.object({
   attributes: z.record(z.unknown()),
 });
 
+export const deleteCartSchema = z.object({
+  cartItemId: z.number(),
+});
+
 export type AddCartType = z.infer<typeof addCartSchema>;
+export type DeleteCartType = z.infer<typeof deleteCartSchema>;

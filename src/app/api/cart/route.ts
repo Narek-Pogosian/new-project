@@ -2,7 +2,7 @@ import { getServerAuthSession } from "@/server/auth";
 import { cookies } from "next/headers";
 import { db } from "@/server/db";
 import { type NextRequest } from "next/server";
-import { addCartSchema } from "@/schemas/cart-schemas";
+import { addCartSchema, deleteCartSchema } from "@/schemas/cart-schemas";
 
 export type GetCartType = ReturnType<typeof getCart>;
 
@@ -84,6 +84,27 @@ export async function POST(req: NextRequest) {
     });
 
     return new Response(JSON.stringify(cartItem), { status: 201 });
+  } catch (err) {
+    return new Response(JSON.stringify({ message: err }), {
+      status: 500,
+    });
+  }
+}
+
+export async function DELETE(req: NextRequest) {
+  const { data } = deleteCartSchema.safeParse(await req.json());
+  if (!data) {
+    return new Response(JSON.stringify({}), { status: 401 });
+  }
+
+  try {
+    await db.cartItem.delete({
+      where: {
+        id: data.cartItemId,
+      },
+    });
+
+    return new Response(JSON.stringify({}), { status: 200 });
   } catch (err) {
     return new Response(JSON.stringify({ message: err }), {
       status: 500,

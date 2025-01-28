@@ -45,7 +45,7 @@ export default function Cart() {
   );
 }
 
-const CartContent = ({ data }: { data: Awaited<GetCartType> }) => {
+const CartContent = ({ data }: { data: GetCartType }) => {
   if (!data.items.length) {
     return <p className="pt-10 text-center">Your cart is empty.</p>;
   }

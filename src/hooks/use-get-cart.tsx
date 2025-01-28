@@ -10,7 +10,7 @@ export function useGetCart() {
         throw new Error("Failed to fetch cart");
       }
 
-      return res.json() as GetCartType;
+      return res.json() as Promise<GetCartType>;
     },
   });
 

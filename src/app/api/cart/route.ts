@@ -2,9 +2,13 @@ import { getServerAuthSession } from "@/server/auth";
 import { cookies } from "next/headers";
 import { db } from "@/server/db";
 import { type NextRequest } from "next/server";
-import { addCartSchema, deleteCartSchema } from "@/schemas/cart-schemas";
+import {
+  addCartSchema,
+  deleteCartSchema,
+  updateQuantitySchema,
+} from "@/schemas/cart-schemas";
 
-export type GetCartType = ReturnType<typeof getCart>;
+export type GetCartType = Awaited<ReturnType<typeof getCart>>;
 
 async function getCart(userId: string | null, cartToken: string | null) {
   let cart = null;
@@ -104,7 +108,31 @@ export async function DELETE(req: NextRequest) {
       },
     });
 
-    return new Response(JSON.stringify({}), { status: 200 });
+    return new Response(JSON.stringify({}), { status: 204 });
+  } catch (err) {
+    return new Response(JSON.stringify({ message: err }), {
+      status: 500,
+    });
+  }
+}
+
+export async function PATCH(req: NextRequest) {
+  const { data } = updateQuantitySchema.safeParse(await req.json());
+  if (!data) {
+    return new Response(JSON.stringify({}), { status: 401 });
+  }
+
+  try {
+    await db.cartItem.update({
+      where: {
+        id: data.cartItemId,
+      },
+      data: {
+        quantity: data.quantity,
+      },
+    });
+
+    return new Response(JSON.stringify({}), { status: 204 });
   } catch (err) {
     return new Response(JSON.stringify({ message: err }), {
       status: 500,

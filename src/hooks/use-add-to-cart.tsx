@@ -12,13 +12,10 @@ export const useAddToCartMutation = () => {
         (res) => res.json(),
       ),
     onSuccess: (res: CartItem) => {
-      queryClient.setQueryData(
-        ["cart"],
-        (prevCartData: Awaited<GetCartType>) => ({
-          ...prevCartData,
-          items: [...prevCartData.items, res].sort((a, b) => a.id - b.id),
-        }),
-      );
+      queryClient.setQueryData(["cart"], (prevCartData: GetCartType) => ({
+        ...prevCartData,
+        items: [...prevCartData.items, res].sort((a, b) => a.id - b.id),
+      }));
     },
   });
 

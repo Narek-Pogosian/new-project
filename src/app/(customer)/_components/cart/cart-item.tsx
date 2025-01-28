@@ -1,12 +1,16 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { type DeleteCartType } from "@/schemas/cart-schemas";
+import {
+  type UpdateQuantityType,
+  type DeleteCartType,
+} from "@/schemas/cart-schemas";
 import { type GetCartType } from "@/app/api/cart/route";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { useDebounce } from "@/hooks/use-debounce";
 import { Button } from "@/components/ui/button";
 import { X } from "lucide-react";
 
 interface Props {
-  item: Awaited<GetCartType>["items"][number];
+  item: GetCartType["items"][number];
   cartId: number;
 }
 
@@ -46,7 +50,7 @@ function DeleteButton({ itemId }: { itemId: number }) {
     onMutate: ({ cartItemId }) => {
       const previousCart = queryClient.getQueryData(["cart"]);
 
-      queryClient.setQueryData(["cart"], (old: Awaited<GetCartType>) => ({
+      queryClient.setQueryData(["cart"], (old: GetCartType) => ({
         ...old,
         items: old.items.filter((i) => i.id !== cartItemId),
       }));
@@ -56,9 +60,6 @@ function DeleteButton({ itemId }: { itemId: number }) {
     onError: (err, _, ctx) => {
       queryClient.setQueryData(["cart"], ctx?.previousCart);
     },
-    // onSuccess: () => {
-    //   void queryClient.invalidateQueries({ queryKey: ["cart"] });
-    // },
   });
 
   return (
@@ -82,6 +83,40 @@ function QuantityChange({
   initialQuantity: number;
 }) {
   const [quantity, setQuantity] = useState(initialQuantity);
+
+  const queryClient = useQueryClient();
+  const quantityRef = useRef(initialQuantity);
+  const debouncedQuantityValue = useDebounce(quantity, 1000);
+
+  const { mutate } = useMutation({
+    mutationFn: (data: UpdateQuantityType) =>
+      fetch("/api/cart", {
+        method: "PATCH",
+        body: JSON.stringify(data),
+      }).then((res) => res.json()),
+    onMutate: ({ cartItemId, quantity }) => {
+      const previousCart = queryClient.getQueryData(["cart"]);
+      quantityRef.current = quantity;
+
+      queryClient.setQueryData(["cart"], (old: GetCartType) => ({
+        ...old,
+        items: old.items.map((item) =>
+          item.id === cartItemId ? { ...item, quantity } : item,
+        ),
+      }));
+
+      return { previousCart };
+    },
+    onError: (err, _, ctx) => {
+      queryClient.setQueryData(["cart"], ctx?.previousCart);
+    },
+  });
+
+  useEffect(() => {
+    if (quantityRef.current !== debouncedQuantityValue) {
+      mutate({ cartItemId: itemId, quantity: debouncedQuantityValue });
+    }
+  }, [debouncedQuantityValue, mutate, itemId]);
 
   const handleQuantityChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = Math.max(1, parseInt(e.target.value, 10));

@@ -16,7 +16,7 @@ function Categories({ categories }: Props) {
 
   return (
     <nav className="shrink-0" aria-label="categories">
-      <ul className="flex w-full items-center gap-2 text-foreground-muted">
+      <ul className="flex w-full flex-wrap items-center gap-2 text-foreground-muted">
         <li>
           <button
             role="link"

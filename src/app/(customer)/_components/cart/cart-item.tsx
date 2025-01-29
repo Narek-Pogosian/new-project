@@ -86,7 +86,7 @@ function QuantityChange({
 
   const queryClient = useQueryClient();
   const quantityRef = useRef(initialQuantity);
-  const debouncedQuantityValue = useDebounce(quantity, 1000);
+  const debouncedQuantityValue = useDebounce(quantity, 650);
 
   const { mutate } = useMutation({
     mutationFn: (data: UpdateQuantityType) =>

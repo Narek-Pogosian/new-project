@@ -13,6 +13,7 @@ import {
 } from "nuqs";
 import { useGetCart } from "@/hooks/use-get-cart";
 import { useAddToCartMutation } from "@/hooks/use-add-to-cart";
+import { Loader2 } from "lucide-react";
 
 type Props = {
   productAttributes: ProductAttribute[];
@@ -42,7 +43,7 @@ function AddToCart({ productAttributes, productId }: Props) {
   };
 
   const cart = useGetCart();
-  const mutate = useAddToCartMutation();
+  const { mutate, isPending } = useAddToCartMutation();
 
   const { data: safeCart, success } = z
     .object({ cartId: z.number() })
@@ -131,8 +132,13 @@ function AddToCart({ productAttributes, productId }: Props) {
       </div>
 
       <div className="flex gap-4">
-        <Button variant="accent" onClick={handleAdd} disabled={!isValid}>
-          Add to cart
+        <Button
+          variant="accent"
+          onClick={handleAdd}
+          disabled={!isValid || isPending}
+          className="w-28"
+        >
+          {isPending ? <Loader2 className="animate-spin" /> : "Add to cart"}
         </Button>
         <Input
           type="number"

@@ -21,7 +21,7 @@ export default function ProductPagination({
   const [, setPage] = useQueryState("page", parseAsInteger);
 
   function changePage(p: number) {
-    void setPage(p > 1 ? p : null, { shallow: false });
+    void setPage(p > 1 ? p : null, { shallow: false, history: "push" });
   }
 
   return (

@@ -37,6 +37,15 @@ function ProductLoading() {
           <div className="mb-6">
             <Skeleton className="mb-1 h-3 w-12" />
             <ul className="flex flex-wrap gap-2">
+              <Skeleton className="h-9 w-10" />
+              <Skeleton className="h-9 w-10" />
+              <Skeleton className="h-9 w-10" />
+              <Skeleton className="h-9 w-10" />
+            </ul>
+          </div>
+          <div className="mb-6">
+            <Skeleton className="mb-1 h-3 w-12" />
+            <ul className="flex flex-wrap gap-2">
               <Skeleton className="h-9 w-20" />
               <Skeleton className="h-9 w-20" />
               <Skeleton className="h-9 w-20" />

@@ -26,6 +26,7 @@ model Product {
     reviews           Review[]
     productAttributes ProductAttribute[]
     CartItem          CartItem[]
+    OrderItem         OrderItem[]
 
     @@index([slug, categoryId, price, rating])
 }
@@ -98,6 +99,41 @@ model CartItem {
     @@index([cartId])
 }
 
+enum OrderStatus {
+    PENDING
+    SHIPPED
+    DELIVERED
+    CANCELLED
+}
+
+model Order {
+    id        Int         @id @default(autoincrement())
+    userId    String?
+    status    OrderStatus @default(PENDING)
+    createdAt DateTime    @default(now())
+    updatedAt DateTime    @updatedAt
+
+    user  User?       @relation(fields: [userId], references: [id], onDelete: Cascade)
+    items OrderItem[]
+
+    @@index([userId, status])
+}
+
+model OrderItem {
+    id                Int      @id @default(autoincrement())
+    orderId           Int
+    productId         Int
+    productAttributes Json
+    quantity          Int
+    createdAt         DateTime @default(now())
+    updatedAt         DateTime @updatedAt
+
+    order   Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
+    product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+    @@index([orderId, productId])
+}
+
 model Review {
     id        Int      @id @default(autoincrement())
     rating    Int      @default(0)
@@ -127,6 +163,7 @@ model User {
     sessions       Session[]
     Review         Review[]
     Cart           Cart[]
+    Order          Order[]
 }
 
 model Session {

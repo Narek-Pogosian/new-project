@@ -10,19 +10,23 @@ This is an e-commerce project built with Next.js 15, featuring both an admin sec
 - **Filtering by Category**: Customers can filter products by category.
 - **Pagination**: Products are paginated for better browsing experience.
 
+### Product Details Page:
+
+Customers can view detailed information about each product and select based on product attributes.
+
+### Serverside cart:
+
+The cart is managed server-side and can be accessed both anonymously or by a signed-in user. Anonymous users have a unique cartToken stored in cookies, allowing them to maintain their cart during the session. Signed-in users have their cart linked to their account, stored in the database for seamless access across devices. This ensures a consistent and persistent cart experience, even after page reloads or logging out.
+
 ### Admin Section:
 
 - **Manage Categories**: Admins can create and manage product categories.
 - **Manage Products**: Admins can create, edit, and delete products.
 
-### Product Details Page:
-
-- **View Product Details**: Customers can view detailed information about each product and select based on product attributes.
-
 ### TODO:
 
-- **Cart**
 - **Orders**
+- **Reviews**
 
 ## Tech Stack
 

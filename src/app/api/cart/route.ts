@@ -132,8 +132,9 @@ export async function PATCH(req: NextRequest) {
       },
     });
 
-    return new Response(JSON.stringify({}), { status: 204 });
+    return new Response(JSON.stringify({}), { status: 200 });
   } catch (err) {
+    console.log(err);
     return new Response(JSON.stringify({ message: err }), {
       status: 500,
     });

@@ -14,6 +14,14 @@ export function slugify(str: string): string {
     .replace(/-+/g, "-");
 }
 
+export function getTotalPrice<
+  T extends { quantity: number; product: { price: number } },
+>(arr: T[]) {
+  return arr
+    .reduce((acc, curr) => acc + curr.quantity * curr.product.price, 0)
+    .toFixed(2);
+}
+
 export function getUpdatedSearchParams(
   params: Record<string, string | number | undefined>,
 ) {

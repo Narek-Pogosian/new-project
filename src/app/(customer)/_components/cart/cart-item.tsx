@@ -11,13 +11,13 @@ import { X } from "lucide-react";
 
 interface Props {
   item: GetCartType["items"][number];
-  cartId: number;
+  allowQuantityChange?: boolean;
 }
 
-export default function CartItem({ item }: Props) {
+export default function CartItem({ item, allowQuantityChange = true }: Props) {
   return (
     <div className="group flex justify-between border-b py-5">
-      <div className="">
+      <div>
         <h3 className="text-sm font-semibold">{item.product.name}</h3>
 
         <p className="mb-2 text-sm text-foreground-muted">
@@ -31,7 +31,14 @@ export default function CartItem({ item }: Props) {
           )}
         </p>
 
-        <QuantityChange itemId={item.id} initialQuantity={item.quantity} />
+        {/* TODO: fix QuantityChange to update the input value when mutating */}
+        {allowQuantityChange ? (
+          <QuantityChange itemId={item.id} initialQuantity={item.quantity} />
+        ) : (
+          <span className="mr-1 text-sm text-foreground-muted">
+            Quantity: {item.quantity}
+          </span>
+        )}
       </div>
 
       <DeleteButton itemId={item.id} />
@@ -47,6 +54,7 @@ function DeleteButton({ itemId }: { itemId: number }) {
       fetch("/api/cart", { method: "DELETE", body: JSON.stringify(data) }).then(
         (res) => res.json(),
       ),
+
     onMutate: ({ cartItemId }) => {
       const previousCart = queryClient.getQueryData(["cart"]);
 
@@ -57,6 +65,7 @@ function DeleteButton({ itemId }: { itemId: number }) {
 
       return { previousCart };
     },
+
     onError: (err, _, ctx) => {
       queryClient.setQueryData(["cart"], ctx?.previousCart);
     },
@@ -94,6 +103,7 @@ function QuantityChange({
         method: "PATCH",
         body: JSON.stringify(data),
       }).then((res) => res.json()),
+
     onMutate: ({ cartItemId, quantity }) => {
       const previousCart = queryClient.getQueryData(["cart"]);
       quantityRef.current = quantity;
@@ -107,6 +117,7 @@ function QuantityChange({
 
       return { previousCart };
     },
+
     onError: (err, _, ctx) => {
       queryClient.setQueryData(["cart"], ctx?.previousCart);
     },

@@ -12,13 +12,26 @@ import {
 } from "@/components/ui/sheet";
 import { useGetCart } from "@/hooks/use-get-cart";
 import { ShoppingCart } from "lucide-react";
+import { getTotalPrice } from "@/lib/utils";
+import { useEffect, useState } from "react";
+import { useParams } from "next/navigation";
 import CartItem from "./cart-item";
+import Link from "next/link";
 
 export default function Cart() {
+  const [isOpen, setIsOpen] = useState(false);
+  const params = useParams();
+
   const { data, isLoading, isError } = useGetCart();
 
+  console.log("Cart", data);
+
+  useEffect(() => {
+    setIsOpen(false);
+  }, [params]);
+
   return (
-    <Sheet>
+    <Sheet open={isOpen} onOpenChange={setIsOpen}>
       <SheetTrigger className="relative" asChild>
         <Button size="icon" variant="ghost">
           <span className="sr-only">Your cart</span>
@@ -45,7 +58,7 @@ export default function Cart() {
   );
 }
 
-const CartContent = ({ data }: { data: GetCartType }) => {
+export const CartContent = ({ data }: { data: GetCartType }) => {
   if (!data.items.length) {
     return <p className="pt-10 text-center">Your cart is empty.</p>;
   }
@@ -54,18 +67,15 @@ const CartContent = ({ data }: { data: GetCartType }) => {
     <div className="h-full">
       <ul className="h-[calc(100%-120px)] overflow-y-scroll pr-1 scrollbar-thin">
         {data.items.map((item) => (
-          <CartItem key={item.id} item={item} cartId={data.cartId} />
+          <CartItem key={item.id} item={item} />
         ))}
       </ul>
       <div className="h-[120px] py-4 text-center">
-        <p className="mb-2 font-semibold">
-          Total Price: €
-          {data.items
-            .reduce((acc, curr) => acc + curr.quantity * curr.product.price, 0)
-            .toFixed(2)}
+        <p className="mb-2 font-medium">
+          Total Price: €{getTotalPrice(data.items)}
         </p>
-        <Button className="w-full" variant="accent">
-          Checkout
+        <Button className="w-full" variant="accent" asChild>
+          <Link href="/checkout">Checkout</Link>
         </Button>
       </div>
     </div>

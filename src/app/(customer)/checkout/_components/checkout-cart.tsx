@@ -1,7 +1,7 @@
 "use client";
 
 import { useGetCart } from "@/hooks/use-get-cart";
-import { getTotalPrice } from "@/lib/utils";
+import { formatPrice, getTotalPrice } from "@/lib/utils";
 import CartItem from "../../_components/cart/cart-item";
 
 function CheckoutCart() {
@@ -17,7 +17,7 @@ function CheckoutCart() {
         <CartItem key={item.id} item={item} allowQuantityChange={false} />
       ))}
       <p className="my-4 text-sm font-medium">
-        Total price: {getTotalPrice(data.items)}
+        Total price: {formatPrice(getTotalPrice(data.items))}
       </p>
     </div>
   );

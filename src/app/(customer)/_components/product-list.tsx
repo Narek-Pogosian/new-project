@@ -5,6 +5,7 @@ import { Luggage } from "lucide-react";
 import ProductPagination from "./product-pagination";
 import Image from "next/image";
 import Link from "next/link";
+import { formatPrice } from "@/lib/utils";
 
 export default async function ProductList({
   searchParams,
@@ -51,7 +52,7 @@ export default async function ProductList({
               </Link>
             </h3>
             <p className="text-xs text-foreground-muted sm:text-sm">
-              €{product.price}
+              {formatPrice(product.price)}
             </p>
           </li>
         ))}

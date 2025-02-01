@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import AddToCart from "./_components/add-to-cart";
 import Image from "next/image";
 import Link from "next/link";
+import { formatPrice } from "@/lib/utils";
 
 type Params = Promise<{ slug: string }>;
 
@@ -42,7 +43,7 @@ async function ProductPage({ params }: { params: Params }) {
                 <Star className="size-4 fill-current text-accent-500" />
                 <p>{product.rating == 0 ? 0 : product.rating.toFixed(1)}</p>
               </div>
-              <p>€{product.price}</p>
+              <p>{formatPrice(product.price)}</p>
             </div>
             <p className="max-w-lg">{product.description}</p>
           </div>
@@ -57,7 +58,7 @@ async function ProductPage({ params }: { params: Params }) {
               <Star className="size-4 fill-current text-accent-500" />
               <p>{product.rating == 0 ? 0 : product.rating.toFixed(1)}</p>
             </div>
-            <p>€{product.price}</p>
+            <p>{formatPrice(product.price)}</p>
           </div>
 
           <hr className="my-6 max-sm:hidden" />

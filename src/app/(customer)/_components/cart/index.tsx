@@ -12,7 +12,7 @@ import {
 } from "@/components/ui/sheet";
 import { useGetCart } from "@/hooks/use-get-cart";
 import { ShoppingCart } from "lucide-react";
-import { getTotalPrice } from "@/lib/utils";
+import { formatPrice, getTotalPrice } from "@/lib/utils";
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import CartItem from "./cart-item";
@@ -72,7 +72,7 @@ export const CartContent = ({ data }: { data: GetCartType }) => {
       </ul>
       <div className="h-[120px] py-4 text-center">
         <p className="mb-2 font-medium">
-          Total Price: €{getTotalPrice(data.items)}
+          Total Price: {formatPrice(getTotalPrice(data.items))}
         </p>
         <Button className="w-full" variant="accent" asChild>
           <Link href="/checkout">Checkout</Link>

@@ -25,7 +25,7 @@ export default async function ShopPage({
 
   return (
     <>
-      <div className="mb-4 flex justify-between gap-4 border-b-2 border-accent-500/30 pb-4">
+      <div className="mb-4 flex justify-between gap-4 border-b-2 pb-2">
         <div className="flex items-center gap-4 max-lg:hidden">
           <h3 className="mb-4 pt-4 text-sm uppercase tracking-wider text-foreground-muted">
             Categories

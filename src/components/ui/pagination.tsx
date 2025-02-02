@@ -49,7 +49,7 @@ const PaginationButton = ({
     aria-current={isActive ? "page" : undefined}
     className={cn(
       buttonVariants({
-        variant: isActive ? "accent" : "ghost",
+        variant: isActive ? "default" : "ghost",
         size,
       }),
       className,

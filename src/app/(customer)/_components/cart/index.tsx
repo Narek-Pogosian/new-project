@@ -74,8 +74,8 @@ export const CartContent = ({ data }: { data: GetCartType }) => {
         <p className="mb-2 font-medium">
           Total Price: {formatPrice(getTotalPrice(data.items))}
         </p>
-        <Button className="w-full" variant="accent" asChild>
-          <Link href="/checkout">Checkout</Link>
+        <Button className="w-full" asChild>
+          <Link href="/checkout">Procceed to checkout</Link>
         </Button>
       </div>
     </div>

@@ -3,6 +3,7 @@
 import { type getCategories } from "@/server/queries/categories";
 import { parseAsInteger, useQueryStates } from "nuqs";
 import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
 
 interface Props {
   categories: Awaited<ReturnType<typeof getCategories>>;
@@ -18,35 +19,37 @@ function Categories({ categories }: Props) {
     <nav className="shrink-0" aria-label="categories">
       <ul className="flex w-full flex-wrap items-center gap-2 text-foreground-muted">
         <li>
-          <button
+          <Button
             role="link"
+            variant="outline"
             onClick={() =>
               setQueryState(null, { shallow: false, history: "push" })
             }
-            className={cn("w-full border-l-2 px-4 py-1 text-left", {
-              "border-l-accent-500/50 text-foreground": !queryState.category,
+            className={cn({
+              "bg-primary text-primary-foreground": !queryState.category,
             })}
           >
             All Products
-          </button>
+          </Button>
         </li>
         {categories.map((c) => (
           <li key={c.id}>
-            <button
+            <Button
               role="link"
+              variant="outline"
               onClick={() =>
                 setQueryState(
                   { category: c.id, page: null },
                   { shallow: false, history: "push" },
                 )
               }
-              className={cn("w-full border-l-2 px-4 py-1 text-left", {
-                "border-l-accent-500/50 text-foreground":
+              className={cn({
+                "bg-primary text-primary-foreground":
                   queryState.category === c.id,
               })}
             >
               {c.name}
-            </button>
+            </Button>
           </li>
         ))}
       </ul>

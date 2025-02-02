@@ -11,10 +11,9 @@ import { X } from "lucide-react";
 
 interface Props {
   item: GetCartType["items"][number];
-  allowQuantityChange?: boolean;
 }
 
-export default function CartItem({ item, allowQuantityChange = true }: Props) {
+export default function CartItem({ item }: Props) {
   return (
     <div className="group flex justify-between border-b py-5">
       <div>
@@ -31,17 +30,35 @@ export default function CartItem({ item, allowQuantityChange = true }: Props) {
           )}
         </p>
 
-        {/* TODO: fix QuantityChange to update the input value when mutating */}
-        {allowQuantityChange ? (
-          <QuantityChange itemId={item.id} initialQuantity={item.quantity} />
-        ) : (
-          <span className="mr-1 text-sm text-foreground-muted">
-            Quantity: {item.quantity}
-          </span>
-        )}
+        <QuantityChange itemId={item.id} initialQuantity={item.quantity} />
       </div>
 
       <DeleteButton itemId={item.id} />
+    </div>
+  );
+}
+
+export function PreviewCartItem({ item }: Props) {
+  return (
+    <div className="group flex justify-between border-b py-5">
+      <div>
+        <h3 className="text-sm font-semibold">{item.product.name}</h3>
+
+        <p className="mb-2 text-sm text-foreground-muted">
+          {/* eslint-disable-next-line */}
+          {Object.entries(JSON.parse(item.productAttributes as string)).map(
+            ([key, value]) => (
+              <span key={key} className="mr-2 text-sm text-foreground-muted">
+                <span>{key}:</span> {value as string}
+              </span>
+            ),
+          )}
+        </p>
+
+        <span className="mr-1 text-sm text-foreground-muted">
+          Quantity: {item.quantity}
+        </span>
+      </div>
     </div>
   );
 }

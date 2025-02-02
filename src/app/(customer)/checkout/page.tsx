@@ -3,7 +3,7 @@ import CheckoutForm from "./_components/checkout-form";
 
 function CheckoutPage() {
   return (
-    <div className="flex flex-col gap-20 md:flex-row-reverse">
+    <div className="flex flex-col gap-8 lg:flex-row-reverse lg:gap-12">
       <CheckoutCart />
       <div className="grow">
         <CheckoutForm />

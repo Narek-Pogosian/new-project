@@ -24,4 +24,14 @@ export const checkoutFormSchema = z.object({
   cvv: z.string().regex(/^\d{3,4}$/, { message: "CVV must be 3 or 4 digits." }),
 });
 
+export const createOrderSchema = z.array(
+  z.object({
+    quantity: z.number().positive().int(),
+    productId: z.number(),
+    cartId: z.number(),
+    attributes: z.unknown(),
+  }),
+);
+
 export type CheckoutFormType = z.infer<typeof checkoutFormSchema>;
+export type CreateOrderType = z.infer<typeof createOrderSchema>;

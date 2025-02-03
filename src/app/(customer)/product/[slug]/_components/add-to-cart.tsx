@@ -133,7 +133,6 @@ function AddToCart({ productAttributes, productId }: Props) {
 
       <div className="flex gap-4">
         <Button
-          variant="accent"
           onClick={handleAdd}
           disabled={!isValid || isPending}
           className="w-28"

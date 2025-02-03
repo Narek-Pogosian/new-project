@@ -24,8 +24,6 @@ export default function Cart() {
 
   const { data, isLoading, isError } = useGetCart();
 
-  console.log("Cart", data);
-
   useEffect(() => {
     setIsOpen(false);
   }, [params]);
@@ -58,22 +56,20 @@ export default function Cart() {
   );
 }
 
-export const CartContent = ({ data }: { data: GetCartType }) => {
+const CartContent = ({ data }: { data: GetCartType }) => {
   if (!data.items.length) {
     return <p className="pt-10 text-center">Your cart is empty.</p>;
   }
 
   return (
     <div className="h-full">
-      <ul className="h-[calc(100%-120px)] overflow-y-scroll pr-1 scrollbar-thin">
+      <ul className="h-[calc(100%-170px)] overflow-y-scroll pr-1 scrollbar-thin">
         {data.items.map((item) => (
           <CartItem key={item.id} item={item} />
         ))}
       </ul>
-      <div className="h-[120px] py-4 text-center">
-        <p className="mb-2 font-medium">
-          Total Price: {formatPrice(getTotalPrice(data.items))}
-        </p>
+      <div className="h-[170px] py-4 pr-4 text-center">
+        <CartPrice items={data.items} />
         <Button className="w-full" asChild>
           <Link href="/checkout">Procceed to checkout</Link>
         </Button>
@@ -81,6 +77,25 @@ export const CartContent = ({ data }: { data: GetCartType }) => {
     </div>
   );
 };
+
+export function CartPrice({ items }: { items: GetCartType["items"] }) {
+  return (
+    <div className="mb-2 space-y-1">
+      <div className="flex justify-between text-sm text-foreground-muted">
+        <span>Subtotal</span>
+        <span>{formatPrice(getTotalPrice(items))}</span>
+      </div>
+      <div className="flex justify-between text-sm text-foreground-muted">
+        <span>Shipment</span>
+        <span>{formatPrice(0)}</span>
+      </div>
+      <div className="flex justify-between font-semibold">
+        <span>Total</span>
+        <span>{formatPrice(getTotalPrice(items))}</span>
+      </div>
+    </div>
+  );
+}
 
 const CartBadge = ({ count }: { count: number }) => (
   <span

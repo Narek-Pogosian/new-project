@@ -1,12 +1,10 @@
-import CheckoutCart from "./_components/checkout-cart";
-import CheckoutForm from "./_components/checkout-form";
+import CheckoutCard from "./_components/checkout-card";
 
 function CheckoutPage() {
   return (
-    <div className="flex flex-col gap-8 lg:flex-row-reverse lg:gap-12">
-      <CheckoutCart />
-      <div className="grow">
-        <CheckoutForm />
+    <div className="flex justify-center lg:pt-12">
+      <div className="w-full rounded border bg-background-card p-6 @container lg:max-w-[500px]">
+        <CheckoutCard />
       </div>
     </div>
   );

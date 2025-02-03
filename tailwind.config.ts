@@ -14,7 +14,7 @@ export default {
       white: colors.white,
       neutral: colors.zinc,
       danger: colors.red,
-      accent: colors.pink,
+      accent: colors.teal,
       "accent-foreground": colors.white,
     },
     borderRadius: {

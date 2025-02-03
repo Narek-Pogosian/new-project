@@ -40,7 +40,7 @@ export default function CartItem({ item }: Props) {
 
 export function PreviewCartItem({ item }: Props) {
   return (
-    <div className="group flex justify-between border-b py-5">
+    <div className="group flex justify-between border-b py-4">
       <div>
         <h3 className="text-sm font-semibold">{item.product.name}</h3>
 

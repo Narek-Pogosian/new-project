@@ -8,6 +8,7 @@ import { useEffect, useRef, useState } from "react";
 import { useDebounce } from "@/hooks/use-debounce";
 import { Button } from "@/components/ui/button";
 import { X } from "lucide-react";
+import Image from "next/image";
 
 interface Props {
   item: GetCartType["items"][number];
@@ -15,35 +16,47 @@ interface Props {
 
 export default function CartItem({ item }: Props) {
   return (
-    <div className="group flex justify-between border-b py-5">
-      <div>
-        <h3 className="text-sm font-semibold">{item.product.name}</h3>
-
-        <p className="mb-2 text-sm text-foreground-muted">
-          {/* eslint-disable-next-line */}
-          {Object.entries(JSON.parse(item.productAttributes as string)).map(
-            ([key, value]) => (
-              <span key={key} className="mr-2 text-sm text-foreground-muted">
-                <span>{key}:</span> {value as string}
-              </span>
-            ),
-          )}
-        </p>
-
-        <QuantityChange itemId={item.id} initialQuantity={item.quantity} />
+    <div className="flex gap-4 border-b py-5">
+      <Image
+        src={item.product.poster}
+        alt=""
+        width={60}
+        height={95}
+        className="rounded"
+      />
+      <div className="flex grow justify-between">
+        <div>
+          <h3 className="text-sm font-semibold">{item.product.name}</h3>
+          <p className="mb-2 text-sm text-foreground-muted">
+            {/* eslint-disable-next-line */}
+            {Object.entries(JSON.parse(item.productAttributes as string)).map(
+              ([key, value]) => (
+                <span key={key} className="mr-2 text-sm text-foreground-muted">
+                  <span>{key}:</span> {value as string}
+                </span>
+              ),
+            )}
+          </p>
+          <QuantityChange itemId={item.id} initialQuantity={item.quantity} />
+        </div>
+        <DeleteButton itemId={item.id} />
       </div>
-
-      <DeleteButton itemId={item.id} />
     </div>
   );
 }
 
 export function PreviewCartItem({ item }: Props) {
   return (
-    <div className="group flex justify-between border-b py-4">
-      <div>
+    <div className="flex gap-4 border-b py-4">
+      <Image
+        src={item.product.poster}
+        alt=""
+        width={60}
+        height={95}
+        className="rounded"
+      />
+      <div className="grow">
         <h3 className="text-sm font-semibold">{item.product.name}</h3>
-
         <p className="mb-2 text-sm text-foreground-muted">
           {/* eslint-disable-next-line */}
           {Object.entries(JSON.parse(item.productAttributes as string)).map(
@@ -54,7 +67,6 @@ export function PreviewCartItem({ item }: Props) {
             ),
           )}
         </p>
-
         <span className="mr-1 text-sm text-foreground-muted">
           Quantity: {item.quantity}
         </span>

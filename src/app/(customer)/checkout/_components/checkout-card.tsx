@@ -32,7 +32,7 @@ export default function CheckoutCard() {
 
   return (
     <div className="space-y-6">
-      <div>
+      <div className="-mt-4">
         {data.items.map((item) => (
           <PreviewCartItem key={item.id} item={item} />
         ))}

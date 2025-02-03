@@ -1,6 +1,9 @@
 "use client";
 
+import { useAddToCartMutation } from "@/hooks/use-add-to-cart";
 import { useState, useMemo } from "react";
+import { useGetCart } from "@/hooks/use-get-cart";
+import { Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
@@ -10,20 +13,12 @@ import {
   useQueryStates,
   type UseQueryStatesKeysMap,
 } from "nuqs";
-import { useGetCart } from "@/hooks/use-get-cart";
-import { useAddToCartMutation } from "@/hooks/use-add-to-cart";
-import { Loader2 } from "lucide-react";
+import { type getProductBySlug } from "@/server/queries/products";
 
 type Props = {
-  productAttributes: {
-    values: {
-      value: string;
-      id: number;
-      productAttributeId: number;
-    }[];
-    id: number;
-    name: string;
-  }[];
+  productAttributes: NonNullable<
+    Awaited<ReturnType<typeof getProductBySlug>>
+  >["productAttributes"];
   productId: number;
 };
 

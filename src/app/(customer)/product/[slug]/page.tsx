@@ -49,7 +49,7 @@ async function ProductPage({ params }: { params: Params }) {
           </div>
         </div>
 
-        <div className="w-full max-w-lg">
+        <div className="w-full max-w-xl">
           <h1 className="mb-1 text-2xl font-bold max-sm:hidden">
             {product.name}
           </h1>
@@ -68,7 +68,7 @@ async function ProductPage({ params }: { params: Params }) {
           />
           <hr className="my-6 max-sm:hidden" />
 
-          <p className="max-w-lg text-foreground-muted max-sm:hidden">
+          <p className="text-foreground-muted max-sm:hidden">
             {product.description}
           </p>
         </div>

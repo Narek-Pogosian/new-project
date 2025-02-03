@@ -1,11 +1,11 @@
 import { type ProductQueryParamsType } from "@/schemas/product-schemas";
 import { discoverProducts } from "@/server/queries/products";
+import { formatPrice } from "@/lib/utils";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Luggage } from "lucide-react";
 import ProductPagination from "./product-pagination";
 import Image from "next/image";
 import Link from "next/link";
-import { formatPrice } from "@/lib/utils";
 
 export default async function ProductList({
   searchParams,

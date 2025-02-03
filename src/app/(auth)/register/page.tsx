@@ -3,7 +3,7 @@ import RegisterForm from "../_components/register-form";
 
 function RegisterPage() {
   return (
-    <div className="mx-auto max-w-md">
+    <>
       <h1 className="mb-4 text-2xl font-bold">Register</h1>
       <RegisterForm />
       <p className="mt-10 text-center text-sm font-medium">
@@ -15,7 +15,7 @@ function RegisterPage() {
           login here
         </Link>
       </p>
-    </div>
+    </>
   );
 }
 

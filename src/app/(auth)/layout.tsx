@@ -11,7 +11,10 @@ function AuthLayout({ children }: { children: React.ReactNode }) {
           Shop
         </Link>
       </Button>
-      {children}
+
+      <div className="mx-auto max-w-lg rounded border bg-background/50 px-8 py-12 shadow-lg backdrop-blur-md dark:shadow-black">
+        {children}
+      </div>
     </div>
   );
 }

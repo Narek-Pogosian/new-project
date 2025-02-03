@@ -1,7 +1,7 @@
 "use client";
 
 import { type getCategories } from "@/server/queries/categories";
-import { parseAsInteger, useQueryStates } from "nuqs";
+import { parseAsInteger, parseAsString, useQueryStates } from "nuqs";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 
@@ -12,7 +12,7 @@ interface Props {
 function Categories({ categories }: Props) {
   const [queryState, setQueryState] = useQueryStates({
     page: parseAsInteger,
-    category: parseAsInteger,
+    category: parseAsString,
   });
 
   return (
@@ -39,13 +39,13 @@ function Categories({ categories }: Props) {
               variant="outline"
               onClick={() =>
                 setQueryState(
-                  { category: c.id, page: null },
+                  { category: c.slug, page: null },
                   { shallow: false, history: "push" },
                 )
               }
               className={cn({
                 "bg-primary text-primary-foreground":
-                  queryState.category === c.id,
+                  queryState.category === c.slug,
               })}
             >
               {c.name}

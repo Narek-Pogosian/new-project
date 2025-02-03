@@ -19,30 +19,61 @@ export const createProductAction = adminActionClient
   .schema(createProductSchema)
   .action(async ({ parsedInput }) => {
     const result = await db.$transaction(async (prisma) => {
-      const product = await prisma.product.create({
-        data: {
-          poster: parsedInput.poster,
-          description: parsedInput.description,
-          name: parsedInput.name,
-          slug: parsedInput.slug,
-          price: parsedInput.price,
-          categoryId: parsedInput.categoryId,
-        },
-      });
+      try {
+        const product = await prisma.product.create({
+          data: {
+            poster: parsedInput.poster,
+            description: parsedInput.description,
+            name: parsedInput.name,
+            slug: parsedInput.slug,
+            price: parsedInput.price,
+            categorySlug: parsedInput.categorySlug,
+          },
+        });
 
-      const attributes = parsedInput.productAttributes.map((p) => ({
-        ...p,
-        productId: product.id,
-      }));
+        const attributes = parsedInput.productAttributes.map((p) => ({
+          name: p.name,
+          productId: product.id,
+        }));
 
-      await prisma.productAttribute.createMany({
-        data: attributes,
-      });
+        await prisma.productAttribute.createMany({
+          data: attributes,
+        });
 
-      return {
-        product,
-        attributes,
-      };
+        const createdAttributes = await prisma.productAttribute.findMany({
+          where: { productId: product.id },
+          select: { id: true, name: true },
+        });
+
+        const productAttributeValues = [];
+        for (const attr of parsedInput.productAttributes) {
+          const createdAttr = createdAttributes.find(
+            (a) => a.name === attr.name,
+          );
+          if (createdAttr) {
+            productAttributeValues.push(
+              ...attr.values.map((value) => ({
+                value,
+                productAttributeId: createdAttr.id,
+              })),
+            );
+          }
+        }
+
+        if (productAttributeValues.length > 0) {
+          await prisma.productAttributeValue.createMany({
+            data: productAttributeValues,
+          });
+        }
+
+        return {
+          product,
+          attributes: createdAttributes,
+          attributeValues: productAttributeValues,
+        };
+      } catch (error) {
+        console.log(error);
+      }
     });
 
     if (result) {

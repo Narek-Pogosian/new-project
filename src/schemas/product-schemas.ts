@@ -12,7 +12,7 @@ export const createProductSchema = z.object({
   description: z.string().trim().min(1, { message: "Description is required" }),
   images: z.array(z.string()).optional(),
   productAttributes: z.array(productAttribute).min(1),
-  categoryId: z.coerce.number().min(1, { message: "Categery is required" }),
+  categorySlug: z.string().min(1, { message: "Categery is required" }),
   price: z.coerce
     .number()
     .min(1, { message: "Price is required" })
@@ -22,7 +22,8 @@ export const createProductSchema = z.object({
 });
 
 export const productQueryParams = z.object({
-  category: z.coerce.number().optional(),
+  query: z.string().optional(),
+  category: z.string().optional(),
   min_price: z.coerce.number().gte(0).optional(),
   max_price: z.coerce.number().gte(0).optional(),
   min_rating: z.coerce.number().gte(0).optional(),

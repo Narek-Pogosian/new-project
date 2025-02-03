@@ -21,26 +21,37 @@ model Product {
     createdAt   DateTime @default(now())
     updatedAt   DateTime @updatedAt
 
-    categoryId        Int
-    category          Category           @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+    tags         ProductTag[]
+    categorySlug String
+    category     Category     @relation(fields: [categorySlug], references: [slug], onDelete: Cascade)
+
     reviews           Review[]
     productAttributes ProductAttribute[]
     CartItem          CartItem[]
     OrderItem         OrderItem[]
 
-    @@index([slug, categoryId, price, rating])
+    @@index([slug, categorySlug, price, rating])
 }
 
 model ProductAttribute {
-    id        Int      @id @default(autoincrement())
+    id        Int                     @id @default(autoincrement())
     name      String
-    values    String[]
+    values    ProductAttributeValue[]
     productId Int
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
-    product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+    createdAt DateTime                @default(now())
+    updatedAt DateTime                @updatedAt
+    product   Product                 @relation(fields: [productId], references: [id], onDelete: Cascade)
 
     @@index([productId])
+}
+
+model ProductAttributeValue {
+    id                 Int              @id @default(autoincrement())
+    value              String
+    productAttributeId Int
+    productAttribute   ProductAttribute @relation(fields: [productAttributeId], references: [id], onDelete: Cascade)
+
+    @@index([productAttributeId])
 }
 
 model Category {
@@ -69,6 +80,24 @@ model CategoryAttribute {
     category       Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
 
     @@index([categoryId])
+}
+
+model Tag {
+    id   Int    @id @default(autoincrement())
+    name String
+    slug String @unique
+
+    products ProductTag[]
+}
+
+model ProductTag {
+    productId Int
+    tagId     Int
+
+    product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+    tag     Tag     @relation(fields: [tagId], references: [id], onDelete: Cascade)
+
+    @@id([productId, tagId])
 }
 
 model Cart {

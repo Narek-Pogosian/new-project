@@ -8,7 +8,12 @@ import { db } from "../db";
 function getProductBySlugInternal(slug: string) {
   return db.product.findFirst({
     where: { slug },
-    include: { productAttributes: true, reviews: true },
+    include: {
+      productAttributes: {
+        select: { name: true, id: true, values: true },
+      },
+      reviews: true,
+    },
   });
 }
 
@@ -50,7 +55,7 @@ function discoverProductsInternal(queryOptions: ProductQueryParamsType) {
   } = queryOptions;
 
   const where: {
-    categoryId?: number;
+    categorySlug?: string;
     price?: {
       gte?: number;
       lte?: number;
@@ -61,7 +66,7 @@ function discoverProductsInternal(queryOptions: ProductQueryParamsType) {
   } = {};
 
   if (category !== undefined) {
-    where.categoryId = category;
+    where.categorySlug = category;
   }
 
   if (min_price !== undefined || max_price !== undefined) {

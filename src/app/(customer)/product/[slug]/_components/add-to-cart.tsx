@@ -1,6 +1,5 @@
 "use client";
 
-import { type ProductAttribute } from "@prisma/client";
 import { useState, useMemo } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -16,7 +15,15 @@ import { useAddToCartMutation } from "@/hooks/use-add-to-cart";
 import { Loader2 } from "lucide-react";
 
 type Props = {
-  productAttributes: ProductAttribute[];
+  productAttributes: {
+    values: {
+      value: string;
+      id: number;
+      productAttributeId: number;
+    }[];
+    id: number;
+    name: string;
+  }[];
   productId: number;
 };
 
@@ -66,8 +73,6 @@ function AddToCart({ productAttributes, productId }: Props) {
           v.productId === productId,
       )
     ) {
-      // Preventing adding product with same attributes again, maybe should increase
-      // quantity instead.
       return;
     }
 
@@ -112,17 +117,17 @@ function AddToCart({ productAttributes, productId }: Props) {
             </h3>
             <ul className="flex flex-wrap gap-2">
               {attribute.values.map((value) => (
-                <li key={value}>
+                <li key={value.id}>
                   <Button
                     variant="outline"
                     size="sm"
                     className={cn("text-xs md:text-sm", {
                       "bg-primary text-primary-foreground":
-                        selectedAttributes[attribute.name] === value,
+                        selectedAttributes[attribute.name] === value.value,
                     })}
-                    onClick={() => handleSelect(attribute.name, value)}
+                    onClick={() => handleSelect(attribute.name, value.value)}
                   >
-                    {value}
+                    {value.value}
                   </Button>
                 </li>
               ))}

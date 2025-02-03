@@ -1,10 +1,10 @@
 import { getProductBySlug } from "@/server/queries/products";
 import { Luggage, Star } from "lucide-react";
+import { formatPrice } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import AddToCart from "./_components/add-to-cart";
 import Image from "next/image";
 import Link from "next/link";
-import { formatPrice } from "@/lib/utils";
 
 type Params = Promise<{ slug: string }>;
 

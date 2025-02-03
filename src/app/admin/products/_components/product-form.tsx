@@ -45,7 +45,7 @@ export default function ProductForm({ categories }: ProductFormProps) {
       price: "" as unknown as number,
       poster: "",
       description: "",
-      categoryId: "" as unknown as number,
+      categorySlug: "" as unknown as string,
       images: [""],
       productAttributes: [{ name: "", values: [] }],
     },
@@ -57,6 +57,7 @@ export default function ProductForm({ categories }: ProductFormProps) {
     if (isPending) return;
 
     const res = await executeAsync(vals);
+    console.log(res);
     if (res) {
       form.reset({ productAttributes: [{ name: "", values: [] }] });
     }
@@ -212,17 +213,17 @@ function CategoryAndAttributes({
   form: UseFormReturn<CreateProductsSchemaType>;
 }) {
   const [, setForceRender] = useState(0);
-  const selectedCategoryId = form.watch("categoryId");
+  const selectedCategorySlug = form.watch("categorySlug");
 
   const handleCategoryChange = (val: string) => {
     const categoryAttributes =
-      categories.find((c) => c.id.toString() === val)?.categoryAttributes ?? [];
+      categories.find((c) => c.slug === val)?.categoryAttributes ?? [];
 
     form.setValue(
       "productAttributes",
       categoryAttributes.map((attr) => ({ name: attr.name, values: [] })),
     );
-    form.setValue("categoryId", parseInt(val));
+    form.setValue("categorySlug", val);
   };
 
   const handleAttributeChange = (attributeName: string, value: string) => {
@@ -244,14 +245,14 @@ function CategoryAndAttributes({
   };
 
   const categoryAttributes =
-    categories.find((c) => c.id == selectedCategoryId)?.categoryAttributes ??
-    [];
+    categories.find((c) => c.slug == selectedCategorySlug)
+      ?.categoryAttributes ?? [];
 
   return (
     <>
       <FormField
         control={form.control}
-        name="categoryId"
+        name="categorySlug"
         render={({ field }) => (
           <FormItem className="grid gap-1 @xl:grid-cols-2 @xl:gap-8">
             <div className="space-y-2">
@@ -266,7 +267,7 @@ function CategoryAndAttributes({
                 handleCategoryChange(value);
                 field.onChange(value);
               }}
-              value={field.value.toString()}
+              value={field.value}
             >
               <FormControl>
                 <SelectTrigger>
@@ -275,7 +276,7 @@ function CategoryAndAttributes({
               </FormControl>
               <SelectContent>
                 {categories.map((category) => (
-                  <SelectItem key={category.id} value={category.id.toString()}>
+                  <SelectItem key={category.id} value={category.slug}>
                     {category.name}
                   </SelectItem>
                 ))}
@@ -285,7 +286,7 @@ function CategoryAndAttributes({
         )}
       />
 
-      {selectedCategoryId && categoryAttributes.length > 0 && (
+      {selectedCategorySlug && categoryAttributes.length > 0 && (
         <>
           <hr />
           <div>

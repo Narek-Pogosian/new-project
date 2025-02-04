@@ -10,8 +10,8 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import { type getCategories } from "@/server/queries/categories";
-import Categories from "../filters/categories";
 import { Filter } from "lucide-react";
+import Filters from "../filters";
 
 interface Props {
   categories: Awaited<ReturnType<typeof getCategories>>;
@@ -23,14 +23,12 @@ function MobileFiltersImplementation({ categories }: Props) {
       <SheetTrigger className={buttonVariants()}>
         <Filter /> Filters
       </SheetTrigger>
-      <SheetContent side="left">
+      <SheetContent side="left" className="max-w-xs">
         <SheetHeader>
-          <SheetTitle>Filters</SheetTitle>
+          <SheetTitle className="text-left">Filters</SheetTitle>
           <SheetDescription></SheetDescription>
         </SheetHeader>
-        <div className="max-h-80 min-h-40 overflow-y-auto px-4">
-          <Categories categories={categories} />
-        </div>
+        <Filters categories={categories} />
       </SheetContent>
     </Sheet>
   );

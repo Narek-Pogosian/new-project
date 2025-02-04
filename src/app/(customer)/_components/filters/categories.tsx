@@ -2,7 +2,6 @@
 
 import { parseAsInteger, parseAsString, useQueryStates } from "nuqs";
 import { type getCategories } from "@/server/queries/categories";
-import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
 interface Props {
@@ -16,27 +15,27 @@ function Categories({ categories }: Props) {
   });
 
   return (
-    <nav className="shrink-0" aria-label="categories">
-      <ul className="flex w-full flex-wrap items-center gap-2 text-foreground-muted">
+    <nav aria-describedby="categories">
+      <h3 className="mb-2 border-b pb-2 font-bold">Product Categories</h3>
+      <ul className="space-y-2 text-sm text-foreground-muted">
         <li>
-          <Button
+          <button
             role="link"
-            variant="outline"
             onClick={() =>
               setQueryState(null, { shallow: false, history: "push" })
             }
             className={cn({
-              "bg-primary text-primary-foreground": !queryState.category,
+              "text-foreground": !queryState.category,
             })}
           >
             All Products
-          </Button>
+          </button>
         </li>
+
         {categories.map((c) => (
           <li key={c.id}>
-            <Button
+            <button
               role="link"
-              variant="outline"
               onClick={() =>
                 setQueryState(
                   { category: c.slug, page: null },
@@ -44,12 +43,11 @@ function Categories({ categories }: Props) {
                 )
               }
               className={cn({
-                "bg-primary text-primary-foreground":
-                  queryState.category === c.slug,
+                "text-foreground": queryState.category === c.slug,
               })}
             >
               {c.name}
-            </Button>
+            </button>
           </li>
         ))}
       </ul>

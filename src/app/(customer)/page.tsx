@@ -4,8 +4,8 @@ import { redirect } from "next/navigation";
 import { Suspense } from "react";
 import ProductList, { ProductsSkeleton } from "./_components/product-list";
 import MobileFilters from "./_components/mobile-filters";
-import Categories from "./_components/filters/categories";
 import Sorting from "./_components/sorting";
+import Filters from "./_components/filters";
 
 type SearchParams = Promise<Record<string, string | string[] | undefined>>;
 
@@ -25,12 +25,9 @@ export default async function ShopPage({
 
   return (
     <>
-      <div className="flex gap-8">
-        <div className="max-lg:hidden">
-          <h3 className="mb-4 text-sm uppercase tracking-wider text-foreground-muted">
-            Categories
-          </h3>
-          <Categories categories={categories} />
+      <div className="flex gap-12">
+        <div className="w-[350px] max-lg:hidden">
+          <Filters categories={categories} />
         </div>
         <div className="w-full">
           <div className="mb-4 flex justify-between">

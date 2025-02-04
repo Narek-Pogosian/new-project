@@ -4,7 +4,7 @@ import { redirect } from "next/navigation";
 import { Suspense } from "react";
 import ProductList, { ProductsSkeleton } from "./_components/product-list";
 import MobileFilters from "./_components/mobile-filters";
-import Categories from "./_components/categories";
+import Categories from "./_components/filters/categories";
 import Sorting from "./_components/sorting";
 
 type SearchParams = Promise<Record<string, string | string[] | undefined>>;
@@ -25,24 +25,31 @@ export default async function ShopPage({
 
   return (
     <>
-      <div className="mb-4 flex justify-between gap-4">
-        <div className="flex items-center gap-4 max-lg:hidden">
-          <h3 className="mb-4 pt-4 text-sm uppercase tracking-wider text-foreground-muted">
+      <div className="flex gap-8">
+        <div className="max-lg:hidden">
+          <h3 className="mb-4 text-sm uppercase tracking-wider text-foreground-muted">
             Categories
           </h3>
           <Categories categories={categories} />
         </div>
-        <div className="lg:hidden">
-          <MobileFilters categories={categories} />
+        <div className="w-full">
+          <div className="mb-4 flex justify-between">
+            <div>
+              <div className="lg:hidden">
+                <MobileFilters categories={categories} />
+              </div>
+              <div className="max-lg:hidden">Search</div>
+            </div>
+            <Sorting />
+          </div>
+          <Suspense
+            fallback={<ProductsSkeleton />}
+            key={Object.values(data).join("")}
+          >
+            <ProductList searchParams={data} />
+          </Suspense>
         </div>
-        <Sorting />
       </div>
-      <Suspense
-        fallback={<ProductsSkeleton />}
-        key={Object.values(data).join("")}
-      >
-        <ProductList searchParams={data} />
-      </Suspense>
     </>
   );
 }

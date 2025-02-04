@@ -2,9 +2,6 @@ import { type ProductQueryParamsType } from "@/schemas/product-schemas";
 import { dbCache } from "./cache";
 import { db } from "../db";
 
-/**
- * PRODUCT
- */
 function getProductBySlugInternal(slug: string) {
   return db.product.findFirst({
     where: { slug },
@@ -25,9 +22,6 @@ export async function getProductBySlug(slug: string) {
   return cacheFunc(slug);
 }
 
-/**
- * ALL PRODUCT
- */
 function getProductsInternal() {
   return db.product.findMany();
 }
@@ -40,9 +34,6 @@ export async function getProducts() {
   return cacheFunc();
 }
 
-/**
- * DISCOVER PRODUCT
- */
 function discoverProductsInternal(queryOptions: ProductQueryParamsType) {
   const {
     category,
@@ -114,7 +105,10 @@ function discoverProductsInternal(queryOptions: ProductQueryParamsType) {
 
 export async function discoverProducts(queryOptions: ProductQueryParamsType) {
   const cacheFunc = dbCache(discoverProductsInternal, {
-    tags: ["products", `products-${Object.values(queryOptions).join("")}`],
+    tags: [
+      "products",
+      `products-${Object.values(queryOptions).sort().join("")}`,
+    ],
   });
 
   return cacheFunc(queryOptions);

@@ -1,6 +1,6 @@
 "use client";
 
-import { type getCategoriesWithProductsCount } from "@/server/queries/categories";
+import { type getCategories } from "@/server/queries/categories";
 import { FileQuestion, Search } from "lucide-react";
 import { useMemo, useState } from "react";
 import { Button } from "@/components/ui/button";
@@ -10,7 +10,7 @@ import CategoryActions from "./category-actions";
 import Image from "next/image";
 
 interface Props {
-  categories: Awaited<ReturnType<typeof getCategoriesWithProductsCount>>;
+  categories: Awaited<ReturnType<typeof getCategories>>;
 }
 
 function CategoryList({ categories }: Props) {

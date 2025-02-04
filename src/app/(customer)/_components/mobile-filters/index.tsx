@@ -5,8 +5,11 @@ import { lazy, Suspense } from "react";
 import { useIsMounted } from "@/hooks/use-is-mounted";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { Button } from "@/components/ui/button";
+import { Filter } from "lucide-react";
 
-const Filters = lazy(() => import("./filters"));
+const MobileFiltersImplementation = lazy(
+  () => import("./mobile-filter-implementation"),
+);
 
 interface Props {
   categories: Awaited<ReturnType<typeof getCategories>>;
@@ -17,14 +20,19 @@ export default function MobileFilters({ categories }: Props) {
   const isMobile = useIsMobile();
 
   if (!isMounted) {
-    return <Button>Filters</Button>;
+    return (
+      <Button>
+        <Filter />
+        Filters
+      </Button>
+    );
   }
 
   return (
     <>
       {isMobile && (
         <Suspense fallback={<Button>Filters</Button>}>
-          <Filters categories={categories} />
+          <MobileFiltersImplementation categories={categories} />
         </Suspense>
       )}
     </>

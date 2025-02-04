@@ -30,14 +30,12 @@ export default function Header() {
           {session ? (
             <UserDropdown session={session} />
           ) : (
-            <nav>
-              <Button size="icon" variant="ghost">
-                <Link href="/login">
-                  <User />
-                  <span className="sr-only">Login</span>
-                </Link>
-              </Button>
-            </nav>
+            <Button size="icon" variant="ghost" asChild>
+              <Link href="/login">
+                <User />
+                <span className="sr-only">Login</span>
+              </Link>
+            </Button>
           )}
           <Cart />
         </div>

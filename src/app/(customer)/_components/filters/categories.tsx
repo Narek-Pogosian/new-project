@@ -1,9 +1,9 @@
 "use client";
 
-import { type getCategories } from "@/server/queries/categories";
 import { parseAsInteger, parseAsString, useQueryStates } from "nuqs";
-import { cn } from "@/lib/utils";
+import { type getCategories } from "@/server/queries/categories";
 import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 
 interface Props {
   categories: Awaited<ReturnType<typeof getCategories>>;

@@ -13,12 +13,14 @@ import { Label } from "@/components/ui/label";
 
 type Option = {
   label: string;
-} & Pick<ProductQueryParamsType, "sort_by" | "dir">;
+  sort_by: ProductQueryParamsType["sort_by"] | null;
+  dir: ProductQueryParamsType["dir"] | null;
+};
 
 const sortingOptions: Option[] = [
   {
-    sort_by: "name",
-    dir: "asc",
+    sort_by: null,
+    dir: null,
     label: "Name Ascending",
   },
   {

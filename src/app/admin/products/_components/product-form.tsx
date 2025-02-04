@@ -1,6 +1,6 @@
 "use client";
 
-import { type getCategoriesWithAttributes } from "@/server/queries/categories";
+import { type getCategories } from "@/server/queries/categories";
 import { useForm, type UseFormReturn } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
@@ -33,7 +33,7 @@ import { useAction } from "next-safe-action/hooks";
 import { createProductAction } from "@/server/actions/products";
 
 interface ProductFormProps {
-  categories: Awaited<ReturnType<typeof getCategoriesWithAttributes>>;
+  categories: Awaited<ReturnType<typeof getCategories>>;
 }
 
 export default function ProductForm({ categories }: ProductFormProps) {

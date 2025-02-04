@@ -30,7 +30,7 @@ export default async function ProductList({
 
   return (
     <section aria-label="products">
-      <ul className="grid w-full grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:gap-8 xl:gap-12">
+      <ul className="grid w-full grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:gap-6">
         {res.products.map((product) => (
           <li key={product.id} className="relative">
             <div className="relative mb-2 aspect-[8/11]">
@@ -67,7 +67,7 @@ export default async function ProductList({
 
 export function ProductsSkeleton() {
   return (
-    <ul className="grid w-full grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:gap-8 xl:gap-12">
+    <ul className="grid w-full grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:gap-6">
       {new Array(10).fill(0).map((_, i) => (
         <li key={i} className="pb-1.5">
           <Skeleton className="relative mb-2 aspect-[8/11]" />

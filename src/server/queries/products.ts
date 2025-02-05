@@ -43,6 +43,7 @@ function discoverProductsInternal(queryOptions: ProductQueryParamsType) {
     page = 1,
     sort_by = "name",
     dir = "asc",
+    query,
   } = queryOptions;
 
   const where: {
@@ -54,7 +55,18 @@ function discoverProductsInternal(queryOptions: ProductQueryParamsType) {
     rating?: {
       gte?: number;
     };
+    name?: {
+      contains?: string;
+      mode?: "insensitive";
+    };
   } = {};
+
+  if (query !== undefined) {
+    where.name = {
+      contains: query,
+      mode: "insensitive",
+    };
+  }
 
   if (category !== undefined) {
     where.categorySlug = category;
@@ -104,6 +116,10 @@ function discoverProductsInternal(queryOptions: ProductQueryParamsType) {
 }
 
 export async function discoverProducts(queryOptions: ProductQueryParamsType) {
+  if (queryOptions.query || queryOptions.max_price || queryOptions.min_price) {
+    return discoverProductsInternal(queryOptions);
+  }
+
   const cacheFunc = dbCache(discoverProductsInternal, {
     tags: [
       "products",

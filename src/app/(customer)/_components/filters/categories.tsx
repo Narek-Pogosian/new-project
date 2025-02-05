@@ -17,7 +17,7 @@ function Categories({ categories }: Props) {
   return (
     <nav aria-describedby="categories">
       <h3 className="mb-2 border-b pb-2 font-bold">Product Categories</h3>
-      <ul className="space-y-2 text-sm text-foreground-muted">
+      <ul className="space-y-2 text-foreground-muted">
         <li>
           <button
             role="link"
@@ -25,7 +25,7 @@ function Categories({ categories }: Props) {
               setQueryState(null, { shallow: false, history: "push" })
             }
             className={cn({
-              "text-foreground": !queryState.category,
+              "font-semibold text-foreground": !queryState.category,
             })}
           >
             All Products
@@ -43,7 +43,7 @@ function Categories({ categories }: Props) {
                 )
               }
               className={cn({
-                "text-foreground": queryState.category === c.slug,
+                "font-semibold text-foreground": queryState.category === c.slug,
               })}
             >
               {c.name}

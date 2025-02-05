@@ -6,6 +6,7 @@ import ProductList, { ProductsSkeleton } from "./_components/product-list";
 import MobileFilters from "./_components/mobile-filters";
 import Sorting from "./_components/sorting";
 import Filters from "./_components/filters";
+import SearchBox from "./_components/searchbox";
 
 type SearchParams = Promise<Record<string, string | string[] | undefined>>;
 
@@ -35,7 +36,9 @@ export default async function ShopPage({
               <div className="lg:hidden">
                 <MobileFilters categories={categories} />
               </div>
-              <div className="max-lg:hidden">Search</div>
+              <div className="max-lg:hidden">
+                <SearchBox />
+              </div>
             </div>
             <Sorting />
           </div>

@@ -9,6 +9,7 @@ import { useDebounce } from "@/hooks/use-debounce";
 import { Button } from "@/components/ui/button";
 import { X } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 
 interface Props {
   item: GetCartType["items"][number];
@@ -26,7 +27,11 @@ export default function CartItem({ item }: Props) {
       />
       <div className="flex grow justify-between">
         <div>
-          <h3 className="text-sm font-semibold">{item.product.name}</h3>
+          <Link href={`/product/${item.product.slug}`}>
+            <h3 className="text-sm font-semibold underline-offset-2 hover:underline">
+              {item.product.name}
+            </h3>
+          </Link>
           <p className="mb-2 text-sm text-foreground-muted">
             {/* eslint-disable-next-line */}
             {Object.entries(JSON.parse(item.productAttributes as string)).map(

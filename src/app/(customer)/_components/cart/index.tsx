@@ -58,7 +58,14 @@ export default function Cart() {
 
 const CartContent = ({ data }: { data: GetCartType }) => {
   if (!data.items.length) {
-    return <p className="pt-10 text-center">Your cart is empty.</p>;
+    return (
+      <div className="pt-20 text-center">
+        <div className="mx-auto mb-4 flex size-28 items-center justify-center rounded-full bg-primary/5">
+          <ShoppingCart className="size-14 text-primary" />
+        </div>
+        <h1 className="mb-2 text-xl font-semibold">Cart is empty</h1>
+      </div>
+    );
   }
 
   return (

@@ -57,7 +57,7 @@ export default function ProductForm({ categories }: ProductFormProps) {
     if (isPending) return;
 
     const res = await executeAsync(vals);
-    console.log(res);
+
     if (res) {
       form.reset({ productAttributes: [{ name: "", values: [] }] });
     }

@@ -6,8 +6,9 @@ import { PreviewCartItem } from "../../_components/cart/cart-item";
 import { useMutation } from "@tanstack/react-query";
 import { useGetCart } from "@/hooks/use-get-cart";
 import { CartPrice } from "../../_components/cart";
-import { Loader2 } from "lucide-react";
+import { Loader2, ShoppingCart } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 export default function CheckoutCard() {
   const { data, isError, isLoading } = useGetCart();
@@ -26,7 +27,15 @@ export default function CheckoutCard() {
 
   if (data.items.length === 0) {
     return (
-      <div className="h-44 content-center text-center">Your cart is empty</div>
+      <div className="py-10 text-center">
+        <div className="mx-auto mb-4 flex size-28 items-center justify-center rounded-full bg-primary/5">
+          <ShoppingCart className="size-14 text-primary" />
+        </div>
+        <h1 className="mb-6 text-xl font-semibold">Your cart is empty</h1>
+        <Button asChild>
+          <Link href="/">Go to shop</Link>
+        </Button>
+      </div>
     );
   }
 

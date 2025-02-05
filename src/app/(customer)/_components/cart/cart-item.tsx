@@ -139,7 +139,7 @@ function QuantityChange({
       }).then((res) => res.json()),
 
     onMutate: ({ cartItemId, quantity }) => {
-      const previousCart = queryClient.getQueryData(["cart"]);
+      const previousCart = queryClient.getQueryData(["cart"]) as GetCartType;
       quantityRef.current = quantity;
 
       queryClient.setQueryData(["cart"], (old: GetCartType) => ({
@@ -149,32 +149,42 @@ function QuantityChange({
         ),
       }));
 
-      return { previousCart };
+      return { previousCart, cartItemId };
     },
 
     onError: (err, _, ctx) => {
       queryClient.setQueryData(["cart"], ctx?.previousCart);
+
+      const previousQuantity = ctx?.previousCart.items.find(
+        (item) => item.id === ctx.cartItemId,
+      )?.quantity;
+
+      if (previousQuantity) setQuantity(previousQuantity);
     },
   });
 
   useEffect(() => {
-    if (quantityRef.current !== debouncedQuantityValue) {
+    if (
+      quantityRef.current !== debouncedQuantityValue &&
+      debouncedQuantityValue
+    ) {
       mutate({ cartItemId: itemId, quantity: debouncedQuantityValue });
     }
   }, [debouncedQuantityValue, mutate, itemId]);
 
-  const handleQuantityChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = Math.max(1, parseInt(e.target.value, 10));
-    setQuantity(value);
-  };
+  function handleQuantityChange(e: React.ChangeEvent<HTMLInputElement>) {
+    const value = parseInt(e.target.value);
+    setQuantity(value > 100 ? 100 : value < 1 ? 1 : value);
+  }
 
   return (
     <label>
       <span className="mr-1 text-sm text-foreground-muted">Quantity:</span>
       <input
         type="number"
-        min="1"
-        value={quantity}
+        min={1}
+        max={100}
+        value={quantity || ""}
         onChange={handleQuantityChange}
         className="w-12 rounded border py-0.5 pl-2 text-sm"
       />

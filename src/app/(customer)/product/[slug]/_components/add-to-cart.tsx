@@ -1,13 +1,12 @@
 "use client";
 
 import { useAddToCartMutation } from "@/hooks/use-add-to-cart";
-import { useState, useMemo } from "react";
+import { useState } from "react";
 import { useGetCart } from "@/hooks/use-get-cart";
 import { Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
-import { z } from "zod";
 import {
   parseAsString,
   useQueryStates,
@@ -23,59 +22,42 @@ type Props = {
 };
 
 function AddToCart({ productAttributes, productId }: Props) {
+  const { data: cart } = useGetCart();
+  const { mutate, isPending } = useAddToCartMutation();
   const [quantity, setQuantity] = useState(1);
 
-  const initialSelectedAttributes = useMemo(() => {
-    return productAttributes.reduce((acc, { name }) => {
+  const [selectedAttributes, setSelectedAttributes] = useQueryStates(
+    productAttributes.reduce((acc, { name }) => {
       acc[name] = parseAsString;
       return acc;
       // eslint-disable-next-line
-    }, {} as UseQueryStatesKeysMap<any>);
-  }, [productAttributes]);
-
-  const [selectedAttributes, setSelectedAttributes] = useQueryStates(
-    initialSelectedAttributes,
+    }, {} as UseQueryStatesKeysMap<any>),
   );
-
-  const handleSelect = (attributeName: string, value: string) => {
-    void setSelectedAttributes((prev) => ({
-      ...prev,
-      [attributeName]: value,
-    }));
-  };
-
-  const cart = useGetCart();
-  const { mutate, isPending } = useAddToCartMutation();
-
-  const { data: safeCart, success } = z
-    .object({ cartId: z.number() })
-    .safeParse(cart.data);
 
   const isValid =
     productAttributes.every(
       (attribute) => selectedAttributes[attribute.name],
     ) &&
     quantity > 0 &&
-    success;
+    quantity <= 100 &&
+    !!cart?.cartId;
 
   function handleAdd() {
-    if (!safeCart?.cartId) return;
+    if (!cart?.cartId || !isValid) return;
 
-    if (
-      cart.data?.items.find(
-        (v) =>
-          v.productAttributes === JSON.stringify(selectedAttributes) &&
-          v.productId === productId,
-      )
-    ) {
-      return;
-    }
+    const alreadyInCart = cart?.items.find(
+      (v) =>
+        v.productAttributes === JSON.stringify(selectedAttributes) &&
+        v.productId === productId,
+    );
+
+    if (alreadyInCart) return;
 
     mutate(
       {
         productId,
         quantity,
-        cartId: safeCart.cartId,
+        cartId: cart.cartId,
         attributes: Object.fromEntries(
           Object.entries(selectedAttributes).map(([key, value]) => [
             key,
@@ -102,6 +84,11 @@ function AddToCart({ productAttributes, productId }: Props) {
     );
   }
 
+  function handleQuantityChange(e: React.ChangeEvent<HTMLInputElement>) {
+    const value = parseInt(e.target.value);
+    setQuantity(value > 100 ? 100 : value < 1 ? 1 : value);
+  }
+
   return (
     <div>
       <div className="mb-6 space-y-4">
@@ -120,7 +107,12 @@ function AddToCart({ productAttributes, productId }: Props) {
                       "bg-primary text-primary-foreground":
                         selectedAttributes[attribute.name] === value,
                     })}
-                    onClick={() => handleSelect(attribute.name, value)}
+                    onClick={() =>
+                      void setSelectedAttributes((prev) => ({
+                        ...prev,
+                        [attribute.name]: value,
+                      }))
+                    }
                   >
                     {value}
                   </Button>
@@ -143,8 +135,8 @@ function AddToCart({ productAttributes, productId }: Props) {
           type="number"
           min={1}
           max={100}
-          value={quantity}
-          onChange={(e) => setQuantity(parseInt(e.target.value, 10))}
+          value={quantity || ""}
+          onChange={handleQuantityChange}
           className="w-24 bg-background"
         />
       </div>

@@ -33,6 +33,6 @@ The server-side cart is accessible to both guests and signed-in users. Guests us
 
 ### Orders:
 
-- A very simple order system with no payment functionality it's just a simple form
+- A very simple order system with no actual payment functionality.
 - Orders can be place anonymously or by a signed-in user, if signed in then the user will be able to track and view their orders.
 - TODO: show succes message or redirect to a new success page after creating order.

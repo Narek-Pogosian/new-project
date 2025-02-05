@@ -31,24 +31,6 @@ export function formatPrice(amount: number, { showZeroAsNumber = false } = {}) {
   return formatter.format(amount);
 }
 
-export function getUpdatedSearchParams(
-  params: Record<string, string | number | undefined>,
-) {
-  const searchParams = new URLSearchParams(window.location.search);
-
-  Object.entries(params).forEach(([key, value]) => {
-    if (value !== undefined && value !== null) {
-      searchParams.set(key, value.toString());
-    } else {
-      searchParams.delete(key);
-    }
-  });
-
-  searchParams.delete("page");
-
-  return `${window.location.pathname}?${searchParams.toString()}`;
-}
-
 export function sleep(ms: number): Promise<void> {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }

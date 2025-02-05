@@ -34,42 +34,15 @@ export const createProductAction = adminActionClient
         const attributes = parsedInput.productAttributes.map((p) => ({
           name: p.name,
           productId: product.id,
+          values: p.values,
         }));
 
         await prisma.productAttribute.createMany({
           data: attributes,
         });
 
-        const createdAttributes = await prisma.productAttribute.findMany({
-          where: { productId: product.id },
-          select: { id: true, name: true },
-        });
-
-        const productAttributeValues = [];
-        for (const attr of parsedInput.productAttributes) {
-          const createdAttr = createdAttributes.find(
-            (a) => a.name === attr.name,
-          );
-          if (createdAttr) {
-            productAttributeValues.push(
-              ...attr.values.map((value) => ({
-                value,
-                productAttributeId: createdAttr.id,
-              })),
-            );
-          }
-        }
-
-        if (productAttributeValues.length > 0) {
-          await prisma.productAttributeValue.createMany({
-            data: productAttributeValues,
-          });
-        }
-
         return {
           product,
-          attributes: createdAttributes,
-          attributeValues: productAttributeValues,
         };
       } catch (error) {
         console.log(error);

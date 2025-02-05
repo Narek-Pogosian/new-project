@@ -76,7 +76,7 @@ function Sorting() {
         }
         onValueChange={handleChange}
       >
-        <SelectTrigger className="w-48 shadow" id="sort-by">
+        <SelectTrigger className="w-48 shadow dark:shadow-black" id="sort-by">
           <SelectValue placeholder="Select option" />
         </SelectTrigger>
         <SelectContent>

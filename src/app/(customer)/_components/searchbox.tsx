@@ -30,7 +30,7 @@ function SearchBox() {
         placeholder="Search.."
         value={queryState ?? ""}
         onChange={(e) => setQueryState(e.target.value)}
-        className="pr-10 font-medium shadow"
+        className="pr-10 font-medium shadow dark:shadow-black"
       />
       <Button
         variant="ghost"

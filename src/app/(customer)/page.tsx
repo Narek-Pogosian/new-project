@@ -16,10 +16,11 @@ export default async function ShopPage({
   searchParams: SearchParams;
 }) {
   const search = await searchParams;
+
   const { data, success } = productQueryParams.safeParse(search);
 
   if (!success) {
-    return redirect("/shop");
+    return redirect("/");
   }
 
   const categories = await getCategories();

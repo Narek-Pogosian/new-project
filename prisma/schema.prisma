@@ -21,7 +21,6 @@ model Product {
     createdAt   DateTime @default(now())
     updatedAt   DateTime @updatedAt
 
-    tags         ProductTag[]
     categorySlug String
     category     Category     @relation(fields: [categorySlug], references: [slug], onDelete: Cascade)
 
@@ -35,8 +34,8 @@ model Product {
 
 model ProductAttribute {
     id        Int                     @id @default(autoincrement())
-    name      String
-    values    ProductAttributeValue[]
+    name      String                  
+    values    String[]
     productId Int
     createdAt DateTime                @default(now())
     updatedAt DateTime                @updatedAt
@@ -45,14 +44,6 @@ model ProductAttribute {
     @@index([productId])
 }
 
-model ProductAttributeValue {
-    id                 Int              @id @default(autoincrement())
-    value              String
-    productAttributeId Int
-    productAttribute   ProductAttribute @relation(fields: [productAttributeId], references: [id], onDelete: Cascade)
-
-    @@index([productAttributeId])
-}
 
 model Category {
     id                 Int                 @id @default(autoincrement())
@@ -80,24 +71,6 @@ model CategoryAttribute {
     category       Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
 
     @@index([categoryId])
-}
-
-model Tag {
-    id   Int    @id @default(autoincrement())
-    name String
-    slug String @unique
-
-    products ProductTag[]
-}
-
-model ProductTag {
-    productId Int
-    tagId     Int
-
-    product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
-    tag     Tag     @relation(fields: [tagId], references: [id], onDelete: Cascade)
-
-    @@id([productId, tagId])
 }
 
 model Cart {

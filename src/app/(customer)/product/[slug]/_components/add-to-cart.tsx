@@ -112,17 +112,17 @@ function AddToCart({ productAttributes, productId }: Props) {
             </h3>
             <ul className="flex flex-wrap gap-2">
               {attribute.values.map((value) => (
-                <li key={value.id}>
+                <li key={value}>
                   <Button
                     variant="outline"
                     size="sm"
                     className={cn("text-xs md:text-sm", {
                       "bg-primary text-primary-foreground":
-                        selectedAttributes[attribute.name] === value.value,
+                        selectedAttributes[attribute.name] === value,
                     })}
-                    onClick={() => handleSelect(attribute.name, value.value)}
+                    onClick={() => handleSelect(attribute.name, value)}
                   >
-                    {value.value}
+                    {value}
                   </Button>
                 </li>
               ))}

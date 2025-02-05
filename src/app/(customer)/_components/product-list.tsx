@@ -42,7 +42,7 @@ export default async function ProductList({
                 className="rounded"
               />
             </div>
-            <h3 className="text-sm font-semibold sm:text-base">
+            <h3 className="text-sm font-semibold">
               <Link
                 href={`/product/${product.slug}`}
                 className="after:absolute after:inset-0"

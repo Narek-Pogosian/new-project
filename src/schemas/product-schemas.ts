@@ -30,7 +30,23 @@ export const productQueryParams = z.object({
   page: z.coerce.number().int().gte(1).optional(),
   sort_by: z.string().optional(),
   dir: z.enum(["asc", "desc"]).optional(),
+  attributes: z
+    .string()
+    .or(z.array(z.string()))
+    .optional()
+    .transform((attr) => {
+      if (!attr) return;
+      return (Array.isArray(attr) ? attr : [attr])
+        .map(parseAttr)
+        .filter((parsed): parsed is Attribute => Boolean(parsed));
+    }),
 });
 
+function parseAttr(str: string): Attribute | undefined {
+  const [name, values] = str.split(":");
+  return name && values ? { name, values: values.split(",") } : undefined;
+}
+
+export type Attribute = z.infer<typeof productAttribute>;
 export type CreateProductsSchemaType = z.infer<typeof createProductSchema>;
 export type ProductQueryParamsType = z.infer<typeof productQueryParams>;

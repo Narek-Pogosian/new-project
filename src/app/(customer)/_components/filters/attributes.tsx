@@ -1,6 +1,6 @@
+import { useCallback, useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { type getCategories } from "@/server/queries/categories";
-import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
@@ -14,7 +14,7 @@ function Attributes({ availableAttributes }: Props) {
   const router = useRouter();
   const searchParams = useSearchParams();
 
-  const [selectedAttributes, setSelectedAttributes] = useState(() => {
+  const setAttributesFromParams = useCallback(() => {
     const attributesFromParams = searchParams.getAll("attributes");
     const initialAttributes: Record<string, string[]> =
       availableAttributes.reduce(
@@ -33,7 +33,15 @@ function Attributes({ availableAttributes }: Props) {
     });
 
     return initialAttributes;
-  });
+  }, [searchParams, availableAttributes]);
+
+  const [selectedAttributes, setSelectedAttributes] = useState(
+    setAttributesFromParams,
+  );
+
+  useEffect(() => {
+    setSelectedAttributes(setAttributesFromParams);
+  }, [searchParams, setAttributesFromParams]);
 
   function handleSelect(name: string, value: string) {
     setSelectedAttributes((prev) => {
@@ -65,6 +73,17 @@ function Attributes({ availableAttributes }: Props) {
     router.push(url);
   }
 
+  function handleReset() {
+    const params = new URLSearchParams(window.location.search);
+    params.delete("attributes");
+
+    const queryString = params.toString();
+    const url = `/?${queryString}`;
+
+    setSelectedAttributes({});
+    router.push(url);
+  }
+
   return (
     <div>
       <h3 className="mb-2 border-b pb-2 font-bold">Available attributes</h3>
@@ -93,7 +112,15 @@ function Attributes({ availableAttributes }: Props) {
           </ul>
         </div>
       ))}
-      <Button onClick={handleApply}>Apply</Button>
+
+      <div className="flex gap-2">
+        <Button size="sm" onClick={handleApply}>
+          Apply
+        </Button>
+        <Button size="sm" variant="ghost" onClick={handleReset}>
+          Reset
+        </Button>
+      </div>
     </div>
   );
 }

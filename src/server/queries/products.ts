@@ -34,7 +34,7 @@ export async function getProducts() {
   return cacheFunc();
 }
 
-function discoverProductsInternal(queryOptions: ProductQueryParamsType) {
+async function discoverProductsInternal(queryOptions: ProductQueryParamsType) {
   const {
     category,
     min_price,
@@ -44,6 +44,7 @@ function discoverProductsInternal(queryOptions: ProductQueryParamsType) {
     sort_by = "createdAt",
     dir = "desc",
     query,
+    attributes,
   } = queryOptions;
 
   const where: {
@@ -88,6 +89,22 @@ function discoverProductsInternal(queryOptions: ProductQueryParamsType) {
     where.rating = { gte: min_rating };
   }
 
+  if (attributes) {
+    const whereConditions = attributes.map((attribute) => ({
+      productAttributes: {
+        some: {
+          AND: [
+            { name: attribute.name },
+            { values: { hasEvery: attribute.values } },
+          ],
+        },
+      },
+    }));
+
+    // @ts-expect-error it works
+    where.AND = whereConditions;
+  }
+
   const take = 12;
   const skip = (page - 1) * take;
   const orderBy = sort_by ? { [sort_by]: dir } : undefined;
@@ -116,7 +133,12 @@ function discoverProductsInternal(queryOptions: ProductQueryParamsType) {
 }
 
 export async function discoverProducts(queryOptions: ProductQueryParamsType) {
-  if (queryOptions.query || queryOptions.max_price || queryOptions.min_price) {
+  if (
+    queryOptions.query ||
+    queryOptions.max_price ||
+    queryOptions.min_price ||
+    queryOptions.attributes
+  ) {
     return discoverProductsInternal(queryOptions);
   }
 

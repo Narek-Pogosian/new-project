@@ -29,7 +29,7 @@ export default async function ShopPage({
     <>
       <div className="flex gap-12">
         <div className="w-[350px] max-lg:hidden">
-          <Filters categories={categories} />
+          <Filters categories={categories} currentCategory={data.category} />
         </div>
         <div className="w-full">
           <div className="mb-4 flex justify-between">

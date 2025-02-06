@@ -41,8 +41,8 @@ function discoverProductsInternal(queryOptions: ProductQueryParamsType) {
     max_price,
     min_rating,
     page = 1,
-    sort_by = "name",
-    dir = "asc",
+    sort_by = "createdAt",
+    dir = "desc",
     query,
   } = queryOptions;
 

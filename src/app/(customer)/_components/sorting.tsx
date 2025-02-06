@@ -21,22 +21,22 @@ const sortingOptions: Option[] = [
   {
     sort_by: null,
     dir: null,
-    label: "Name Ascending",
+    label: "Latest",
   },
   {
-    sort_by: "name",
-    dir: "desc",
-    label: "Name Descending",
+    sort_by: "rating",
+    dir: "asc",
+    label: "Most popular",
   },
   {
     sort_by: "price",
     dir: "asc",
-    label: "Price Ascending",
+    label: "Lowest price",
   },
   {
     sort_by: "price",
     dir: "desc",
-    label: "Price Descending",
+    label: "Highest price",
   },
 ];
 

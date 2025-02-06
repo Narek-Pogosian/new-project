@@ -12,6 +12,7 @@ function Categories({ categories }: Props) {
   const [queryState, setQueryState] = useQueryStates({
     page: parseAsInteger,
     category: parseAsString,
+    attributes: parseAsString,
   });
 
   return (
@@ -38,7 +39,7 @@ function Categories({ categories }: Props) {
               role="link"
               onClick={() =>
                 setQueryState(
-                  { category: c.slug, page: null },
+                  { category: c.slug, page: null, attributes: null },
                   { shallow: false, history: "push" },
                 )
               }

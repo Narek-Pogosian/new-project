@@ -1,18 +1,28 @@
 "use client";
 
 import { type getCategories } from "@/server/queries/categories";
-import Categories from "./categories";
 import PriceSlider from "./price";
+import Categories from "./categories";
+import Attributes from "./attributes";
 
 interface Props {
   categories: Awaited<ReturnType<typeof getCategories>>;
+  currentCategory: string | undefined;
 }
 
-function Filters({ categories }: Props) {
+function Filters({ categories, currentCategory }: Props) {
+  const categoryAttributes = categories.find((c) => c.slug === currentCategory);
+
   return (
     <div className="space-y-8">
       <PriceSlider />
       <Categories categories={categories} />
+
+      {categoryAttributes && (
+        <Attributes
+          availableAttributes={categoryAttributes.categoryAttributes}
+        />
+      )}
     </div>
   );
 }

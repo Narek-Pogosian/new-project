@@ -35,7 +35,10 @@ export default async function ShopPage({
           <div className="mb-4 flex justify-between">
             <div>
               <div className="lg:hidden">
-                <MobileFilters categories={categories} />
+                <MobileFilters
+                  categories={categories}
+                  currentCategory={data.category}
+                />
               </div>
               <div className="max-lg:hidden">
                 <SearchBox />

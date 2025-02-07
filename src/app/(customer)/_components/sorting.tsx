@@ -25,7 +25,7 @@ const sortingOptions: Option[] = [
   },
   {
     sort_by: "rating",
-    dir: "asc",
+    dir: "desc",
     label: "Most popular",
   },
   {

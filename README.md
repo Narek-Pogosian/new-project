@@ -2,6 +2,8 @@
 
 This is an e-commerce project built with Next.js 15, featuring both an admin section for managing categories and products, and a customer-facing shop interface with product sorting, filtering, and pagination. It also includes individual product detail pages for customers.
 
+![image](/public/screenshot.webp)
+
 ## Tech Stack
 
 - **Next.js 15**
@@ -13,9 +15,9 @@ This is an e-commerce project built with Next.js 15, featuring both an admin sec
 ### Shop Page:
 
 - **Product Sorting**: Customers can sort products based on various criteria.
-- **Filtering by Category**: TODO: more filtering options, can filter products by category for now.
+- **Filtering by Category**: Multiple filtering options such as category, min and max price, available attributes based on category e.g size, color.
 - **Pagination**: Products are paginated for better browsing experience.
-- **Searchbox** Coming soon
+- **Searchbox** A simple searchbox that finds products based user input.
 
 ### Product Details Page:
 

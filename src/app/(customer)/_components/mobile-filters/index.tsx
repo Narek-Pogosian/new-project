@@ -13,9 +13,10 @@ const MobileFiltersImplementation = lazy(
 
 interface Props {
   categories: Awaited<ReturnType<typeof getCategories>>;
+  currentCategory: string | undefined;
 }
 
-export default function MobileFilters({ categories }: Props) {
+export default function MobileFilters({ categories, currentCategory }: Props) {
   const isMounted = useIsMounted();
   const isMobile = useIsMobile();
 
@@ -32,7 +33,10 @@ export default function MobileFilters({ categories }: Props) {
     <>
       {isMobile && (
         <Suspense fallback={<Button>Filters</Button>}>
-          <MobileFiltersImplementation categories={categories} />
+          <MobileFiltersImplementation
+            categories={categories}
+            currentCategory={currentCategory}
+          />
         </Suspense>
       )}
     </>

@@ -93,7 +93,7 @@ function Attributes({ availableAttributes }: Props) {
           <h4 className="mb-1 text-xs uppercase tracking-wider text-foreground-muted">
             {attribute.name}
           </h4>
-          <ul className="flex flex-wrap gap-2">
+          <ul className="flex flex-wrap gap-1">
             {attribute.possibleValues.map((value) => (
               <li key={value}>
                 <Button

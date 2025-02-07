@@ -15,9 +15,10 @@ import Filters from "../filters";
 
 interface Props {
   categories: Awaited<ReturnType<typeof getCategories>>;
+  currentCategory: string | undefined;
 }
 
-function MobileFiltersImplementation({ categories }: Props) {
+function MobileFiltersImplementation({ categories, currentCategory }: Props) {
   return (
     <Sheet>
       <SheetTrigger className={buttonVariants()}>
@@ -28,7 +29,7 @@ function MobileFiltersImplementation({ categories }: Props) {
           <SheetTitle className="text-left">Filters</SheetTitle>
           <SheetDescription></SheetDescription>
         </SheetHeader>
-        <Filters categories={categories} />
+        <Filters categories={categories} currentCategory={currentCategory} />
       </SheetContent>
     </Sheet>
   );

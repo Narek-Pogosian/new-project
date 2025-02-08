@@ -3,15 +3,15 @@ import WriteReview from "./write-review";
 
 interface Props {
   reviews: NonNullable<Awaited<ReturnType<typeof getProductBySlug>>>["reviews"];
-  productSlug: string;
+  productId: number;
 }
 
-function ReviewsInfo({ reviews, productSlug }: Props) {
+function ReviewsInfo({ reviews, productId }: Props) {
   return (
     <div>
       <div>Rating 0.0 based X review</div>
       <div className="mb-6">reviews distribution</div>
-      <WriteReview productSlug={productSlug} />
+      <WriteReview productId={productId} />
     </div>
   );
 }

@@ -6,15 +6,14 @@ import { db } from "@/server/db";
 import { cookies } from "next/headers";
 
 export async function POST(req: NextRequest) {
-  const session = await getServerAuthSession();
-
-  const { data } = createOrderSchema.safeParse(await req.json());
-
-  if (!data || data.length === 0) {
-    return new Response(JSON.stringify({}), { status: 400 });
-  }
-
   try {
+    const session = await getServerAuthSession();
+
+    const { data } = createOrderSchema.safeParse(await req.json());
+    if (!data || data.length === 0) {
+      return new Response(JSON.stringify({}), { status: 400 });
+    }
+
     const order = await db.order.create({
       data: {
         userId: session?.user.id ?? undefined,

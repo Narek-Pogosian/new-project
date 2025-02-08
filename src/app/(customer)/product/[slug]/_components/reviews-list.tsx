@@ -5,7 +5,11 @@ interface Props {
 }
 
 function ReviewsList({ reviews }: Props) {
-  return <div>Scrollable list of the actual reviews</div>;
+  return (
+    <div>
+      Scrollable list of the actual reviews, {JSON.stringify(reviews, null, 2)}
+    </div>
+  );
 }
 
 export default ReviewsList;

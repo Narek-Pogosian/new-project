@@ -48,7 +48,7 @@ async function ProductPage({ params }: { params: Params }) {
             <div className="mb-4 flex items-center gap-4">
               <div className="flex items-center gap-0.5">
                 <Star className="size-4 fill-current text-accent-500" />
-                <p>{product.rating == 0 ? 0 : product.rating.toFixed(1)}</p>
+                <p>{product.rating === 0 ? 0 : product.rating.toFixed(1)}</p>
               </div>
               <p>{formatPrice(product.price)}</p>
             </div>
@@ -87,7 +87,7 @@ async function ProductPage({ params }: { params: Params }) {
         </h2>
 
         <div className="grid grid-cols-2 gap-12">
-          <ReviewsInfo reviews={product.reviews} productSlug={product.slug} />
+          <ReviewsInfo reviews={product.reviews} productId={product.id} />
           <ReviewsList reviews={product.reviews} />
         </div>
       </section>

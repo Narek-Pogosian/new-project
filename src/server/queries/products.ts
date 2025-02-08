@@ -25,7 +25,7 @@ function getProductBySlugInternal(slug: string) {
 
 export async function getProductBySlug(slug: string) {
   const cacheFunc = dbCache(getProductBySlugInternal, {
-    tags: [`products-${slug}}`],
+    tags: [`products-${slug}`],
   });
 
   return cacheFunc(slug);

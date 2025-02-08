@@ -46,20 +46,20 @@ async function getCart(userId: string | null, cartToken: string | null) {
 }
 
 export async function GET() {
-  const session = await getServerAuthSession();
-  const cookieStore = await cookies();
-  const cartToken = cookieStore.get("cartToken");
-
-  let tokenToUse = cartToken?.value ?? null;
-  if (!tokenToUse && !session?.user.id) {
-    tokenToUse = crypto.randomUUID();
-    cookieStore.set("cartToken", tokenToUse, {
-      httpOnly: true,
-      path: "/",
-    });
-  }
-
   try {
+    const session = await getServerAuthSession();
+    const cookieStore = await cookies();
+    const cartToken = cookieStore.get("cartToken");
+
+    let tokenToUse = cartToken?.value ?? null;
+    if (!tokenToUse && !session?.user.id) {
+      tokenToUse = crypto.randomUUID();
+      cookieStore.set("cartToken", tokenToUse, {
+        httpOnly: true,
+        path: "/",
+      });
+    }
+
     const cart = await getCart(session?.user.id ?? null, tokenToUse);
 
     return new Response(JSON.stringify(cart), { status: 200 });

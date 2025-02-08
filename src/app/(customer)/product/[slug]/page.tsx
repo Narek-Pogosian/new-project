@@ -82,12 +82,16 @@ async function ProductPage({ params }: { params: Params }) {
       </section>
 
       <section aria-describedby="reviews">
-        <h2 id="reviews" className="mb-2 text-xl font-bold">
+        <h2 id="reviews" className="mb-6 text-2xl font-bold">
           Client Reviews
         </h2>
 
-        <div className="grid grid-cols-2 gap-12">
-          <ReviewsInfo reviews={product.reviews} productId={product.id} />
+        <div className="grid gap-12 lg:grid-cols-2 xl:grid-cols-3 xl:gap-20">
+          <ReviewsInfo
+            reviews={product.reviews}
+            rating={product.rating}
+            productId={product.id}
+          />
           <ReviewsList reviews={product.reviews} />
         </div>
       </section>

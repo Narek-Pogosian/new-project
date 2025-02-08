@@ -58,8 +58,6 @@ export async function POST(req: NextRequest) {
       return { product };
     });
 
-    console.log(result.product.slug);
-
     revalidateDbCache(`products-${result.product.slug}`);
     revalidateDbCache("products");
 

@@ -9,7 +9,16 @@ function getProductBySlugInternal(slug: string) {
       productAttributes: {
         select: { name: true, id: true, values: true },
       },
-      reviews: true,
+      reviews: {
+        include: {
+          user: {
+            select: {
+              name: true,
+              image: true,
+            },
+          },
+        },
+      },
     },
   });
 }

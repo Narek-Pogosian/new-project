@@ -2,6 +2,8 @@ import { getProductBySlug } from "@/server/queries/products";
 import { Luggage, Star } from "lucide-react";
 import { formatPrice } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
+import ReviewsInfo from "./_components/reviews-info";
+import ReviewsList from "./_components/reviews-list";
 import AddToCart from "./_components/add-to-cart";
 import Image from "next/image";
 import Link from "next/link";
@@ -27,8 +29,11 @@ async function ProductPage({ params }: { params: Params }) {
 
   return (
     <>
-      <section className="flex w-full flex-col gap-8 sm:flex-row xl:gap-16">
-        <div className="relative aspect-[9/11] w-full shrink-0 sm:w-60 md:w-72 lg:w-96 xl:w-[450px]">
+      <section
+        className="mb-12 flex w-full flex-col gap-8 sm:flex-row xl:gap-16"
+        aria-describedby="title"
+      >
+        <div className="relative aspect-[9/11] w-full shrink-0 sm:w-60 md:w-72 lg:w-96 xl:w-[500px]">
           <Image
             src={product.poster}
             alt=""
@@ -37,7 +42,9 @@ async function ProductPage({ params }: { params: Params }) {
             className="rounded"
           />
           <div className="absolute inset-0 rounded bg-black/60 p-8 text-white sm:hidden">
-            <h1 className="mb-1 text-xl font-bold">{product.name}</h1>
+            <h1 id="title" className="mb-1 text-xl font-bold">
+              {product.name}
+            </h1>
             <div className="mb-4 flex items-center gap-4">
               <div className="flex items-center gap-0.5">
                 <Star className="size-4 fill-current text-accent-500" />
@@ -71,6 +78,17 @@ async function ProductPage({ params }: { params: Params }) {
           <p className="text-foreground-muted max-sm:hidden">
             {product.description}
           </p>
+        </div>
+      </section>
+
+      <section aria-describedby="reviews">
+        <h2 id="reviews" className="mb-2 text-xl font-bold">
+          Client Reviews
+        </h2>
+
+        <div className="grid grid-cols-2 gap-12">
+          <ReviewsInfo reviews={product.reviews} productSlug={product.slug} />
+          <ReviewsList reviews={product.reviews} />
         </div>
       </section>
     </>

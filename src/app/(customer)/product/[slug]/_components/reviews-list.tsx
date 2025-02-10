@@ -9,10 +9,10 @@ function ReviewsList({ reviews }: Props) {
   if (reviews.length === 0) {
     return (
       <div className="flex w-full flex-col items-center justify-center text-center max-lg:hidden xl:col-span-2">
-        <div className="mx-auto mb-4 flex size-28 items-center justify-center rounded-full bg-primary/5">
+        <div className="mx-auto mb-2 flex size-28 items-center justify-center rounded-full bg-primary/5">
           <Squirrel className="size-16 text-primary" />
         </div>
-        <p className="mb-4 text-xl font-semibold">No reviews</p>
+        <p className="font-semibold">No reviews</p>
       </div>
     );
   }

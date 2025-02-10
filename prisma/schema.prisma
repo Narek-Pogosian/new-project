@@ -14,7 +14,7 @@ model Product {
     price       Float
     description String
     isFeatured  Boolean  @default(false)
-    rating      Int      @default(0)
+    rating      Float    @default(0)
     poster      String
     images      String[]
     vector      Bytes?
@@ -138,7 +138,7 @@ model OrderItem {
 
 model Review {
     id        Int      @id @default(autoincrement())
-    rating    Int      @default(0)
+    rating    Float      @default(0)
     comment   String?
     userId    String
     user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)

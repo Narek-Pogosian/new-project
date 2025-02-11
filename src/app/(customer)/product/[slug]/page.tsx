@@ -33,7 +33,7 @@ async function ProductPage({ params }: { params: Params }) {
         className="mb-12 flex w-full flex-col gap-8 sm:flex-row xl:gap-16"
         aria-describedby="title"
       >
-        <div className="relative aspect-[9/11] w-full shrink-0 sm:w-60 md:w-72 lg:w-96 xl:w-[500px]">
+        <div className="relative aspect-[9/11] h-fit w-full shrink-0 sm:w-72 lg:w-96 xl:w-[500px]">
           <Image
             src={product.poster}
             alt=""

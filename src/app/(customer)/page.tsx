@@ -28,9 +28,9 @@ export default async function ShopPage({
   return (
     <>
       <div className="flex gap-12">
-        <div className="w-[350px] max-lg:hidden">
+        <section aria-label="Filters" className="w-[350px] max-lg:hidden">
           <Filters categories={categories} currentCategory={data.category} />
-        </div>
+        </section>
         <div className="w-full">
           <div className="mb-4 flex justify-between">
             <div>

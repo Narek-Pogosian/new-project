@@ -5,7 +5,7 @@ function ProductLoading() {
   return (
     <>
       <section className="flex flex-col gap-8 sm:flex-row xl:gap-16">
-        <div className="relative aspect-[9/11] w-full shrink-0 sm:w-60 md:w-72 lg:w-96 xl:w-[500px]">
+        <div className="relative aspect-[9/11] h-fit w-full shrink-0 sm:w-72 lg:w-96 xl:w-[500px]">
           <Skeleton className="h-full w-full" />
           <div className="absolute inset-0 rounded bg-black/60 p-8 text-white sm:hidden">
             <Skeleton className="mb-2 h-7 text-xl font-bold" />

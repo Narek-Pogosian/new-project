@@ -27,7 +27,9 @@ function PriceSlider() {
 
   return (
     <div className="price-slider">
-      <h3 className="mb-2 border-b pb-2 font-bold">Price Range</h3>
+      <h3 className="mb-2 border-b pb-2 text-xs font-semibold uppercase tracking-wider text-foreground-muted">
+        Price Range
+      </h3>
 
       <div className="mb-2 flex justify-between text-sm font-medium">
         <span>

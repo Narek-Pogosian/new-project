@@ -4,6 +4,7 @@ import { type getCategories } from "@/server/queries/categories";
 import PriceSlider from "./price";
 import Categories from "./categories";
 import Attributes from "./attributes";
+import Rating from "./rating";
 
 interface Props {
   categories: Awaited<ReturnType<typeof getCategories>>;
@@ -16,7 +17,10 @@ function Filters({ categories, currentCategory }: Props) {
   return (
     <div className="space-y-8">
       <PriceSlider />
+
       <Categories categories={categories} />
+
+      <Rating />
 
       {categoryAttributes && (
         <Attributes

@@ -86,7 +86,9 @@ function Attributes({ availableAttributes }: Props) {
 
   return (
     <div>
-      <h3 className="mb-2 border-b pb-2 font-bold">Available attributes</h3>
+      <h3 className="mb-2 border-b pb-2 text-xs font-semibold uppercase tracking-wider text-foreground-muted">
+        Available attributes
+      </h3>
 
       {availableAttributes.map((attribute) => (
         <div key={attribute.id} className="mb-4">

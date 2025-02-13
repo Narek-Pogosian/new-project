@@ -17,7 +17,12 @@ function Categories({ categories }: Props) {
 
   return (
     <nav aria-describedby="categories">
-      <h3 className="mb-2 border-b pb-2 font-bold">Product Categories</h3>
+      <h3
+        id="categories"
+        className="mb-2 border-b pb-2 text-xs font-semibold uppercase tracking-wider text-foreground-muted"
+      >
+        Product Categories
+      </h3>
       <ul className="space-y-2 text-foreground-muted">
         <li>
           <button

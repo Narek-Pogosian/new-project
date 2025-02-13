@@ -30,14 +30,14 @@ function SearchBox() {
         placeholder="Search.."
         value={queryState ?? ""}
         onChange={(e) => setQueryState(e.target.value)}
-        className="pr-10 font-medium shadow dark:shadow-black"
+        className="h-10 pr-12 font-medium shadow dark:shadow-black"
       />
       <Button
-        variant="ghost"
         size="icon"
-        className="absolute right-1 top-0.5 size-8"
+        variant="ghost"
+        className="group absolute right-1 top-1 size-8"
       >
-        <Search className="text-foreground-muted" />
+        <Search className="text-foreground-muted transition-colors group-hover:text-foreground" />
         <span className="sr-only">Search</span>
       </Button>
     </form>

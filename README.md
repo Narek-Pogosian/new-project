@@ -38,4 +38,9 @@ The server-side cart is accessible to both guests and signed-in users. Guests us
 
 - A very simple order system with no actual payment functionality.
 - Orders can be place anonymously or by a signed-in user, if signed in then the user will be able to track and view their orders.
-- TODO: show success message or redirect to a new success page after creating order.
+
+## TODO
+
+- Improve a11y/keyboard navigation for custom star rating component.
+- Maybe use disclosures for filters.
+- Show success message or redirect to a new success page after creating order.

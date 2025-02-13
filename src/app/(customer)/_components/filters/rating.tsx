@@ -12,7 +12,7 @@ function Rating() {
   function handleRatingChange(rating: number) {
     void setQueryState(
       { page: null, min_rating: rating },
-      { shallow: false, clearOnDefault: true },
+      { shallow: false, clearOnDefault: true, history: "push" },
     );
   }
 

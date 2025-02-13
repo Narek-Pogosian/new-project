@@ -35,7 +35,8 @@ function ReviewsInfo({ reviews, productId, rating }: Props) {
           </span>
         </div>
         <span className="text-sm font-medium">
-          Based on <b>{reviews.length}</b> reviews
+          Based on <b>{reviews.length}</b>{" "}
+          {reviews.length > 1 ? "reviews" : "review"}
         </span>
       </div>
 
@@ -44,7 +45,7 @@ function ReviewsInfo({ reviews, productId, rating }: Props) {
           .sort((a, b) => +b[0] - +a[0])
           .map(([key, value]) => (
             <li key={key} className="flex items-center gap-1">
-              <span className="font-bold">{key}</span>
+              <span className="w-4 font-bold">{key}</span>
               <Star className="size-4 fill-accent-500 stroke-accent-500" />
               <Progress value={(value / reviews.length) * 100} />
               <span className="flex w-10 justify-end text-sm font-medium text-foreground-muted">

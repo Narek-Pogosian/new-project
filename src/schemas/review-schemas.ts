@@ -2,7 +2,7 @@ import { z } from "zod";
 
 export const reviewSchema = z.object({
   productId: z.number().min(1, { message: "ProductId is required" }),
-  comment: z.string().optional(),
+  comment: z.string().trim().optional(),
   rating: z.coerce
     .number()
     .int()

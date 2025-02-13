@@ -97,12 +97,14 @@ function AddToCart({ productAttributes, productId }: Props) {
             <h3 className="mb-1 text-xs uppercase tracking-wider text-foreground-muted">
               {attribute.name}
             </h3>
-            <ul className="flex flex-wrap gap-2">
+            <ul className="flex flex-wrap gap-2" role="list">
               {attribute.values.map((value) => (
-                <li key={value}>
+                <li key={value} role="listitem">
                   <Button
-                    variant="outline"
                     size="sm"
+                    variant="outline"
+                    aria-pressed={selectedAttributes[attribute.name] === value}
+                    aria-label={`Select ${value} for ${attribute.name}`}
                     className={cn("text-xs md:text-sm", {
                       "bg-primary text-primary-foreground":
                         selectedAttributes[attribute.name] === value,
@@ -123,22 +125,25 @@ function AddToCart({ productAttributes, productId }: Props) {
         ))}
       </div>
 
-      <div className="flex gap-4">
-        <Button
-          onClick={handleAdd}
-          disabled={!isValid || isPending}
-          className="w-28"
-        >
-          {isPending ? <Loader2 className="animate-spin" /> : "Add to cart"}
-        </Button>
+      <div className="flex flex-row-reverse justify-end gap-4">
         <Input
+          id="quantity"
           type="number"
           min={1}
           max={100}
           value={quantity || ""}
           onChange={handleQuantityChange}
+          aria-label="Select quantity"
           className="w-24 bg-background"
         />
+        <Button
+          onClick={handleAdd}
+          disabled={!isValid || isPending}
+          aria-label={`Add ${quantity} items to cart with selected attributes`}
+          className="w-28"
+        >
+          {isPending ? <Loader2 className="animate-spin" /> : "Add to cart"}
+        </Button>
       </div>
     </div>
   );

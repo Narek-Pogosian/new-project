@@ -90,15 +90,22 @@ function Attributes({ availableAttributes }: Props) {
 
       {availableAttributes.map((attribute) => (
         <div key={attribute.id} className="mb-4">
-          <h4 className="mb-1 text-xs uppercase tracking-wider text-foreground-muted">
+          <h4
+            id={attribute.name}
+            className="mb-1 text-xs uppercase tracking-wider text-foreground-muted"
+          >
             {attribute.name}
           </h4>
-          <ul className="flex flex-wrap gap-1">
+          <ul className="flex flex-wrap gap-1" aria-labelledby={attribute.name}>
             {attribute.possibleValues.map((value) => (
               <li key={value}>
                 <Button
                   variant="outline"
                   size="sm"
+                  aria-pressed={selectedAttributes[attribute.name]?.includes(
+                    value,
+                  )}
+                  aria-label={`Filter by ${attribute.name}: ${value}`}
                   className={cn("text-xs md:text-sm", {
                     "bg-primary text-primary-foreground":
                       selectedAttributes[attribute.name]?.includes(value),
@@ -114,10 +121,19 @@ function Attributes({ availableAttributes }: Props) {
       ))}
 
       <div className="flex gap-2">
-        <Button size="sm" onClick={handleApply}>
+        <Button
+          size="sm"
+          onClick={handleApply}
+          aria-label="Apply selected filters"
+        >
           Apply
         </Button>
-        <Button size="sm" variant="ghost" onClick={handleReset}>
+        <Button
+          size="sm"
+          variant="ghost"
+          onClick={handleReset}
+          aria-label="Reset all filters"
+        >
           Reset
         </Button>
       </div>

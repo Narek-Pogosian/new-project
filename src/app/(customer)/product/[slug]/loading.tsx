@@ -1,9 +1,11 @@
+import ScrollTop from "@/components/scroll-top";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Star } from "lucide-react";
 
 function ProductLoading() {
   return (
     <>
+      <ScrollTop />
       <section className="flex flex-col gap-8 sm:flex-row xl:gap-16">
         <div className="relative aspect-[9/11] h-fit w-full shrink-0 sm:w-72 lg:w-96 xl:w-[500px]">
           <Skeleton className="h-full w-full" />

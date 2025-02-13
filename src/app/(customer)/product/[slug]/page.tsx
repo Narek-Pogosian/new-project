@@ -7,6 +7,7 @@ import ReviewsList from "./_components/reviews-list";
 import AddToCart from "./_components/add-to-cart";
 import Image from "next/image";
 import Link from "next/link";
+import ScrollTop from "@/components/scroll-top";
 
 type Params = Promise<{ slug: string }>;
 
@@ -29,6 +30,7 @@ async function ProductPage({ params }: { params: Params }) {
 
   return (
     <>
+      <ScrollTop />
       <section
         className="mb-12 flex w-full flex-col gap-8 sm:flex-row xl:gap-16"
         aria-describedby="title"

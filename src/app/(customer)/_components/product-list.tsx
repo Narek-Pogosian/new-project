@@ -47,7 +47,6 @@ export default async function ProductList({
                 href={`/product/${product.slug}`}
                 className="after:absolute after:inset-0"
                 prefetch={false}
-                scroll
               >
                 {product.name}
               </Link>

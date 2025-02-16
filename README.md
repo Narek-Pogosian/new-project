@@ -1,15 +1,10 @@
 # E-Commerce Project with Next.js 15
 
-This is an e-commerce project built with Next.js 15, featuring both an admin section for managing categories and products, and a customer-facing shop interface with product sorting, filtering, and pagination. It also includes individual product detail pages for customers.
+## About
+
+This is an e-commerce project built with Next.js 15, Tailwind and Prisma, featuring both an admin section for managing categories and products, and a customer-facing shop interface with product sorting, filtering, and pagination. It also includes individual product detail pages for customers.
 
 ![image](/public/screenshot.webp)
-
-## Tech Stack
-
-- **Next.js**
-- **Tailwind**
-- **Postgres**
-- **Prisma**
 
 ## Features
 
@@ -29,18 +24,14 @@ This is an e-commerce project built with Next.js 15, featuring both an admin sec
 
 The server-side cart is accessible to both guests and signed-in users. Guests use a cookie-stored cartToken to retain their cart during the session, while signed-in users have their cart saved in the database for access across devices.
 
-### Admin Section
-
-- Admins can create and manage product categories.
-- Admins can create, edit, and delete products.
-
 ### Orders
 
 - A very simple order system with no actual payment functionality.
-- Orders can be place anonymously or by a signed-in user, if signed in then the user will be able to track and view their orders.
+- Orders can be placed anonymously or by a signed-in user, if signed in then the user will be able to track and view their orders.
 
 ## TODO
 
 - Improve a11y/keyboard navigation for custom star rating component.
-- Maybe use disclosures for filters.
 - Show success message or redirect to a new success page after creating order.
+- Overview and orders pages for users with features like cancel order, change password, delete account.
+- More admin tools

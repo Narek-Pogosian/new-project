@@ -2,7 +2,7 @@ import { type GetCartType } from "@/app/api/cart/route";
 import { useQuery } from "@tanstack/react-query";
 
 export function useGetCart() {
-  const { data, isLoading, isError, isSuccess } = useQuery({
+  const getCart = useQuery({
     queryKey: ["cart"],
     queryFn: async () => {
       const res = await fetch("/api/cart");
@@ -14,5 +14,5 @@ export function useGetCart() {
     },
   });
 
-  return { data, isLoading, isError, isSuccess };
+  return getCart;
 }

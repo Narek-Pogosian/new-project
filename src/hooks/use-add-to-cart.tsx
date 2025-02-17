@@ -6,7 +6,7 @@ import { type CartItem } from "@prisma/client";
 export const useAddToCartMutation = () => {
   const queryClient = useQueryClient();
 
-  const { mutate, isPending } = useMutation({
+  const addToCart = useMutation({
     mutationFn: (data: AddCartType) =>
       fetch("/api/cart", { method: "POST", body: JSON.stringify(data) }).then(
         (res) => res.json(),
@@ -19,5 +19,5 @@ export const useAddToCartMutation = () => {
     },
   });
 
-  return { mutate, isPending };
+  return addToCart;
 };

@@ -25,13 +25,13 @@ export default function UserDropdown({ session }: { session: Session }) {
           <DropdownMenuLabel>{session.user.name}</DropdownMenuLabel>
           <DropdownMenuSeparator />
         </>
-        <DropdownMenuItem>
+        <DropdownMenuItem className="py-2">
           <Eye /> Overview
         </DropdownMenuItem>
-        <DropdownMenuItem>
+        <DropdownMenuItem className="py-2">
           <Box /> Orders
         </DropdownMenuItem>
-        <DropdownMenuItem onSelect={() => signOut()}>
+        <DropdownMenuItem className="py-2" onSelect={() => signOut()}>
           <LogOut /> Signout
         </DropdownMenuItem>
       </DropdownMenuContent>

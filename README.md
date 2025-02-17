@@ -1,37 +1,39 @@
 # E-Commerce Project with Next.js 15
 
-## About
+## 📚 About
 
-This is an e-commerce project built with Next.js 15, Tailwind and Prisma, featuring both an admin section for managing categories and products, and a customer-facing shop interface with product sorting, filtering, and pagination. It also includes individual product detail pages for customers.
+This is an e-commerce project built with **Next.js 15**, **Tailwind CSS**, and **Prisma**. It features both an **Admin Panel** for managing categories and products, and a **Customer-facing Shop Interface** with product sorting, filtering, pagination, and detailed product pages.
 
-![image](/public/screenshot.webp)
+![Screenshot](/public/screenshot.webp)
 
-## Features
+## ⚡ Features
 
-### Shop Page
+### 🛍️ **Shop Page**
 
-- **Product Sorting**: Customers can sort products based on various criteria.
-- **Filtering by Category**: Multiple filtering options such as category, min and max price, available attributes based on category e.g size, color.
-- **Pagination**: Products are paginated for better browsing experience.
-- **Searchbox** A simple searchbox that finds products based user input.
+- **Product Sorting**: Sort products by various criteria such as price, name, or popularity.
+- **Filtering by Category**: Filter products by category, price range, and attributes like size or color.
+- **Pagination**: Products are paginated for a better browsing experience.
+- **Searchbox**: A search bar to find products based on user input.
 
-### Product Details Page
+### 🏷️ **Product Details Page**
 
-- **Detailed Info**: Customers can view detailed information about each product and select based on product attributes.
-- **Reviews**: Signed in users can create a review and the details page showcases ratings and reviews in a nice format.
+- **Detailed Info**: Customers can view comprehensive details for each product, including attributes like size and color.
+- **Reviews**: Signed-in users can create reviews. The page displays ratings and reviews in an appealing format.
 
-### Serverside cart
+### 🛒 **Server-Side Cart**
 
-The server-side cart is accessible to both guests and signed-in users. Guests use a cookie-stored cartToken to retain their cart during the session, while signed-in users have their cart saved in the database for access across devices.
+- **Guests**: Cart is stored using a cookie (cartToken) for the session.
+- **Signed-in Users**: Cart is saved in the database and can be accessed across devices.
 
-### Orders
+### 📦 **Orders**
 
-- A very simple order system with no actual payment functionality.
-- Orders can be placed anonymously or by a signed-in user, if signed in then the user will be able to track and view their orders.
+- **Order Placement**: Simple order system without payment functionality.
+- **Anonymous or Signed-In Users**: Orders can be placed anonymously or with a user account.
+- **Order Tracking**: Signed-in users can view and track their orders.
 
-## TODO
+## 📝 TODO
 
-- Improve a11y/keyboard navigation for custom star rating component.
-- Show success message or redirect to a new success page after creating order.
-- Overview and orders pages for users with features like cancel order, change password, delete account.
-- More admin tools
+- **User Dashboard**: Add pages for users to view and manage orders, with features like cancel order, change password, and delete account.
+
+- **Improve Accessibility**: Enhance keyboard navigation and accessibility for the custom star rating component.
+- **Success Page**: Show a success message or redirect users to a success page after creating an order.

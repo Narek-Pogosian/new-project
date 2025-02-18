@@ -63,7 +63,12 @@ function WriteReviewContent({
   } = useMutation({
     mutationFn: (vals: ReviewSchemaType) =>
       fetch("/api/review", { method: "POST", body: JSON.stringify(vals) }).then(
-        (res) => res.json(),
+        (res) => {
+          if (res.ok) return res.json();
+          if (res.status === 409)
+            throw Error("You have already created a review for this product");
+          throw Error("Something went wrong");
+        },
       ),
   });
 
@@ -87,6 +92,9 @@ function WriteReviewContent({
         onSuccess: () => {
           router.refresh();
           closeDialog();
+        },
+        onError: (err) => {
+          setError(err.message);
         },
       });
     } catch (err) {

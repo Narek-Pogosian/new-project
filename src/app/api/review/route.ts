@@ -1,3 +1,4 @@
+import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
 import { getServerAuthSession } from "@/server/auth";
 import { revalidateDbCache } from "@/server/queries/cache";
 import { type NextRequest } from "next/server";
@@ -63,7 +64,15 @@ export async function POST(req: NextRequest) {
 
     return new Response(JSON.stringify({ review: result }), { status: 201 });
   } catch (err) {
-    console.error(err);
+    if (err instanceof PrismaClientKnownRequestError && err.code === "P2002") {
+      return new Response(
+        JSON.stringify({ message: "Unique constraint violation" }),
+        {
+          status: 409,
+        },
+      );
+    }
+
     return new Response(JSON.stringify({ message: "Internal server error" }), {
       status: 500,
     });

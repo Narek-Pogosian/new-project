@@ -5,10 +5,18 @@ import { type OrderStatus } from "@prisma/client";
 import { type getOrders } from "@/server/queries/order";
 import { FileQuestion } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import OrderItem from "./order-item";
 
 interface Props {
   orders: NonNullable<Awaited<ReturnType<typeof getOrders>>>;
 }
+
+const statuses: OrderStatus[] = [
+  "PENDING",
+  "SHIPPED",
+  "DELIVERED",
+  "CANCELLED",
+];
 
 function OrderList({ orders }: Props) {
   const [status, setStatus] = useState<OrderStatus | null>(null);
@@ -22,7 +30,7 @@ function OrderList({ orders }: Props) {
       <div
         role="group"
         aria-labelledby="filter-status"
-        className="mb-6 flex gap-2"
+        className="mb-6 flex gap-2 overflow-x-auto"
       >
         <span id="filter-status" className="sr-only">
           Filter orders by status
@@ -34,19 +42,17 @@ function OrderList({ orders }: Props) {
         >
           All Orders
         </Button>
-        {["PENDING", "SHIPPED", "DELIVERED", "CANCELLED"].map(
-          (statusOption) => (
-            <Button
-              key={statusOption}
-              onClick={() => setStatus(statusOption as OrderStatus)}
-              variant={status === statusOption ? "default" : "outline"}
-              className="capitalize"
-              aria-pressed={status === statusOption}
-            >
-              {statusOption.toLowerCase()}
-            </Button>
-          ),
-        )}
+        {statuses.map((statusOption) => (
+          <Button
+            key={statusOption}
+            onClick={() => setStatus(statusOption)}
+            variant={status === statusOption ? "default" : "outline"}
+            className="capitalize"
+            aria-pressed={status === statusOption}
+          >
+            {statusOption.toLowerCase()}
+          </Button>
+        ))}
       </div>
 
       <hr className="mb-6" />
@@ -63,14 +69,9 @@ function OrderList({ orders }: Props) {
             </p>
           </div>
         ) : (
-          <ul className="space-y-6">
+          <ul className="space-y-10">
             {filteredOrders.map((order) => (
-              <li
-                key={order.id}
-                className="flex items-center justify-between gap-2 [&:not(:last-of-type)]:border-b [&:not(:last-of-type)]:pb-6"
-              >
-                {JSON.stringify(order, null, 2)}
-              </li>
+              <OrderItem key={order.id} item={order} />
             ))}
           </ul>
         )}

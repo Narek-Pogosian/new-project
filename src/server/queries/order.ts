@@ -11,7 +11,15 @@ export async function getOrders() {
     include: {
       items: {
         include: {
-          product: true,
+          product: {
+            select: {
+              id: true,
+              slug: true,
+              name: true,
+              poster: true,
+              price: true,
+            },
+          },
         },
       },
     },

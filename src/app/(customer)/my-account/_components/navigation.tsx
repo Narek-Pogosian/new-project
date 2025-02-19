@@ -21,7 +21,7 @@ function MyAccountNavigation() {
       >
         Your Account
       </h3>
-      <ul className="flex gap-2 overflow-x-auto lg:flex-col lg:gap-4">
+      <ul className="flex gap-2 overflow-x-auto p-1 lg:flex-col lg:gap-4">
         {items.map((item) => (
           <li key={item.label}>
             <Link

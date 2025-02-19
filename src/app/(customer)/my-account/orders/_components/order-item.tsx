@@ -2,31 +2,32 @@ import { formatPrice, getTotalPrice } from "@/lib/utils";
 import { type getOrders } from "@/server/queries/order";
 import Image from "next/image";
 import Link from "next/link";
+import OrderCancelDialog from "./cancel-order";
 
 interface Props {
-  item: NonNullable<Awaited<ReturnType<typeof getOrders>>>[number];
+  order: NonNullable<Awaited<ReturnType<typeof getOrders>>>[number];
 }
 
-function OrderItem({ item }: Props) {
+function OrderItem({ order }: Props) {
   return (
     <li className="border-b pb-8 @container">
-      <div className="mb-2 flex items-center justify-between">
+      <div className="mb-4 flex items-center justify-between">
         <div className="flex items-center gap-2">
           <span className="h-full font-semibold capitalize">
-            {item.status.toLowerCase()}
+            {order.status.toLowerCase()}
           </span>
           <span aria-hidden className="text-lg text-foreground-muted">
             |
           </span>
           <span className="h-full text-sm font-medium text-foreground-muted">
-            {item.createdAt.toDateString()}
+            {order.createdAt.toDateString()}
           </span>
         </div>
-        {item.status === "PENDING" && <div>Cancel</div>}
+        {order.status === "PENDING" && <OrderCancelDialog id={order.id} />}
       </div>
 
       <ul className="mb-4 grid gap-4 @xl:grid-cols-2">
-        {item.items.map((item) => {
+        {order.items.map((item) => {
           const attributes = item.productAttributes as string;
           return (
             <div key={item.id} className="flex gap-4">
@@ -68,7 +69,7 @@ function OrderItem({ item }: Props) {
       </ul>
 
       <p className="text-sm text-foreground-muted">
-        Total price: <b>{formatPrice(getTotalPrice(item.items))}</b>
+        Total price: <b>{formatPrice(getTotalPrice(order.items))}</b>
       </p>
     </li>
   );

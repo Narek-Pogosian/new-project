@@ -4,6 +4,7 @@ import { type NextRequest } from "next/server";
 import { type JsonObject } from "next-auth/adapters";
 import { cookies } from "next/headers";
 import { db } from "@/server/db";
+import { z } from "zod";
 
 export async function POST(req: NextRequest) {
   try {
@@ -38,7 +39,55 @@ export async function POST(req: NextRequest) {
     return new Response(JSON.stringify({ order, orderItems }), { status: 201 });
   } catch (err) {
     console.error("Error creating order:", err);
-    return new Response(JSON.stringify({ message: "Internal server error" }), {
+
+    return new Response(JSON.stringify({ msg: "Internal server error" }), {
+      status: 500,
+    });
+  }
+}
+
+export async function PATCH(req: NextRequest) {
+  try {
+    const session = await getServerAuthSession();
+    const userId = session?.user.id;
+
+    if (!userId) {
+      return new Response(JSON.stringify({ msg: "Unauthorized" }), {
+        status: 401,
+      });
+    }
+
+    const { data, success } = z
+      .object({ id: z.number() })
+      .safeParse(await req.json());
+
+    if (!success) {
+      return new Response(JSON.stringify({ msg: "Please provide an id" }), {
+        status: 400,
+      });
+    }
+
+    const order = await db.order.findFirst({ where: { id: data.id } });
+    if (!order || order.userId !== userId) {
+      return new Response(JSON.stringify({ msg: "Unauthorized" }), {
+        status: 401,
+      });
+    }
+
+    await db.order.update({
+      where: { id: data.id },
+      data: {
+        status: "CANCELLED",
+      },
+    });
+
+    return new Response(JSON.stringify({ msg: "Order has been cancelled" }), {
+      status: 200,
+    });
+  } catch (err) {
+    console.error("Error canceling order:", err);
+
+    return new Response(JSON.stringify({ msg: "Internal server error" }), {
       status: 500,
     });
   }

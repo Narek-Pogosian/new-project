@@ -71,7 +71,7 @@ function OrderList({ orders }: Props) {
         ) : (
           <ul className="space-y-10">
             {filteredOrders.map((order) => (
-              <OrderItem key={order.id} item={order} />
+              <OrderItem key={order.id} order={order} />
             ))}
           </ul>
         )}

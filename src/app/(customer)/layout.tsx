@@ -4,7 +4,7 @@ import QueryProvider from "@/components/query-provider";
 import SkipToMain from "./_components/skip-to-main";
 import Footer from "./_components/footer";
 
-function AdminLayout({ children }: { children: React.ReactNode }) {
+function CustomerLayout({ children }: { children: React.ReactNode }) {
   return (
     <NuqsAdapter>
       <QueryProvider>
@@ -25,4 +25,4 @@ function AdminLayout({ children }: { children: React.ReactNode }) {
   );
 }
 
-export default AdminLayout;
+export default CustomerLayout;

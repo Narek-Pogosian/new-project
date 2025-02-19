@@ -57,10 +57,13 @@ export default async function ProductList({
           </li>
         ))}
       </ul>
-      <ProductPagination
-        currentPage={res.currentPage}
-        totalPages={res.totalPages}
-      />
+
+      {res.totalPages > 1 && (
+        <ProductPagination
+          currentPage={res.currentPage}
+          totalPages={res.totalPages}
+        />
+      )}
     </section>
   );
 }

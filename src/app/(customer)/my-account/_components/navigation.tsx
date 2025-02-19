@@ -1,24 +1,23 @@
 "use client";
 
-import { Box, Eye, User } from "lucide-react";
+import { Box, User } from "lucide-react";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 
 const items = [
-  { label: "Overview", link: "/my-account", icon: Eye },
   { label: "Orders", link: "/my-account/orders", icon: Box },
-  { label: "Personal details", link: "/my-account/details", icon: User },
+  { label: "Account", link: "/my-account/account", icon: User },
 ];
 
 function MyAccountNavigation() {
   const pathName = usePathname();
 
   return (
-    <nav aria-describedby="your-account" className="lg:w-64">
+    <nav aria-describedby="your-account" className="shrink-0 lg:w-60">
       <h3
         id="your-account"
-        className="max-lg:sr-only lg:mb-4 lg:text-lg lg:font-bold"
+        className="text-sm font-semibold uppercase tracking-wider text-foreground-muted max-lg:sr-only lg:mb-4"
       >
         Your Account
       </h3>

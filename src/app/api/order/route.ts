@@ -2,8 +2,8 @@ import { getServerAuthSession } from "@/server/auth";
 import { createOrderSchema } from "@/schemas/checkout-schemas";
 import { type NextRequest } from "next/server";
 import { type JsonObject } from "next-auth/adapters";
-import { db } from "@/server/db";
 import { cookies } from "next/headers";
+import { db } from "@/server/db";
 
 export async function POST(req: NextRequest) {
   try {

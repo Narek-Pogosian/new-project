@@ -1,6 +1,6 @@
 import { getServerAuthSession } from "@/server/auth";
-import MyAccountNavigation from "./_components/navigation";
 import { redirect } from "next/navigation";
+import MyAccountNavigation from "./_components/navigation";
 
 async function MyAccountLayout({ children }: { children: React.ReactNode }) {
   const session = await getServerAuthSession();
@@ -12,7 +12,7 @@ async function MyAccountLayout({ children }: { children: React.ReactNode }) {
   return (
     <div className="flex flex-col gap-10 lg:flex-row">
       <MyAccountNavigation />
-      {children}
+      <div className="w-full">{children}</div>
     </div>
   );
 }

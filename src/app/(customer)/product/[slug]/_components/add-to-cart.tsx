@@ -97,30 +97,29 @@ function AddToCart({ productAttributes, productId }: Props) {
             <h3 className="mb-1 text-xs uppercase tracking-wider text-foreground-muted">
               {attribute.name}
             </h3>
-            <ul className="flex flex-wrap gap-2" role="list">
+            <div className="flex flex-wrap gap-2" role="group">
               {attribute.values.map((value) => (
-                <li key={value} role="listitem">
-                  <Button
-                    size="sm"
-                    variant="outline"
-                    aria-pressed={selectedAttributes[attribute.name] === value}
-                    aria-label={`Select ${value} for ${attribute.name}`}
-                    className={cn("text-xs md:text-sm", {
-                      "bg-primary text-primary-foreground":
-                        selectedAttributes[attribute.name] === value,
-                    })}
-                    onClick={() =>
-                      void setSelectedAttributes((prev) => ({
-                        ...prev,
-                        [attribute.name]: value,
-                      }))
-                    }
-                  >
-                    {value}
-                  </Button>
-                </li>
+                <Button
+                  key={value}
+                  size="sm"
+                  variant="outline"
+                  aria-pressed={selectedAttributes[attribute.name] === value}
+                  aria-label={`Select ${value} for ${attribute.name}`}
+                  className={cn("text-xs md:text-sm", {
+                    "bg-primary text-primary-foreground":
+                      selectedAttributes[attribute.name] === value,
+                  })}
+                  onClick={() =>
+                    void setSelectedAttributes((prev) => ({
+                      ...prev,
+                      [attribute.name]: value,
+                    }))
+                  }
+                >
+                  {value}
+                </Button>
               ))}
-            </ul>
+            </div>
           </div>
         ))}
       </div>

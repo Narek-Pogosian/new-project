@@ -1,4 +1,4 @@
-import { formatPrice, getTotalPrice } from "@/lib/utils";
+import { cn, formatPrice, getTotalPrice } from "@/lib/utils";
 import { type getOrders } from "@/server/queries/order";
 import Image from "next/image";
 import Link from "next/link";
@@ -10,10 +10,18 @@ interface Props {
 
 function OrderItem({ order }: Props) {
   return (
-    <li className="border-b pb-8 @container">
+    <li className="border-b pb-10 @container">
       <div className="mb-4 flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <span className="h-full font-semibold capitalize">
+          <span
+            className={cn(
+              "h-full rounded border border-current px-2 py-1 text-xs font-semibold capitalize text-accent-700 dark:text-accent-400",
+              {
+                "text-danger-600 dark:text-danger-400":
+                  order.status === "CANCELLED",
+              },
+            )}
+          >
             {order.status.toLowerCase()}
           </span>
           <span aria-hidden className="text-lg text-foreground-muted">

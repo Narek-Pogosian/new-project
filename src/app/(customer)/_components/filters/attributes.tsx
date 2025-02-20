@@ -98,27 +98,30 @@ function Attributes({ availableAttributes }: Props) {
           >
             {attribute.name}
           </h4>
-          <ul className="flex flex-wrap gap-1" aria-labelledby={attribute.name}>
+          <div
+            role="group"
+            className="flex flex-wrap gap-1"
+            aria-labelledby={attribute.name}
+          >
             {attribute.possibleValues.map((value) => (
-              <li key={value}>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  aria-pressed={selectedAttributes[attribute.name]?.includes(
-                    value,
-                  )}
-                  aria-label={`Filter by ${attribute.name}: ${value}`}
-                  className={cn("text-xs md:text-sm", {
-                    "bg-primary text-primary-foreground":
-                      selectedAttributes[attribute.name]?.includes(value),
-                  })}
-                  onClick={() => handleSelect(attribute.name, value)}
-                >
-                  {value}
-                </Button>
-              </li>
+              <Button
+                key={value}
+                variant="outline"
+                size="sm"
+                aria-pressed={selectedAttributes[attribute.name]?.includes(
+                  value,
+                )}
+                aria-label={`Filter by ${attribute.name}: ${value}`}
+                className={cn("text-xs md:text-sm", {
+                  "bg-primary text-primary-foreground":
+                    selectedAttributes[attribute.name]?.includes(value),
+                })}
+                onClick={() => handleSelect(attribute.name, value)}
+              >
+                {value}
+              </Button>
             ))}
-          </ul>
+          </div>
         </div>
       ))}
 

@@ -10,6 +10,7 @@ async function MyOrdersPage() {
   if (orders?.length === 0) {
     return (
       <div className="pt-20 text-center">
+        <h1 className="sr-only">Your orders</h1>
         <div className="mx-auto mb-4 flex size-20 items-center justify-center rounded-full bg-primary/5">
           <FileQuestion className="size-10 text-primary" />
         </div>
@@ -23,6 +24,7 @@ async function MyOrdersPage() {
 
   return (
     <>
+      <h1 className="sr-only">Your orders</h1>
       <OrderList orders={orders} />
     </>
   );

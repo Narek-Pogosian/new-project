@@ -13,49 +13,54 @@ import {
   AlertDialogCancel,
 } from "@/components/ui/alert-dialog";
 import { useMutation } from "@tanstack/react-query";
-import { useRouter } from "next/navigation";
+import { signOut } from "next-auth/react";
+import { Button } from "@/components/ui/button";
 
-function OrderCancelDialog({ id }: { id: number }) {
-  const router = useRouter();
+function DeleteAccount() {
   const [isOpen, setIsOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
-  const { mutate, isPending } = useMutation({
-    mutationFn: (id: number) =>
-      fetch("/api/order", {
-        method: "PATCH",
-        body: JSON.stringify({ id }),
+  const { mutate } = useMutation({
+    mutationFn: () =>
+      fetch("/api/account", {
+        method: "DELETE",
       }).then((res) => {
         if (!res.ok) throw Error("");
         return res.json();
       }),
 
-    onSuccess: () => {
+    onMutate: () => {
+      setIsLoading(true);
+    },
+    onSuccess: async () => {
+      await signOut();
       setIsOpen(false);
-      router.refresh();
+    },
+    onSettled: () => {
+      setIsOpen(false);
     },
   });
 
   return (
     <AlertDialog open={isOpen} onOpenChange={setIsOpen}>
-      <AlertDialogTrigger className="rounded px-3 py-1.5 text-sm font-semibold text-danger-500 hover:bg-danger-400/10">
-        Cancel
+      <AlertDialogTrigger asChild>
+        <Button variant="destructive">Delete Account</Button>
       </AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>
           <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
           <AlertDialogDescription>
-            This will cancel the order and you will have to place a new one if
-            you regret it.
+            All your data will be lost and cannot be recovered.
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogCancel>Close</AlertDialogCancel>
+          <AlertDialogCancel>Cancel</AlertDialogCancel>
           <LoadingButton
-            loading={isPending}
+            loading={isLoading}
             variant="destructive"
-            onClick={() => mutate(id)}
+            onClick={() => mutate()}
           >
-            Cancel
+            Delete
           </LoadingButton>
         </AlertDialogFooter>
       </AlertDialogContent>
@@ -63,4 +68,4 @@ function OrderCancelDialog({ id }: { id: number }) {
   );
 }
 
-export default OrderCancelDialog;
+export default DeleteAccount;

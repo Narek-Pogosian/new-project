@@ -27,9 +27,9 @@ function MyAccountNavigation() {
             <Link
               href={item.link}
               className={cn(
-                "flex items-center gap-2 text-nowrap font-semibold hover:text-accent-600 hover:dark:text-accent-400 max-lg:border-r max-lg:px-4 max-lg:py-2 max-lg:text-sm",
+                "flex items-center gap-2 text-nowrap text-sm font-semibold text-foreground hover:underline max-lg:border-r max-lg:px-4 max-lg:py-2",
                 {
-                  "text-accent-600 dark:text-accent-400":
+                  "text-accent-700 dark:text-accent-400":
                     pathName === item.link,
                 },
               )}

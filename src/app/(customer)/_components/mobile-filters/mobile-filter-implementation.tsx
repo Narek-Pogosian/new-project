@@ -1,6 +1,7 @@
 "use client";
 
-import { buttonVariants } from "@/components/ui/button";
+import { MobileFiltersButton } from ".";
+import { type getCategories } from "@/server/queries/categories";
 import {
   Sheet,
   SheetContent,
@@ -9,8 +10,6 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import { type getCategories } from "@/server/queries/categories";
-import { Filter } from "lucide-react";
 import Filters from "../filters";
 
 interface Props {
@@ -21,10 +20,10 @@ interface Props {
 function MobileFiltersImplementation({ categories, currentCategory }: Props) {
   return (
     <Sheet>
-      <SheetTrigger className={buttonVariants()}>
-        <Filter /> Filters
+      <SheetTrigger asChild>
+        <MobileFiltersButton />
       </SheetTrigger>
-      <SheetContent side="left" className="max-w-xs">
+      <SheetContent side="left" className="max-w-xs overflow-y-auto">
         <SheetHeader>
           <SheetTitle className="text-left">Filters</SheetTitle>
           <SheetDescription></SheetDescription>

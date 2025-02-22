@@ -26,6 +26,7 @@ function SearchBox() {
   return (
     <form className="relative" role="search" onSubmit={handleSubmit}>
       <Input
+        id="search"
         type="search"
         placeholder="Search.."
         value={queryState ?? ""}

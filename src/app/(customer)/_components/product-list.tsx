@@ -33,7 +33,7 @@ export default async function ProductList({
       <ul className="grid w-full grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-3 lg:gap-6 xl:grid-cols-4">
         {res.products.map((product) => (
           <li key={product.id} className="relative">
-            <div className="relative mb-2 aspect-[8/11]">
+            <div className="relative mb-2 aspect-[3/4]">
               <Image
                 src={product.poster}
                 alt=""

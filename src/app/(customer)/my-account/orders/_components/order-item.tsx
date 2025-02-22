@@ -42,8 +42,8 @@ function OrderItem({ order }: Props) {
               <Image
                 src={item.product.poster}
                 alt=""
-                width={60}
-                height={95}
+                width={75}
+                height={100}
                 className="rounded"
               />
               <div className="flex grow justify-between">

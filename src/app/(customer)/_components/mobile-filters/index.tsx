@@ -16,23 +16,29 @@ interface Props {
   currentCategory: string | undefined;
 }
 
+export function MobileFiltersButton(
+  props: React.ButtonHTMLAttributes<HTMLButtonElement>,
+) {
+  return (
+    <Button {...props}>
+      <Filter />
+      Filters
+    </Button>
+  );
+}
+
 export default function MobileFilters({ categories, currentCategory }: Props) {
   const isMounted = useIsMounted();
   const isMobile = useIsMobile();
 
   if (!isMounted) {
-    return (
-      <Button>
-        <Filter />
-        Filters
-      </Button>
-    );
+    return <MobileFiltersButton />;
   }
 
   return (
     <>
       {isMobile && (
-        <Suspense fallback={<Button>Filters</Button>}>
+        <Suspense fallback={<MobileFiltersButton />}>
           <MobileFiltersImplementation
             categories={categories}
             currentCategory={currentCategory}

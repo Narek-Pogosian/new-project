@@ -33,6 +33,7 @@ This is an e-commerce project built with **Next.js 15**, **Tailwind CSS**, and *
 
 ## 📝 TODO
 
-- [] **User Dashboard**: Add pages for users to view and manage orders, with features like cancel order, change password, and delete account.
+- [x] **User Dashboard**: Add pages for users to view and manage orders, with features like cancel order and delete account.
+- [] **Edit Account info** Be able to change various account infos like email, name and password
 - [x] **Improve Accessibility**: Enhance keyboard navigation and accessibility for the custom star rating component.
 - [] **Success Page**: Show a success message or redirect users to a success page after creating an order.

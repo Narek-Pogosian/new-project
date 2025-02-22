@@ -1,4 +1,6 @@
+import { type CategoryAttribute } from "@prisma/client";
 import { clsx, type ClassValue } from "clsx";
+import { type Attribute } from "@/schemas/product-schemas";
 import { twMerge } from "tailwind-merge";
 
 export function cn(...inputs: ClassValue[]) {
@@ -33,4 +35,31 @@ export function formatPrice(amount: number, { showZeroAsNumber = false } = {}) {
 
 export function sleep(ms: number): Promise<void> {
   return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+export function parseAttributes(str: string): Attribute | undefined {
+  const [name, values] = str.split(":");
+  return name && values ? { name, values: values.split(",") } : undefined;
+}
+
+export function parseAttributesFromParams(
+  attributesFromParams: string[],
+  availableAttributes: CategoryAttribute[],
+) {
+  const initialAttributes = availableAttributes.reduce(
+    (acc, { name }) => {
+      acc[name] = [];
+      return acc;
+    },
+    {} as Record<string, string[]>,
+  );
+
+  attributesFromParams.forEach((attr) => {
+    const parsed = parseAttributes(attr);
+    if (parsed) {
+      initialAttributes[parsed.name] = parsed.values;
+    }
+  });
+
+  return initialAttributes;
 }

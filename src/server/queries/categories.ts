@@ -25,13 +25,7 @@ function getCategoriesInternal() {
           products: true,
         },
       },
-      categoryAttributes: {
-        select: {
-          id: true,
-          name: true,
-          possibleValues: true,
-        },
-      },
+      categoryAttributes: true,
     },
   });
 }

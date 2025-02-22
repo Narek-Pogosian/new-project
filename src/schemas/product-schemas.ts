@@ -1,3 +1,4 @@
+import { parseAttributes } from "@/lib/utils";
 import { z } from "zod";
 
 const productAttribute = z.object({
@@ -37,15 +38,10 @@ export const productQueryParams = z.object({
     .transform((attr) => {
       if (!attr) return;
       return (Array.isArray(attr) ? attr : [attr])
-        .map(parseAttr)
+        .map(parseAttributes)
         .filter((parsed): parsed is Attribute => Boolean(parsed));
     }),
 });
-
-function parseAttr(str: string): Attribute | undefined {
-  const [name, values] = str.split(":");
-  return name && values ? { name, values: values.split(",") } : undefined;
-}
 
 export type Attribute = z.infer<typeof productAttribute>;
 export type CreateProductsSchemaType = z.infer<typeof createProductSchema>;

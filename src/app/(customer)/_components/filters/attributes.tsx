@@ -1,13 +1,18 @@
+import { type AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 import { useCallback, useEffect, useState } from "react";
+import { cn, parseAttributesFromParams } from "@/lib/utils";
 import { useRouter, useSearchParams } from "next/navigation";
-import { type getCategories } from "@/server/queries/categories";
+import { type CategoryAttribute } from "@prisma/client";
 import { Button } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
 
 interface Props {
-  availableAttributes: Awaited<
-    ReturnType<typeof getCategories>
-  >[number]["categoryAttributes"];
+  availableAttributes: CategoryAttribute[];
+}
+
+function updateUrl(params: URLSearchParams, router: AppRouterInstance) {
+  const queryString = params.toString();
+  const url = `/?${queryString}`;
+  router.push(url);
 }
 
 function Attributes({ availableAttributes }: Props) {
@@ -16,21 +21,10 @@ function Attributes({ availableAttributes }: Props) {
 
   const setAttributesFromParams = useCallback(() => {
     const attributesFromParams = searchParams.getAll("attributes");
-    const initialAttributes: Record<string, string[]> =
-      availableAttributes.reduce(
-        (acc, { name }) => {
-          acc[name] = [];
-          return acc;
-        },
-        {} as Record<(typeof availableAttributes)[number]["name"], string[]>,
-      );
-
-    attributesFromParams.forEach((attr) => {
-      const [key, values] = attr.split(":");
-      if (key && values) {
-        initialAttributes[key] = values.split(",");
-      }
-    });
+    const initialAttributes = parseAttributesFromParams(
+      attributesFromParams,
+      availableAttributes,
+    );
 
     return initialAttributes;
   }, [searchParams, availableAttributes]);
@@ -44,17 +38,12 @@ function Attributes({ availableAttributes }: Props) {
   }, [searchParams, setAttributesFromParams]);
 
   function handleSelect(name: string, value: string) {
-    setSelectedAttributes((prev) => {
-      if (!Array.isArray(prev[name])) return {};
-
-      const isAlreadySelected = prev[name].includes(value);
-      return {
-        ...prev,
-        [name]: isAlreadySelected
-          ? prev[name].filter((v) => v !== value)
-          : [...prev[name], value],
-      };
-    });
+    setSelectedAttributes((prev) => ({
+      ...prev,
+      [name]: prev[name]?.includes(value)
+        ? prev[name].filter((v) => v !== value)
+        : [...(prev[name] || []), value],
+    }));
   }
 
   function handleApply() {
@@ -67,21 +56,15 @@ function Attributes({ availableAttributes }: Props) {
       }
     });
 
-    const queryString = params.toString();
-    const url = `/?${queryString}`;
-
-    router.push(url);
+    updateUrl(params, router);
   }
 
   function handleReset() {
     const params = new URLSearchParams(window.location.search);
     params.delete("attributes");
 
-    const queryString = params.toString();
-    const url = `/?${queryString}`;
-
     setSelectedAttributes({});
-    router.push(url);
+    updateUrl(params, router);
   }
 
   return (

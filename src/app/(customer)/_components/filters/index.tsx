@@ -15,7 +15,7 @@ function Filters({ categories, currentCategory }: Props) {
   const categoryAttributes = categories.find((c) => c.slug === currentCategory);
 
   return (
-    <div className="space-y-8">
+    <div className="grid gap-7">
       <PriceSlider />
 
       <Categories categories={categories} />
